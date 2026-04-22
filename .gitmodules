@@ -1,0 +1,3 @@
+[submodule "AutoRaise"]
+	path = AutoRaise
+	url = git@github.com:AdrianLSY/AutoRaise.git
