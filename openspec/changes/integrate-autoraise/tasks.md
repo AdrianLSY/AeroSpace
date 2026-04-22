@@ -1,0 +1,72 @@
+# Tasks: integrate-autoraise
+
+## Phase 1 — Scaffolding
+
+- [x] 1.1 Create `Sources/AutoRaiseCore/` directory with `include/module.modulemap` and `include/AutoRaiseBridge.h`.
+- [x] 1.2 Add `AutoRaiseCore` target in `Package.swift` (language: ObjC++, ARC enabled, linked frameworks: AppKit, Carbon, ApplicationServices).
+- [x] 1.3 Add `AutoRaiseCore` as a dependency of `AppBundle` in `Package.swift`.
+- [x] 1.4 Update `project.yml` with the matching Xcode target so `./generate.sh` produces a consistent `AeroSpace.xcodeproj`. — **No change needed**: Xcode target depends on the `AppBundle` SwiftPM product (`AeroSpacePackage`); Xcode's SPM integration picks up `AutoRaiseCore` as a transitive dependency via Package.swift. Same pattern as `PrivateApi` today.
+- [ ] 1.5 Verify `./build-debug.sh` passes with an empty `AutoRaise.mm` stub in the new target. — **Blocked on Linux**; verify on macOS.
+
+## Phase 2 — Port AutoRaise.mm
+
+- [x] 2.1 Copy `AutoRaise/AutoRaise.mm` into `Sources/AutoRaiseCore/AutoRaise.mm`. Preserve its GPL copyright header.
+- [x] 2.2 Strip `main()`, `NSApplicationMain`, the argv/NSArgumentDomain CLI path.
+- [x] 2.3 Strip `ConfigClass` file IO, `~/.AutoRaise` / `~/.config/AutoRaise/config` reading, `parametersDictionary`, `warnAndStripDeprecated`, `rewriteConfigStrippingDeprecatedKeys`, and all deprecated-key constants.
+- [x] 2.4 Strip `MDWorkspaceWatcher` — its subscriptions are replaced by bridge calls from Swift (Phase 4).
+- [x] 2.5 Strip the warp path: `appActivated`'s warp/scale body, `CGSSetCursorScale` / `CGSGetCursorScale` extern decls, `SCALE_DELAY_MS` / `SCALE_DURATION_MS`, `TASK_SWITCHER_MODIFIER_KEY` handling, `activated_by_task_switcher`, `altTaskSwitcher` branch, `warpX` / `warpY` / `scale` config reads. `appActivated` becomes a tiny function that opens the SUPPRESS window (needed even without warp, to cover keyboard app-switch stabilization).
+- [x] 2.6 Strip the `-verbose` logging gate, or route `NSLog` calls behind a compile-time flag that stays off. — Fully removed `verbose` global and all `if (verbose) { NSLog(...); }` call-sites. `logWindowTitle` (only called from verbose branches) removed.
+- [x] 2.7 Strip `OLD_ACTIVATION_METHOD` and `ALTERNATIVE_TASK_SWITCHER` compile flags (we standardize on one activation path). Also removed `#include <Carbon/Carbon.h>` and `#include <libproc.h>` — no symbols from either remain.
+- [ ] 2.8 Confirm remaining file compiles standalone with `-fobjc-arc` against AppKit + Carbon + ApplicationServices. — **Blocked on Linux**; verify on macOS.
+
+## Phase 3 — Bridge surface
+
+- [ ] 3.1 Define `AutoRaiseConfigC` struct in `AutoRaiseBridge.h` with primitive fields for all ported options (see spec requirement §Config).
+- [ ] 3.2 Define bridge C API: `autoraise_start`, `autoraise_stop`, `autoraise_reload`, `autoraise_on_active_space_did_change`, `autoraise_on_app_did_activate`, `autoraise_set_route_callback`.
+- [ ] 3.3 Implement bridge in `AutoRaiseBridge.mm`: install/teardown the `CGEventTap`, convert `AutoRaiseConfigC` into the existing global state variables, replace AutoRaise's `raiseAndActivate` body with a call to the route-callback passing `CGWindowID`.
+- [ ] 3.4 Wire `raiseGeneration` retries: the 50ms/100ms `dispatch_after` blocks must still gate on `gen == raiseGeneration` and call the route callback on success.
+- [ ] 3.5 Expose the module to Swift via `include/module.modulemap` (`module AutoRaiseCore`).
+
+## Phase 4 — Swift side
+
+- [ ] 4.1 Create `Sources/AppBundle/autoraise/AutoRaiseController.swift` with `start`/`stop`/`reload`/`isEnabled` and the two observer callbacks `onActiveSpaceDidChange` / `onAppDidActivate`.
+- [ ] 4.2 Create `Sources/AppBundle/autoraise/RaiseRouter.swift` with the `CGWindowID → Window` mapping, current-workspace check (`window.visualWorkspace == focus.workspace`), and `setFocus(to:)` call. Register as the bridge route-callback on controller start.
+- [ ] 4.3 Create `Sources/AppBundle/autoraise/AutoRaiseConfig.swift` model struct + conversion to `AutoRaiseConfigC`.
+- [ ] 4.4 Wire `GlobalObserver.onNotif` to call `AutoRaiseController.onActiveSpaceDidChange()` on `activeSpaceDidChangeNotification` and `.onAppDidActivate()` on `didActivateApplicationNotification`, after scheduling the existing refresh session.
+- [ ] 4.5 Call `AutoRaiseController.start(config.autoRaise)` from `initAppBundle.swift` after `GlobalObserver.initObserver()`, gated on `config.autoRaise.enabled`.
+
+## Phase 5 — Config
+
+- [ ] 5.1 Add `AutoRaiseConfig` field to `Config` in `Sources/AppBundle/config/Config.swift`.
+- [ ] 5.2 Add `[auto-raise]` section parsing in `Sources/AppBundle/config/parseConfig.swift` (or a new `parseAutoRaise.swift`). Keys: `enabled`, `poll-millis`, `ignore-space-changed`, `invert-disable-key`, `invert-ignore-apps`, `ignore-apps`, `ignore-titles`, `stay-focused-bundle-ids`, `disable-key`.
+- [ ] 5.3 Validate `poll-millis >= 1`, `disable-key ∈ {control, option, disabled}`, `ignore-titles` entries compile as ICU regex.
+- [ ] 5.4 Hook `ConfigFileWatcher` reload path to call `AutoRaiseController.reload(newConfig.autoRaise)`.
+- [ ] 5.5 Reload must respect runtime toggle: if the user has disabled via `disable-auto-raise`, a reload does not re-enable.
+
+## Phase 6 — Commands
+
+- [ ] 6.1 `Sources/Common/cmdArgs/impl/EnableAutoRaiseCmdArgs.swift` + `DisableAutoRaiseCmdArgs.swift`; register in `cmdArgsManifest.swift`.
+- [ ] 6.2 `Sources/AppBundle/command/impl/EnableAutoRaiseCommand.swift` + `DisableAutoRaiseCommand.swift`; register in `cmdManifest.swift`.
+- [ ] 6.3 `docs/aerospace-enable-auto-raise.adoc` + `docs/aerospace-disable-auto-raise.adoc`; link from `docs/commands.adoc`.
+- [ ] 6.4 Shell-completion grammar entries in `grammar/commands-bnf-grammar.txt`.
+- [ ] 6.5 Run `./generate.sh`, commit generated files, confirm `./test.sh` passes the generate-is-no-op check.
+
+## Phase 7 — Licensing & cleanup
+
+- [ ] 7.1 Add `LICENSE-GPL` at repo root with full GPL-2.0-or-later text.
+- [ ] 7.2 Amend `LICENSE` / `README.md` with the combined-work notice.
+- [ ] 7.3 Remove the `AutoRaise/` submodule entry from `.gitmodules` and delete the submodule directory (after port is verified working).
+
+## Phase 8 — Tests & QA
+
+- [ ] 8.1 Unit tests for `[auto-raise]` TOML parsing round-trip in `Sources/AppBundleTests/`.
+- [ ] 8.2 Unit test: `RaiseRouter.route` drops windows on non-focused workspaces.
+- [ ] 8.3 Manual QA script: multi-monitor hover, full-screen apps, workspace switch mid-hover, `disableKey` held while hovering, `ignoreApps` entry, `stayFocusedBundleIds` entry, `enable`/`disable-auto-raise` runtime toggle, config file live-reload.
+- [ ] 8.4 Verify `./test.sh` passes (build with `-warnings-as-errors`, swift tests, lint, generate.sh no-op).
+- [ ] 8.5 Release build (`./build-release.sh`) succeeds on a universal binary.
+
+## Phase 9 — Docs
+
+- [ ] 9.1 Update `CLAUDE.md` §Architecture with a new "AutoRaise integration" subsection describing `AutoRaiseCore` target, bridge shape, raise-routing rule.
+- [ ] 9.2 New `docs/guide/auto-raise.adoc` user-facing guide covering config keys, commands, `disableKey`, and the `on-focus-changed` firing-on-hover gotcha.
+- [ ] 9.3 `docs/aerospace-config.adoc` (or the relevant config reference) documents the `[auto-raise]` section.
