@@ -19,7 +19,7 @@
  */
 
 /*
- * Adapted from AutoRaise (https://github.com/sbmpost/AutoRaise) for integration
+ * Adapted from AutoRaise (https://github.com/AdrianLSY/AutoRaise) for integration
  * into AeroSpace. Licensed under GPL-2.0-or-later; see the notice above.
  *
  * Modifications vs. upstream (openspec change integrate-autoraise):

@@ -2,7 +2,7 @@
 
 ## Why
 
-AeroSpace is a tiling window manager; it does not currently implement focus-follows-mouse with raise-on-hover. AutoRaise (sbmpost) is a single-file Objective-C++ program that does this well, and is already tracked in this repo as a git submodule at `AutoRaise/` pointing at a fork. Running AutoRaise as a separate process alongside AeroSpace would mean two processes both driving AX focus, two config files, two Accessibility permission prompts, and no shared model — hovering a window would change native macOS focus but leave AeroSpace's tree/focus state chasing behind.
+AeroSpace is a tiling window manager; it does not currently implement focus-follows-mouse with raise-on-hover. AutoRaise is a single-file Objective-C++ program that does this well, and is already tracked in this repo as a git submodule at `AutoRaise/` pointing at [AdrianLSY's fork](https://github.com/AdrianLSY/AutoRaise) of upstream AutoRaise. Running AutoRaise as a separate process alongside AeroSpace would mean two processes both driving AX focus, two config files, two Accessibility permission prompts, and no shared model — hovering a window would change native macOS focus but leave AeroSpace's tree/focus state chasing behind.
 
 Porting AutoRaise into `AppBundle` makes hover-raise a first-class AeroSpace feature: one process, one TOML config, one AX permission, and every raise flows through AeroSpace's `setFocus(to:)` so the tree model stays consistent.
 
