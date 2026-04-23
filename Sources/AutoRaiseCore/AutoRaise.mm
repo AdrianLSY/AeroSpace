@@ -45,6 +45,11 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <Foundation/Foundation.h>
 #include <AppKit/AppKit.h>
+#import "AutoRaiseBridge.h"
+
+// Route callback, set once by AutoRaiseBridge (autoraise_set_route_callback)
+// and read from `raiseAndActivate` on the main thread.
+extern AutoRaiseRouteRaise routeRaise;
 
 #define STACK_THRESHOLD 20
 
@@ -70,15 +75,17 @@
 
 extern "C" AXError _AXUIElementGetWindow(AXUIElementRef, CGWindowID *out);
 
-static AXObserverRef axObserver = NULL;
-static uint64_t lastDestroyedMouseWindow_id = kCGNullWindowID;
+// Non-static globals below are read or written by AutoRaiseBridge via `extern`.
+// See openspec change integrate-autoraise §D3 ("globals stay globals").
+AXObserverRef axObserver = NULL;
+uint64_t lastDestroyedMouseWindow_id = kCGNullWindowID;
 
-static CFMachPortRef eventTap = NULL;
+CFMachPortRef eventTap = NULL;
 static AXUIElementRef _accessibility_object = AXUIElementCreateSystemWide();
 static AXUIElementRef _dock_app = NULL;
-static NSArray * ignoreApps = NULL;
-static NSArray * ignoreTitles = NULL;
-static NSArray * stayFocusedBundleIds = NULL;
+NSArray * ignoreApps = NULL;
+NSArray * ignoreTitles = NULL;
+NSArray * stayFocusedBundleIds = NULL;
 static NSArray * const mainWindowAppsWithoutTitle = @[
     @"System Settings",
     @"System Information",
@@ -108,21 +115,21 @@ static NSString * const XQuartz = @"XQuartz";
 static NSString * const Finder = @"Finder";
 static NSString * const Pake = @"pake";
 static NSString * const NoTitle = @"";
-static CGPoint desktopOrigin = {0, 0};
-static CGPoint oldPoint = {0, 0};
-static bool ignoreSpaceChanged = false;
-static bool invertDisableKey = false;
-static bool invertIgnoreApps = false;
-static int pollMillis = 0;
-static int disableKey = 0;
+CGPoint desktopOrigin = {0, 0};
+CGPoint oldPoint = {0, 0};
+bool ignoreSpaceChanged = false;
+bool invertDisableKey = false;
+bool invertIgnoreApps = false;
+int pollMillis = 0;
+int disableKey = 0;
 
 // Event-driven throttle + suppression state. All times in milliseconds since process
 // start, using a monotonic clock. `raiseGeneration` is incremented every time a raise
 // is checked; scheduled retries capture the generation at schedule time and only fire
 // if it still matches at execution time.
-static double lastCheckTime = 0;
-static double suppressRaisesUntil = 0;
-static uint64_t raiseGeneration = 0;
+double lastCheckTime = 0;
+double suppressRaisesUntil = 0;
+uint64_t raiseGeneration = 0;
 
 static inline double currentTimeMillis() {
     return [[NSProcessInfo processInfo] systemUptime] * 1000.0;
@@ -136,10 +143,16 @@ inline void activate(pid_t pid) {
         activateWithOptions: 0];
 }
 
+// AeroSpace integration: route the raise through Swift via the bridge callback.
+// Swift resolves the CGWindowID to an AeroSpace Window, enforces the
+// current-workspace rule, and calls setFocus(to:). The `window_pid` parameter
+// is retained only to avoid churning the retry-block call sites; Swift
+// rediscovers the pid from the window.
 inline void raiseAndActivate(AXUIElementRef _window, pid_t window_pid) {
-    if (AXUIElementPerformAction(_window, kAXRaiseAction) == kAXErrorSuccess) {
-        activate(window_pid);
-    }
+    (void) window_pid;
+    CGWindowID window_id = kCGNullWindowID;
+    if (_AXUIElementGetWindow(_window, &window_id) != kAXErrorSuccess) { return; }
+    if (routeRaise != NULL) { routeRaise((uint32_t) window_id); }
 }
 
 // TODO: does not take into account different languages

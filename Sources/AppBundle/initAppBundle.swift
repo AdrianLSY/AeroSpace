@@ -28,6 +28,9 @@ import Foundation
         checkAccessibilityPermissions()
         startUnixSocketServer()
         GlobalObserver.initObserver()
+        if config.autoRaise.enabled {
+            AutoRaiseController.start(config: config.autoRaise)
+        }
         Workspace.garbageCollectUnusedWorkspaces() // init workspaces
         _ = Workspace.all.first?.focusWorkspace()
         await runHeavyCompleteRefreshSession(

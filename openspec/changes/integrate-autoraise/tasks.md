@@ -6,7 +6,7 @@
 - [x] 1.2 Add `AutoRaiseCore` target in `Package.swift` (language: ObjC++, ARC enabled, linked frameworks: AppKit, Carbon, ApplicationServices).
 - [x] 1.3 Add `AutoRaiseCore` as a dependency of `AppBundle` in `Package.swift`.
 - [x] 1.4 Update `project.yml` with the matching Xcode target so `./generate.sh` produces a consistent `AeroSpace.xcodeproj`. — **No change needed**: Xcode target depends on the `AppBundle` SwiftPM product (`AeroSpacePackage`); Xcode's SPM integration picks up `AutoRaiseCore` as a transitive dependency via Package.swift. Same pattern as `PrivateApi` today.
-- [ ] 1.5 Verify `./build-debug.sh` passes with an empty `AutoRaise.mm` stub in the new target. — **Blocked on Linux**; verify on macOS.
+- [x] 1.5 Verify `./build-debug.sh` passes with an empty `AutoRaise.mm` stub in the new target. — Verified on macOS with the full port (supersedes the stub check): `swift build` completes in 99s with AutoRaiseCore, AppBundle, and AeroSpaceApp all linking cleanly. Note: `build-debug.sh`'s `swift build --target AppBundleTests` step fails on Command Line Tools due to missing XCTest; orthogonal toolchain issue, resolved by installing Xcode 26+ (also required for release builds per CLAUDE.md).
 
 ## Phase 2 — Port AutoRaise.mm
 
@@ -17,23 +17,23 @@
 - [x] 2.5 Strip the warp path: `appActivated`'s warp/scale body, `CGSSetCursorScale` / `CGSGetCursorScale` extern decls, `SCALE_DELAY_MS` / `SCALE_DURATION_MS`, `TASK_SWITCHER_MODIFIER_KEY` handling, `activated_by_task_switcher`, `altTaskSwitcher` branch, `warpX` / `warpY` / `scale` config reads. `appActivated` becomes a tiny function that opens the SUPPRESS window (needed even without warp, to cover keyboard app-switch stabilization).
 - [x] 2.6 Strip the `-verbose` logging gate, or route `NSLog` calls behind a compile-time flag that stays off. — Fully removed `verbose` global and all `if (verbose) { NSLog(...); }` call-sites. `logWindowTitle` (only called from verbose branches) removed.
 - [x] 2.7 Strip `OLD_ACTIVATION_METHOD` and `ALTERNATIVE_TASK_SWITCHER` compile flags (we standardize on one activation path). Also removed `#include <Carbon/Carbon.h>` and `#include <libproc.h>` — no symbols from either remain.
-- [ ] 2.8 Confirm remaining file compiles standalone with `-fobjc-arc` against AppKit + Carbon + ApplicationServices. — **Blocked on Linux**; verify on macOS.
+- [x] 2.8 Confirm remaining file compiles standalone with `-fobjc-arc` against AppKit + Carbon + ApplicationServices. — Verified via the same build as task 1.5. `AutoRaise.mm` compiles clean with no warnings under `-warnings-as-errors`.
 
 ## Phase 3 — Bridge surface
 
-- [ ] 3.1 Define `AutoRaiseConfigC` struct in `AutoRaiseBridge.h` with primitive fields for all ported options (see spec requirement §Config).
-- [ ] 3.2 Define bridge C API: `autoraise_start`, `autoraise_stop`, `autoraise_reload`, `autoraise_on_active_space_did_change`, `autoraise_on_app_did_activate`, `autoraise_set_route_callback`.
-- [ ] 3.3 Implement bridge in `AutoRaiseBridge.mm`: install/teardown the `CGEventTap`, convert `AutoRaiseConfigC` into the existing global state variables, replace AutoRaise's `raiseAndActivate` body with a call to the route-callback passing `CGWindowID`.
-- [ ] 3.4 Wire `raiseGeneration` retries: the 50ms/100ms `dispatch_after` blocks must still gate on `gen == raiseGeneration` and call the route callback on success.
-- [ ] 3.5 Expose the module to Swift via `include/module.modulemap` (`module AutoRaiseCore`).
+- [x] 3.1 Define `AutoRaiseConfigC` struct in `AutoRaiseBridge.h` with primitive fields for all ported options (see spec requirement §Config). — Implemented as an ObjC `@interface AutoRaiseBridgeConfig` instead of a plain C struct (design.md §D3.b refinement): zero marshaling cost when Swift passes NSArrays of strings, and the `Bridge` in the name distinguishes this wire type from the Swift model struct `AutoRaiseConfig` (AppBundle). Fields: pollMillis, disableKey (CGEventFlags mask), ignoreSpaceChanged, invertDisableKey, invertIgnoreApps, ignoreApps, ignoreTitles, stayFocusedBundleIds.
+- [x] 3.2 Define bridge C API: `autoraise_start`, `autoraise_stop`, `autoraise_reload`, `autoraise_on_active_space_did_change`, `autoraise_on_app_did_activate`, `autoraise_set_route_callback`. — Also added `autoraise_is_running` for the Swift controller's idempotency checks.
+- [x] 3.3 Implement bridge in `AutoRaiseBridge.mm`: install/teardown the `CGEventTap`, convert `AutoRaiseConfigC` into the existing global state variables, replace AutoRaise's `raiseAndActivate` body with a call to the route-callback passing `CGWindowID`. — Tap installed on `CFRunLoopGetMain()` (design.md §D3.c), `kCGHIDEventTap` + listen-only. `applyConfig` auto-appends `@"AssistiveControl"` to ignoreApps (§D3.d). Config-owned and runtime-state globals in `AutoRaise.mm` have `static` dropped; bridge accesses them via `extern`.
+- [x] 3.4 Wire `raiseGeneration` retries: the 50ms/100ms `dispatch_after` blocks must still gate on `gen == raiseGeneration` and call the route callback on success. — No code change required: the retry blocks call `raiseAndActivate(_win1, captured_pid)` which now routes through the callback. `autoraise_stop` bumps `raiseGeneration` so in-flight retries no-op post-teardown.
+- [x] 3.5 Expose the module to Swift via `include/module.modulemap` (`module AutoRaiseCore`). — Existing module map is sufficient; `#import <Foundation/Foundation.h>` inside the `#ifdef __OBJC__` block in the public header lets clang's modules import Foundation transitively for Swift.
 
 ## Phase 4 — Swift side
 
-- [ ] 4.1 Create `Sources/AppBundle/autoraise/AutoRaiseController.swift` with `start`/`stop`/`reload`/`isEnabled` and the two observer callbacks `onActiveSpaceDidChange` / `onAppDidActivate`.
-- [ ] 4.2 Create `Sources/AppBundle/autoraise/RaiseRouter.swift` with the `CGWindowID → Window` mapping, current-workspace check (`window.visualWorkspace == focus.workspace`), and `setFocus(to:)` call. Register as the bridge route-callback on controller start.
-- [ ] 4.3 Create `Sources/AppBundle/autoraise/AutoRaiseConfig.swift` model struct + conversion to `AutoRaiseConfigC`.
-- [ ] 4.4 Wire `GlobalObserver.onNotif` to call `AutoRaiseController.onActiveSpaceDidChange()` on `activeSpaceDidChangeNotification` and `.onAppDidActivate()` on `didActivateApplicationNotification`, after scheduling the existing refresh session.
-- [ ] 4.5 Call `AutoRaiseController.start(config.autoRaise)` from `initAppBundle.swift` after `GlobalObserver.initObserver()`, gated on `config.autoRaise.enabled`.
+- [x] 4.1 Create `Sources/AppBundle/autoraise/AutoRaiseController.swift` with `start`/`stop`/`reload`/`isEnabled` and the two observer callbacks `onActiveSpaceDidChange` / `onAppDidActivate`. — `@MainActor enum` with sticky `runtimeDisabled` flag enforcing the §D8 precedence rule (runtime disable beats config reload). Route callback installed lazily on first start via `installRouteCallbackOnce`.
+- [x] 4.2 Create `Sources/AppBundle/autoraise/RaiseRouter.swift` with the `CGWindowID → Window` mapping, current-workspace check (`window.visualWorkspace == focus.workspace`), and `setFocus(to:)` call. Register as the bridge route-callback on controller start. — `RaiseRouter.cCallback` is a `@convention(c)` closure that calls `MainActor.assumeIsolated { route(...) }`. Valid because the CGEventTap + dispatch_after retries run on the main run loop (§D3.c). Confirmed to compile cleanly under Swift 6.3 strict concurrency.
+- [x] 4.3 Create `Sources/AppBundle/autoraise/AutoRaiseConfig.swift` model struct + conversion to `AutoRaiseConfigC`. — Swift `AutoRaiseConfig` is a `ConvenienceCopyable, Equatable` struct. `toBridge()` constructs an `AutoRaiseBridgeConfig` and maps the Swift `AutoRaiseDisableKey` enum to the `CGEventFlags.maskControl` / `.maskAlternate` raw values.
+- [x] 4.4 Wire `GlobalObserver.onNotif` to call `AutoRaiseController.onActiveSpaceDidChange()` on `activeSpaceDidChangeNotification` and `.onAppDidActivate()` on `didActivateApplicationNotification`, after scheduling the existing refresh session.
+- [x] 4.5 Call `AutoRaiseController.start(config.autoRaise)` from `initAppBundle.swift` after `GlobalObserver.initObserver()`, gated on `config.autoRaise.enabled`. — `Config.autoRaise` field added with a default-constructed `AutoRaiseConfig` (TOML parsing lands in Phase 5); `enabled` defaults to false so the controller is only wired, not active, until Phase 5 delivers config parsing.
 
 ## Phase 5 — Config
 
