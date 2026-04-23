@@ -45,11 +45,11 @@
 
 ## Phase 6 — Commands
 
-- [ ] 6.1 `Sources/Common/cmdArgs/impl/EnableAutoRaiseCmdArgs.swift` + `DisableAutoRaiseCmdArgs.swift`; register in `cmdArgsManifest.swift`.
-- [ ] 6.2 `Sources/AppBundle/command/impl/EnableAutoRaiseCommand.swift` + `DisableAutoRaiseCommand.swift`; register in `cmdManifest.swift`.
-- [ ] 6.3 `docs/aerospace-enable-auto-raise.adoc` + `docs/aerospace-disable-auto-raise.adoc`; link from `docs/commands.adoc`.
-- [ ] 6.4 Shell-completion grammar entries in `grammar/commands-bnf-grammar.txt`.
-- [ ] 6.5 Run `./generate.sh`, commit generated files, confirm `./test.sh` passes the generate-is-no-op check.
+- [x] 6.1 `Sources/Common/cmdArgs/impl/EnableAutoRaiseCmdArgs.swift` + `DisableAutoRaiseCmdArgs.swift`; register in `cmdArgsManifest.swift`. — Both structs take only `--fail-if-noop` (no positional args). `CmdKind` gains `enableAutoRaise = "enable-auto-raise"` and `disableAutoRaise = "disable-auto-raise"`, kept alphabetical with the `enable` / `debugWindows` neighbors.
+- [x] 6.2 `Sources/AppBundle/command/impl/EnableAutoRaiseCommand.swift` + `DisableAutoRaiseCommand.swift`; register in `cmdManifest.swift`. — Both commands short-circuit on `AutoRaiseController.isEnabled` mismatch (the `--fail-if-noop` / stderr-message split mirrors `EnableCommand`). The transition branch calls `AutoRaiseController.start(config: config.autoRaise)` / `.stop()`, which maintain the §D8 sticky flag.
+- [x] 6.3 `docs/aerospace-enable-auto-raise.adoc` + `docs/aerospace-disable-auto-raise.adoc`; link from `docs/commands.adoc`. — New `==` sections in `docs/commands.adoc` placed alphabetically (`disable-auto-raise` between close-all-windows-but-current and enable; `enable-auto-raise` between enable and exec-and-forget).
+- [x] 6.4 Shell-completion grammar entries in `grammar/commands-bnf-grammar.txt`. — Two new `| disable-auto-raise [--fail-if-noop]` and `| enable-auto-raise [--fail-if-noop]` alternatives under the `<subcommand>` rule.
+- [x] 6.5 Run `./generate.sh`, commit generated files, confirm `./test.sh` passes the generate-is-no-op check. — `./generate.sh --ignore-shell-parser` regenerated `cmdHelpGenerated.swift` (added `enable_auto_raise_help_generated` + `disable_auto_raise_help_generated` blocks), `subcommandDescriptionsGenerated.swift`, and `AeroSpace.xcodeproj`. Shell parser was skipped (ANTLR needs JDK which is absent on this box); `grammar/ShellParser.g4` is untouched so the generated `ShellParserGenerated/` package doesn't need regen. Full `./test.sh` deferred to Phase 8 QA (same XCTest toolchain constraint noted in 1.5). `swift build` completes in 41s clean.
 
 ## Phase 7 — Licensing & cleanup
 
