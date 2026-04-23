@@ -46,4 +46,3 @@ private func parseIgnoreTitles(_ raw: Json, _ backtrace: ConfigBacktrace) -> Par
         return .success(patterns)
     }
 }
-
