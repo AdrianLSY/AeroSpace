@@ -37,11 +37,11 @@
 
 ## Phase 5 — Config
 
-- [ ] 5.1 Add `AutoRaiseConfig` field to `Config` in `Sources/AppBundle/config/Config.swift`.
-- [ ] 5.2 Add `[auto-raise]` section parsing in `Sources/AppBundle/config/parseConfig.swift` (or a new `parseAutoRaise.swift`). Keys: `enabled`, `poll-millis`, `ignore-space-changed`, `invert-disable-key`, `invert-ignore-apps`, `ignore-apps`, `ignore-titles`, `stay-focused-bundle-ids`, `disable-key`.
-- [ ] 5.3 Validate `poll-millis >= 1`, `disable-key ∈ {control, option, disabled}`, `ignore-titles` entries compile as ICU regex.
-- [ ] 5.4 Hook `ConfigFileWatcher` reload path to call `AutoRaiseController.reload(newConfig.autoRaise)`.
-- [ ] 5.5 Reload must respect runtime toggle: if the user has disabled via `disable-auto-raise`, a reload does not re-enable.
+- [x] 5.1 Add `AutoRaiseConfig` field to `Config` in `Sources/AppBundle/config/Config.swift`. — Landed in Phase 4 alongside the controller wiring; defaults to `AutoRaiseConfig()` (i.e. `enabled = false`).
+- [x] 5.2 Add `[auto-raise]` section parsing in `Sources/AppBundle/config/parseConfig.swift` (or a new `parseAutoRaise.swift`). Keys: `enabled`, `poll-millis`, `ignore-space-changed`, `invert-disable-key`, `invert-ignore-apps`, `ignore-apps`, `ignore-titles`, `stay-focused-bundle-ids`, `disable-key`. — `parseAutoRaise.swift` introduces the subtable parser; `configParser` in `parseConfig.swift` registers it. `parseArrayOfStrings` is now non-private so the subtable parser can reuse it. Unknown keys fail via the generic `unknownKeyError` in `parseTable`.
+- [x] 5.3 Validate `poll-millis >= 1`, `disable-key ∈ {control, option, disabled}`, `ignore-titles` entries compile as ICU regex. — Folded into the per-field parsers in `parseAutoRaise.swift`. ICU regex validation uses `NSRegularExpression(pattern:)`, matching AutoRaise.mm's `NSRegularExpressionSearch` call-site.
+- [x] 5.4 Hook `ConfigFileWatcher` reload path to call `AutoRaiseController.reload(newConfig.autoRaise)`. — `reloadConfig()` in `ReloadConfigCommand.swift` is the single entry point that both `ConfigFileWatcher` and the `reload-config` command feed into. `AutoRaiseController.reload(config:)` is called after `syncStartAtLogin()` and before `MessageModel.shared.message` is cleared.
+- [x] 5.5 Reload must respect runtime toggle: if the user has disabled via `disable-auto-raise`, a reload does not re-enable. — Already enforced in `AutoRaiseController.reload` via the sticky `runtimeDisabled` flag; no further wiring needed.
 
 ## Phase 6 — Commands
 

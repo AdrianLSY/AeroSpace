@@ -2,7 +2,7 @@ import AppKit
 import AutoRaiseCore
 import Common
 
-struct AutoRaiseConfig: ConvenienceCopyable, Equatable {
+struct AutoRaiseConfig: ConvenienceCopyable, Equatable, Sendable {
     var enabled: Bool = false
     var pollMillis: Int = 8
     var ignoreSpaceChanged: Bool = false
@@ -14,7 +14,7 @@ struct AutoRaiseConfig: ConvenienceCopyable, Equatable {
     var disableKey: AutoRaiseDisableKey = .control
 }
 
-enum AutoRaiseDisableKey: String, Equatable {
+enum AutoRaiseDisableKey: String, Equatable, Sendable {
     case control, option, disabled
 
     // CGEventFlags mask. Upstream AutoRaise checks modifier state via

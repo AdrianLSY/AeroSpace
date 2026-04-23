@@ -34,6 +34,7 @@ struct ReloadConfigCommand: Command {
                 configUrl = url
                 try await activateMode(activeMode)
                 syncStartAtLogin()
+                AutoRaiseController.reload(config: config.autoRaise)
                 MessageModel.shared.message = nil
             }
             result = true
