@@ -53,9 +53,9 @@
 
 ## Phase 7 — Licensing & cleanup
 
-- [ ] 7.1 Add `LICENSE-GPL` at repo root with full GPL-2.0-or-later text.
-- [ ] 7.2 Amend `LICENSE` / `README.md` with the combined-work notice.
-- [ ] 7.3 Remove the `AutoRaise/` submodule entry from `.gitmodules` and delete the submodule directory (after port is verified working).
+- [x] 7.1 Add `LICENSE-GPL` at repo root with full GPL-2.0-or-later text. — Canonical text fetched from gnu.org/licenses/gpl-2.0.txt (338 lines). Matches the "either version 2 of the License, or (at your option) any later version" clause in `Sources/AutoRaiseCore/AutoRaise.mm`'s header.
+- [x] 7.2 Amend `LICENSE` / `README.md` with the combined-work notice. — `LICENSE.txt` now opens with a dual-licensing preamble: individual files keep their header license (MIT for most, GPL-2.0-or-later for `Sources/AutoRaiseCore/`), combined binary is GPL-2.0-or-later. New `## License` section in `README.md` points at both `LICENSE.txt` and `LICENSE-GPL`.
+- [x] 7.3 Remove the `AutoRaise/` submodule entry from `.gitmodules` and delete the submodule directory (after port is verified working). — `git submodule deinit -f AutoRaise` + `git rm -f AutoRaise` + `rm -rf .git/modules/AutoRaise`. `.gitmodules` was left empty after the deinit (no other submodules), so it was deleted too. Post-removal `swift build` remains clean — no code referenced the submodule path; upstream material now lives entirely in `Sources/AutoRaiseCore/`.
 
 ## Phase 8 — Tests & QA
 

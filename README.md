@@ -171,3 +171,11 @@ Source: [reddit](https://www.reddit.com/r/MacOS/comments/k6hiwk/keyboard_modifie
 
 - [Amethyst](https://github.com/ianyh/Amethyst)
 - [yabai](https://github.com/koekeishiya/yabai)
+
+## License
+
+AeroSpace sources are MIT-licensed ([LICENSE.txt](./LICENSE.txt)), with the
+exception of `Sources/AutoRaiseCore/` — ported from
+[AutoRaise](https://github.com/sbmpost/AutoRaise) and licensed under
+GPL-2.0-or-later. The combined AeroSpace binary is therefore distributed under
+GPL-2.0-or-later; see [LICENSE-GPL](./LICENSE-GPL) for the full text.
