@@ -157,6 +157,7 @@ private let configParser: [String: any ParserProtocol<Config>] = [
     "focus-follows-mouse": Parser(\.focusFollowsMouse, parseFocusFollowsMouse),
     "workspace-to-monitor-force-assignment": Parser(\.workspaceToMonitorForceAssignment, parseWorkspaceToMonitorAssignment),
     "on-window-detected": Parser(\.onWindowDetected, parseOnWindowDetectedArray),
+    "auto-raise": Parser(\.autoRaise, parseAutoRaise),
 
     // Deprecated
     "non-empty-workspaces-root-containers-layout-on-startup": Parser(\._nonEmptyWorkspacesRootContainersLayoutOnStartup, parseStartupRootContainerLayout),
@@ -402,7 +403,7 @@ private func parsePersistentWorkspaces(_ raw: OrderedJson, _ backtrace: ConfigBa
         }
 }
 
-private func parseArrayOfStrings(_ raw: OrderedJson, _ backtrace: ConfigBacktrace) -> ResOrConfigParseDiagnostic<[String]> {
+func parseArrayOfStrings(_ raw: OrderedJson, _ backtrace: ConfigBacktrace) -> ResOrConfigParseDiagnostic<[String]> {
     parseTomlArray(raw, backtrace)
         .flatMap { arr in
             arr.enumerated().mapAllOrFailure { (index, elem) in

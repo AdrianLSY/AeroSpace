@@ -56,6 +56,10 @@ struct ReloadConfigResult {
         await activateMode_nonCancellable(activeMode)
         syncStartAtLogin()
         syncFocusFollowsMouse(config)
+        // Mirrors syncFocusFollowsMouse: reconcile hover-raise with the
+        // newly-assigned config. A sticky `disable-auto-raise` is preserved
+        // inside the controller across reloads.
+        AutoRaiseController.reload(config: config.autoRaise)
         syncConfigFileWatcher()
     }
 
