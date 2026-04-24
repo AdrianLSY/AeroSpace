@@ -23,7 +23,7 @@ state, and `on-focus-changed` callbacks stay consistent).
   A sticky `disable-auto-raise` survives the cycle.
 
 Everything else in this fork matches upstream. For unchanged behavior refer
-to upstream's [user guide](https://nikitabobko.github.io/AeroSpace/guide) —
+to upstream's [user guide](https://adrianlsy.github.io/AeroSpace/guide) —
 the fork's docs site at
 [adrianlsy.github.io/AeroSpace](https://adrianlsy.github.io/AeroSpace)
 mirrors the same content with a fork header.
@@ -46,7 +46,7 @@ install both simultaneously — pick one.
 
 Other installation options (manual zip download, build from source) match
 upstream; see upstream's
-[installation guide](https://nikitabobko.github.io/AeroSpace/guide#installation)
+[installation guide](https://adrianlsy.github.io/AeroSpace/guide#installation)
 for details.
 
 ## Relationship to upstream
@@ -63,14 +63,12 @@ for details.
   - When upstream releases `v0.21.0-Beta` and the fork rebases, the next
     fork tag resets to `v0.21.0-Beta.adrianlsy.1`.
 - **Where to file bugs:**
-  - Bugs in AutoRaise integration, fork-specific docs, or the fork's
-    release tooling →
-    **[this repo's issues](https://github.com/AdrianLSY/AeroSpace/issues)**.
-  - Upstream AeroSpace bugs (tiling, focus, multi-monitor, config parsing,
-    CLI) →
-    **[upstream discussions](https://github.com/nikitabobko/AeroSpace/discussions)**,
-    per upstream's policy. The fork's issue tracker has an
-    "Upstream behavior (redirect)" template to route you there in one click.
+    Bug reports can be filed at
+    **[this repo's issues](https://github.com/AdrianLSY/AeroSpace/issues)** —
+    both fork-specific and upstream behavior bugs are accepted.
+    For upstream AeroSpace bugs you can also file at
+    **[upstream discussions](https://github.com/nikitabobko/AeroSpace/discussions)**
+    if you prefer. Either place works.
 
 ## License
 

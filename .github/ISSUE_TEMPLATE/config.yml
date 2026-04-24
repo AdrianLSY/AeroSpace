@@ -2,4 +2,4 @@ blank_issues_enabled: false
 contact_links:
   - name: Upstream AeroSpace discussions
     url: https://github.com/nikitabobko/AeroSpace/discussions
-    about: "For bugs and feature requests in upstream AeroSpace (tiling, focus, multi-monitor, config parsing, CLI). File here only if the issue is fork-specific (AutoRaise, fork docs, release tooling)."
+    about: "You can also file upstream AeroSpace bugs (tiling, focus, multi-monitor, config parsing, CLI) directly at the upstream project if you prefer."

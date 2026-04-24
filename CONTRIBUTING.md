@@ -3,8 +3,8 @@
 This document applies to **AdrianLSY/AeroSpace**, a fork of
 [nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace) that adds
 AutoRaise hover-to-raise. Contribution rules for the fork differ from
-upstream — upstream's rules are preserved verbatim below the divider for
-anyone wanting to upstream a change.
+upstream — upstream's rules are reproduced below the divider (with minor
+annotations) for anyone wanting to upstream a change.
 
 ## Scope
 
@@ -30,14 +30,17 @@ here.
 
 ## Filing issues
 
-- Bugs and feature requests in fork-specific work: use this repo's
-  [Issues](https://github.com/AdrianLSY/AeroSpace/issues) — no Discussion
-  gate. The **Bug (fork-specific)** and **Feature request (fork-specific)**
-  templates are set up for this.
-- Bugs in upstream behavior: use the **Upstream behavior (redirect)**
-  template to get a link to the right upstream discussion category, or
-  file directly at
-  [upstream discussions](https://github.com/nikitabobko/AeroSpace/discussions).
+Bug reports and feature requests can be submitted to this repo's
+[Issues](https://github.com/AdrianLSY/AeroSpace/issues) — no Discussion
+gate required. Use the **Bug (fork-specific)** and **Feature request
+(fork-specific)** templates.
+
+If a bug is clearly in upstream AeroSpace behavior (tiling, focus,
+multi-monitor, config parsing, CLI), you're also welcome to file it
+directly at
+[upstream discussions](https://github.com/nikitabobko/AeroSpace/discussions)
+so it benefits the wider community. The **Upstream behavior (redirect)**
+issue template can help route you there. Either place works.
 
 ## Licensing
 
@@ -71,9 +74,9 @@ AeroSpace maintainers are not involved — this fork is a separate project.
 
 The rules below apply to the upstream project at
 [nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace). They
-are preserved verbatim here so contributors can see how upstream handles
-contributions, in case you want to upstream a change instead of (or in
-addition to) sending it to the fork.
+are reproduced here (with minor annotations where the fork differs) so
+contributors can see how upstream handles contributions, in case you want
+to upstream a change instead of (or in addition to) sending it to the fork.
 
 ## Users cannot create GitHub Issues directly
 
@@ -167,7 +170,7 @@ Similarly, when implementing features and bug fixes, please stick to the structu
 
 A good commit message also mentions the motivation of the change (the commit describes what, why and how)
 
-**License Agreement**. By contributing changes to this repository, you agree to license your contributions under the MIT license.
+**License Agreement**. By contributing changes to this repository, you agree to license your contributions under the MIT license. (**Note:** this applies to upstream only. This fork's AutoRaiseCore code is GPL-2.0-or-later — see the [Licensing](#licensing) section above for the fork's terms.)
 
 Maintainers can merge your pull request with arbitrary modifications.
 
@@ -191,4 +194,4 @@ Submit your tips to [the Goodies page](https://nikitabobko.github.io/AeroSpace/g
 
 ## Support the project financially
 
-Supporting the project financially counts as a contribution (even if it's just a $1/month). https://github.com/sponsors/nikitabobko
+Supporting the parent project financially counts as a contribution (even if it's just a $1/month). https://github.com/sponsors/nikitabobko

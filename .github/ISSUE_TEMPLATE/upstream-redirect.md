@@ -6,9 +6,9 @@ labels: upstream
 ---
 
 <!--
-This fork handles only AutoRaise integration and fork-specific bugs.
-For upstream AeroSpace behavior — tiling, focus, multi-monitor, workspaces,
-config parsing, CLI that matches upstream — please file at upstream instead:
+You can file any bug here, but if the issue is clearly in upstream AeroSpace
+behavior (tiling, focus, multi-monitor, workspaces, config parsing, CLI),
+filing at upstream helps the wider community:
 -->
 
 - **Bugs** → https://github.com/nikitabobko/AeroSpace/discussions/categories/potential-bugs

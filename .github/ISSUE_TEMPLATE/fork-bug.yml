@@ -5,13 +5,14 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for filing! Use this template for bugs in **fork-specific**
-        features: AutoRaise, fork docs, or the fork's release tooling.
+        Thanks for filing! This template is for bugs in **fork-specific**
+        features (AutoRaise, fork docs, fork release tooling), but we also
+        accept reports for upstream AeroSpace behavior here.
 
-        For bugs in upstream AeroSpace behavior (tiling, focus, multi-monitor,
-        config parsing, CLI that matches upstream), please use the
-        **Upstream behavior (redirect)** template or file directly at
-        [nikitabobko/AeroSpace discussions](https://github.com/nikitabobko/AeroSpace/discussions).
+        If a bug is clearly in upstream behavior (tiling, focus, multi-monitor,
+        config parsing, CLI), you're welcome to file it here or at
+        [upstream discussions](https://github.com/nikitabobko/AeroSpace/discussions)
+        — either place works.
   - type: input
     id: version
     attributes:

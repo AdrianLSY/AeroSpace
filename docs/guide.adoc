@@ -32,7 +32,7 @@ brew install --cask nikitabobko/tap/aerospace@0.12.0
 [#manual-installation]
 === Manual installation
 
-. Download the latest available zip from https://github.com/nikitabobko/AeroSpace/releases[releases page]
+. Download the latest available zip from https://github.com/AdrianLSY/AeroSpace/releases[releases page]
 . Unpack zip
 . Put unpacked `AeroSpace-v$VERSION/AeroSpace.app` to `/Applications`
 . Put unpacked `AeroSpace-v$VERSION/bin/aerospace` anywhere to `$PATH`

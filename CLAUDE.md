@@ -2,91 +2,233 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project
+## What this is
 
-AeroSpace is an i3-like tiling window manager for macOS. It consists of:
-- `AeroSpace.app` (server) — the long-running process that manages windows via the macOS Accessibility API
-- `aerospace` (CLI client) — binary that forwards commands to the server over a UNIX socket
+AeroSpace is an i3-like tiling window manager for macOS. This repo is the
+**AdrianLSY fork** of [nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace)
+that adds hover-to-raise (AutoRaise). Fork-specific code lives in
+`Sources/AutoRaiseCore/` (ObjC++, GPL-2.0-or-later) and
+`Sources/AppBundle/autoraise/` (Swift). Everything else mirrors upstream
+and is MIT; the combined binary ships under GPL-2.0-or-later because of
+the AutoRaise linkage.
 
-Written in Swift 6.3 (see `.swift-version`), targeting macOS 13+. Building a release requires macOS + Xcode 26+; debug builds require macOS 14+. The shell scripts under `script/` and the root `*.sh` entry points assume macOS (they shell out to `xcodebuild`, `codesign`, `sw_vers`, etc.) — they will not run on Linux.
+See [FORK.md](FORK.md), [CONTRIBUTING.md](CONTRIBUTING.md), and
+[dev-docs/fork-maintenance.md](dev-docs/fork-maintenance.md) for fork
+context; [dev-docs/development.md](dev-docs/development.md) for env
+setup and tooling; [dev-docs/architecture.md](dev-docs/architecture.md)
+for the upstream architecture primer.
 
-## Common commands
+## Commands
 
-All of these are top-level shell scripts — invoke them from the repo root:
+All scripts live at repo root; invoke them with `./name.sh`. They all
+`cd` to repo root and `source script/setup.sh`, which pins toolchains
+via `swiftly` when available.
 
-- `./build-debug.sh` — SPM debug build into `.debug/` (produces `aerospace` CLI and `AeroSpaceApp` server binaries). Skips xcodeproj/cmd-help/shell-parser regeneration for speed.
-- `./test.sh` — full CI pipeline: builds with `-warnings-as-errors`, runs swift tests, sanity-checks the CLI binary, runs the linter, and verifies `generate.sh` produces no uncommitted changes. **This is the gate for PRs.**
-- `./swift-test.sh` — just the swift test target. Run a single test with `swift test --filter <TestClass>.<method>` or `swift test --filter <TestClass>` (scripts wrap `swift test`, so flags pass through).
-- `./lint.sh` — runs SwiftFormat + SwiftLint (with `--fix`) and then Periphery (dead-code detection, `--strict`). Periphery is skipped on macOS 14 (dylib incompatibility) and on macOS 15 + 26 (a Periphery-SwiftSyntax mixed-language issue triggered by `AutoRaiseCore` — tracked at `peripheryapp/periphery#1105`). Effectively, Periphery currently cannot run anywhere on this codebase until #1105 lands.
-- `./format.sh` — SwiftFormat + SwiftLint `--fix` only (subset of lint.sh).
-- `./run-debug.sh [args...]` — builds and runs `AeroSpaceApp` (the server).
-- `./run-cli.sh [args...]` — builds (if needed) and runs `aerospace` CLI with forwarded args.
-- `./build-release.sh` — full release build via Xcode (`AeroSpace.xcodeproj`) with codesigning. Requires the `aerospace-codesign-certificate` self-signed cert in Keychain (see `dev-docs/development.md`).
-- `./generate.sh` — regenerates `AeroSpace.xcodeproj` (via XcodeGen + `project.yml`), `*Generated.swift` files, the shell parser, and `cmdHelpGenerated.swift` from `docs/aerospace-*.adoc`. `test.sh` asserts this is a no-op on a clean tree, so run it after editing commands/docs.
-- `./build-docs.sh` / `./build-shell-completion.sh` — generate site + man pages into `.site`/`.man`, and shell completions into `.shell-completion` (requires Rust + bash + fish).
+**Primary dev loop**
+- `./build-debug.sh` — SPM debug build into `.debug/`. Fast inner loop.
+  Skips xcodeproj/cmd-help/shell-parser regeneration by default.
+- `./swift-test.sh` — `swift test` with pruned output. Add
+  `--filter <TestCaseName>` or `--filter <TestCaseName>/<testMethod>`
+  to target a single test (pass-through to `swift test`).
+- `./test.sh` — CI-equivalent: debug build with warnings-as-errors,
+  full test suite, CLI smoke tests, `./lint.sh`, `./generate.sh`, and a
+  check that no generated files are uncommitted. Run this before
+  opening a PR (required by `.github/pull_request_template.md`).
+- `./format.sh` — swiftformat + swiftlint `--fix`.
+- `./lint.sh [--check-uncommitted-files]` — format + periphery dead-code
+  scan. Note: periphery is skipped on macOS 14/15/26 (see comments
+  inside `lint.sh` for details — it can't run anywhere right now).
+- `./run-debug.sh [args]` — rebuild + launch `.debug/AeroSpaceApp`.
+- `./run-cli.sh [args]` — rebuild + invoke `.debug/aerospace` with
+  forwarded args against the already-running server.
 
-The `makefile` exists only so `:make` works in vim — it just delegates to the scripts above.
+**Release / packaging**
+- `./build-release.sh` — Xcode-driven universal release build into
+  `.release/`. Debug builds never use Xcode; release builds must.
+- `./install-from-sources.sh` — builds release + installs as
+  `aerospace-adrianlsy` Homebrew cask (fork-specific uninstall list;
+  do not rebrand on rebase).
+- `./build-docs.sh` / `./build-shell-completion.sh` — generate the
+  docs site (`.site/`), man pages (`.man/`), and shell completions
+  (`.shell-completion/`).
+
+**Code generation**
+- `./generate.sh` regenerates `AeroSpace.xcodeproj` and several Swift
+  source files. Regenerated outputs (named `*Generated.swift` in
+  `Sources/Common/` and `Sources/Cli/`) **must be committed** —
+  `./test.sh` fails if they drift. Re-run after:
+  - editing `project.yml` (xcodeproj)
+  - adding/removing/renaming `docs/aerospace-*.adoc` (subcommand
+    descriptions in the CLI `--help`)
+  - editing shell grammar under `grammar/` (regenerate with
+    `./script/generate-shell-parser.sh`)
+- `swift-version` is pinned in `.swift-version`; `swiftly` in
+  `script/setup.sh` enforces it.
 
 ## Architecture
 
 ### Client/server split
 
-The CLI is a thin client. Every command round-trip is:
-1. `Sources/Cli/` parses args locally (so `-h`/`--help` and arg errors don't need the server).
-2. On success, args + stdin + `AEROSPACE_WINDOW_ID`/`AEROSPACE_WORKSPACE` env vars are sent to `AeroSpace.app` over a UNIX socket.
-3. `Sources/AppBundle/server.swift` re-parses the args via `parseCommand` and runs the command on the main actor.
-4. Server returns `{stdout, stderr, exitCode}`; client prints and exits with that code.
+`aerospace` CLI binary (`Sources/Cli`) is the client. `AeroSpace.app`
+(`Sources/AeroSpaceApp` entry point, `Sources/AppBundle` library) is
+the server. They communicate over a Unix socket (`server.swift`,
+client code in `Sources/Cli/_main.swift`). Args are parsed on the
+client (for `--help` / early-exit shortcuts), sent over the socket,
+then **re-parsed on the server** via the same code in
+`Sources/Common/cmdArgs/`. That shared-parser constraint is why arg
+parsing and command arg structs live in `Common/` — both client and
+server link them.
 
-This means arg-parsing code lives in `Sources/Common/cmdArgs/` so it can be linked into both targets; the actual command behavior lives in `Sources/AppBundle/command/impl/`.
+### SPM vs Xcode
 
-### SPM layout (`Package.swift`)
+Library code and the CLI build **purely via SPM** (`Package.swift`).
+SPM cannot produce a macOS App Bundle, so the App Bundle is built via
+Xcode against the generated `AeroSpace.xcodeproj` (generated from
+`project.yml` via `xcodegen`). Push as much code as possible into the
+SPM library (`Sources/AppBundle`) — the Xcode target is just a thin
+entry point. Open `Package.swift` in Xcode, not `.xcodeproj`, unless
+you're debugging the release build.
 
-- `Sources/PrivateApi/` — C shim exposing the single private API used (`_AXUIElementGetWindow`). Everything else is public macOS Accessibility API.
-- `Sources/AutoRaiseCore/` — ObjC++ hover-raise engine ported from [AutoRaise](https://github.com/sbmpost/AutoRaise) (GPL-2.0-or-later). `AutoRaise.mm` keeps upstream's CGEventTap / AX walk / `raiseGeneration` retry discipline; `AutoRaiseBridge.mm` exposes a small C API (`autoraise_start/stop/reload/on_*_did_*/set_route_callback/is_running`) consumed from Swift. Linking it into the AppBundle makes the combined binary GPL-2.0-or-later (see `LICENSE.txt` / `LICENSE-GPL`).
-- `Sources/Common/` — code shared between client and server (cmdArgs, model types, util).
-- `Sources/AppBundle/` — server logic; exposed as a library because SPM can't build macOS app bundles. The actual `.app` is built by Xcode via `AeroSpace.xcodeproj` (generated from `project.yml`) and the tiny `xcode-app-bundle-launcher/` wrapper.
-- `Sources/AeroSpaceApp/` — SPM executable target that links AppBundle; used by the **debug** flow (`run-debug.sh`). Release uses the Xcode target.
-- `Sources/Cli/` — CLI client executable.
-- `Sources/AppBundleTests/` — tests.
-- `ShellParserGenerated/` — separate SPM package (ANTLR-generated from `grammar/ShellParser.g4`). Regenerated by `script/generate-shell-parser.sh`; excluded from swiftformat/swiftlint/periphery.
+### Command pipeline
 
-### Core subsystems inside `Sources/AppBundle/`
+A command is defined in three places:
 
-- `command/` — one `*Command.swift` per subcommand in `command/impl/`. Every command conforms to the `Command` protocol (`command/Command.swift`) with `args: T where T: CmdArgs` and a `@MainActor run(env, io)`. After each command, `runCmdSeq` calls `refreshModel()` and optionally resets the closed-windows cache. There are 4 entry points that invoke commands: config keybindings, CLI requests, `on-window-detected` callback, and tray icon buttons.
-- `config/` — TOML parsing (via `TOMLDecoder`). `parseConfig.swift` is the entry point; `HotkeyBinding.swift`, `Mode.swift`, `parseOnWindowDetected.swift`, etc. handle specific sections. `ConfigFileWatcher.swift` watches for live reload.
-- `tree/` — the mutable window/container tree model. `TreeNode` is the base class; see `TreeNodeCases.swift` for the container/window taxonomy (`TilingContainer`, `Workspace`, `MacWindow`, `MacosUnconventionalWindowsContainer`). Note the big refactoring planned in README is to make this tree immutable/single-linked — be aware when touching this code.
-- `layout/` — pure layout algorithm (`layoutRecursive.swift`) and the per-session `refresh.swift` that reconciles tree state to actual macOS window rects.
-- `mouse/`, `ui/`, `shell/` — mouse handling, tray/menu UI, and shell-combinator support (`&&`, `||`, `;`, `eval`).
-- Top-level files: `initAppBundle.swift` (entry point from the Xcode app bundle), `server.swift` (UNIX socket listener), `runLoop.swift` (main actor run-session scheduling), `GlobalObserver.swift` (AX notification subscriptions), `focus*.swift` (focus state + cache).
-- `autoraise/` — Swift driver for the AutoRaiseCore bridge. `AutoRaiseController` (`@MainActor enum`) owns the tap lifecycle, reconciling three state sources: `[auto-raise]` config (startup + ConfigFileWatcher reload), the `enable-auto-raise` / `disable-auto-raise` runtime commands, and `NSWorkspace` observers fanned out from `GlobalObserver.onNotif`. A sticky `runtimeDisabled` flag makes `disable-auto-raise` survive config reloads. `RaiseRouter.route(windowId:)` is the Swift-side raise callback — resolves the `CGWindowID` to an AeroSpace `Window`, drops raises whose target workspace isn't `focus.workspace` (current-workspace-only rule), then pairs `window.focusWindow()` (syncs the tree/monitor state + fires `on-focus-changed`) with `window.nativeFocus()` (macOS-side AX raise + app activate). Both are needed: normal commands get the native sync for free from the refresh session that `runCmdSeq` runs after them, but AutoRaise's callback path bypasses that — without the explicit `nativeFocus()` call, the raise spins in a loop because AeroSpace's internal focus advances while macOS-level focus stays put.
+1. **`Sources/Common/cmdArgs/impl/<Name>CmdArgs.swift`** — argument
+   struct. Also registered in the `CmdKind` enum +
+   `initSubcommands()` switch in
+   `Sources/Common/cmdArgs/cmdArgsManifest.swift`.
+2. **`Sources/AppBundle/command/impl/<Name>Command.swift`** —
+   server-side `Command` conformance (`run(env, io) async throws`).
+   Also wired into the `toCommand()` switch in
+   `Sources/AppBundle/command/cmdManifest.swift`.
+3. **`docs/aerospace-<name>.adoc`** — docs + man page + the CLI
+   `--help` subcommand summary (pulled by `generate.sh` from
+   `:manpurpose:`).
 
-### AutoRaise integration
+Adding or renaming a command without touching all three breaks the
+build or the `./test.sh` "no uncommitted generated files" check.
 
-- **Wire direction.** The bridge is Swift-calls-ObjC++ for lifecycle and ObjC++-calls-Swift for raises. `AutoRaiseController` calls `autoraise_start(bridgeConfig)` / `autoraise_stop()` / `autoraise_reload(bridgeConfig)`; inside the ObjC++ side, `raiseAndActivate` forwards the hovered window's `CGWindowID` back via the function pointer installed with `autoraise_set_route_callback`. The callback is `@convention(c)` + `MainActor.assumeIsolated { RaiseRouter.route(...) }`; safe because the `CGEventTap` and the 50ms/100ms `dispatch_after` retries both live on `CFRunLoopGetMain()`.
-- **Observers are unified.** Upstream AutoRaise subscribed to `NSWorkspace.activeSpaceDidChange` / `didActivateApplication` via its own `MDWorkspaceWatcher`. That subscription is stripped in the port; `GlobalObserver.onNotif` fans those notifications to `AutoRaiseController.onActiveSpaceDidChange()` / `.onAppDidActivate()` which call into `autoraise_on_*`. Keeps AeroSpace's refresh session and AutoRaise's internal state machines reacting to the same tick.
-- **Warp / cursor-scale is dropped.** `warpX`, `warpY`, `scale`, `altTaskSwitcher`, and the `CGSSetCursorScale` private-API path were stripped in Phase 2 of the port. Users who want mouse-follows-focus compose `on-focus-changed` with the `move-mouse` command instead (documented in `docs/guide.adoc` § auto-raise).
-- **Globals stay globals.** `AutoRaise.mm` keeps its file-scope `axObserver` / `eventTap` / `lastCheckTime` / `suppressRaisesUntil` / `raiseGeneration` / ignore-list state. `static` was stripped so `AutoRaiseBridge.mm` can access them via `extern`; the library is a de-facto singleton and we only ever have one tap in one process.
+### Refresh sessions (focus + layout reconciliation)
 
-### Adding / modifying a command (checklist from `dev-docs/architecture.md`)
+The central reconciliation primitive lives in
+`Sources/AppBundle/layout/refresh.swift`:
 
-1. Args model in `Sources/Common/cmdArgs/impl/<Name>CmdArgs.swift` + register in `cmdArgsManifest.swift`.
-2. Server impl in `Sources/AppBundle/command/impl/<Name>Command.swift` + register in `cmdManifest.swift`.
-3. Docs in `docs/aerospace-<name>.adoc` (and add link in `docs/commands.adoc` if new). `generate.sh` reads these to produce `subcommandDescriptionsGenerated.swift` and `cmdHelpGenerated.swift`.
-4. Shell completion grammar in `grammar/commands-bnf-grammar.txt`.
-5. Decide whether `--window-id`/`--workspace` flags apply.
-6. Run `./generate.sh` and commit any generated changes — `test.sh` fails if the tree is dirty after regeneration.
+- `runHeavyCompleteRefreshSession` — full `getNativeFocusedWindow` →
+  model refresh (`MacApp.refreshAllAndGetAliveWindowIds` + GC) →
+  layout pass. Kicked off by NSWorkspace notifications and AX
+  observers via `scheduleCancellableCompleteRefreshSession`.
+- `runLightSession` — wraps command execution. Cancels any in-flight
+  heavy session, runs the command body, relayout, syncs focus, then
+  reschedules a heavy session. Commands received via the socket
+  server always run inside a `runLightSession`.
 
-### Notes for editing
+`TrayMenuModel.shared.isEnabled` (aka "the master switch", toggled
+by `enable on/off`) gates both. When disabled, workspaces are
+stashed into off-screen corners (see `hideInCorner`/`unhideFromCorner`
+in `refresh.swift`).
 
-- Swift source uses 4-space indent, 120-col limit (see `.editorconfig`, `.swiftformat`). `.swiftlint.yml` is an allowlist — only the rules listed there are enforced.
-- `test.sh` sets `-Xswiftc -warnings-as-errors` — warnings break CI.
-- Don't bypass codesigning. If the debug binary keeps losing Accessibility permission on rebuild, see the tip in `dev-docs/development.md` about the `aerospace-codesign-certificate` self-signed cert and setting Xcode's scheme console to `Terminal`.
-- Release binaries are universal (arm64 + x86_64) and have the git hash embedded — `build-release.sh` asserts both.
+### Tree model
 
-### Contribution conventions
+`Sources/AppBundle/tree/`:
 
-Per `CONTRIBUTING.md` and `.github/pull_request_template.md`:
-- Each commit is one atomic change — don't mix refactors with functional changes.
-- Commit messages explain what / why / how.
-- Rebase, don't merge; force-push is expected.
-- For non-trivial user-visible changes, open a GitHub Discussion for design review before the PR.
+- `TreeNode` — base class. Every node records `lastAppliedLayoutPhysicalRect`
+  (real gaps) and `lastAppliedLayoutVirtualRect` (zero gaps); many
+  commands read these without re-querying AX.
+- `Workspace`, `TilingContainer`, `Window` / `MacWindow` — concrete
+  nodes. `Window.get(byId:)` has a unit-test branch that walks
+  workspaces instead of `MacWindow.allWindowsMap`.
+- `MacosUnconventionalWindowsContainer` holds fullscreen/minimized/
+  hidden-app windows off the main tree; `normalizeLayoutReason.swift`
+  shuttles windows in and out based on macOS state.
+
+### Focus
+
+`focus.swift` owns the global `LiveFocus` (derived) and `FrozenFocus`
+(stored, safe to hold). Command implementations should generally
+respect `--window-id` / `--workspace` / `AEROSPACE_WINDOW_ID` /
+`AEROSPACE_WORKSPACE` env first and fall back to the global only when
+none applies. Focus changes go through `setFocus(to:)` (updates the
+tree model) paired with `Window.nativeFocus()` (AX-side raise + app
+activate) — see `GlobalObserver`, `RaiseRouter`, and the end of
+`runLightSession` for how the pair is used consistently.
+
+### AutoRaise integration (fork-specific)
+
+The AutoRaise port has two layers:
+
+- **`Sources/AutoRaiseCore/`** (ObjC++, GPL-2.0-or-later). `AutoRaise.mm`
+  is the ported upstream; `AutoRaiseBridge.{h,mm}` is the C API the
+  Swift side calls. The ObjC++ globals in `AutoRaise.mm` are the
+  source of truth at runtime — the bridge writes config fields and
+  resets runtime-state fields on each start. The CGEventTap and
+  retry timers are pinned to the **main run loop** so raise routing
+  can stay synchronous.
+- **`Sources/AppBundle/autoraise/`** (Swift). `AutoRaiseController` is
+  a `@MainActor` singleton that reconciles four state sources:
+  1. `[auto-raise]` TOML section (startup + file-watcher reloads).
+  2. `enable-auto-raise` / `disable-auto-raise` CLI commands
+     (`runtimeDisabled` is **sticky across config reloads** — see
+     comments in `AutoRaiseController.swift`).
+  3. Master `enable on/off` via `pauseForMaster`/`resumeFromMaster`
+     (snapshots running state; *not* sticky).
+  4. NSWorkspace observer fan-out from `GlobalObserver` (active-space
+     / app-activated notifications).
+
+  `RaiseRouter.route(windowId:)` is the C→Swift callback:
+  resolve `CGWindowID` → `Window`, drop if target is on a non-focused
+  workspace, then call `focusWindow()` + `nativeFocus()`. Integration
+  points in the upstream codebase:
+  - `initAppBundle.swift` — boot-time start.
+  - `GlobalObserver.swift` — fan-out to `onActiveSpaceDidChange` /
+    `onAppDidActivate`.
+  - `EnableCommand.swift` — pause/resume on master toggle.
+  - `refresh.swift` — `onLayoutDidChange` hook at end of
+    `runLightSession`, used for the cursor-over-window hit test after
+    AeroSpace-driven layout changes.
+
+  The `AutoRaiseBridgeProtocol` seam exists so
+  `AutoRaiseControllerTest` can drive the state machine with
+  `FakeAutoRaiseBridge` without installing a real CGEventTap.
+
+### Private API
+
+`Sources/PrivateApi/` exposes exactly one private symbol:
+`_AXUIElementGetWindow`. This is the only private API in the project
+and the codebase's guiding principle is to keep it that way.
+
+### Generated code
+
+These files are produced by `generate.sh` and checked in. Don't edit
+them by hand:
+
+- `Sources/Common/versionGenerated.swift`
+- `Sources/Common/gitHashGenerated.swift`
+- `Sources/Common/cmdHelpGenerated.swift`
+- `Sources/Cli/subcommandDescriptionsGenerated.swift`
+- `AeroSpace.xcodeproj/` (regenerated from `project.yml`)
+- `ShellParserGenerated/Sources/**` (regenerated from `grammar/*.g4`)
+
+## Conventions that will catch you out
+
+- **Swift strict concurrency.** `Package.swift` enables
+  `NonisolatedNonsendingByDefault` and `.strictMemorySafety()`. Most
+  mutable globals are `@MainActor`. Cross-actor calls need explicit
+  annotations; `unsafe` is required for the few `nonisolated(unsafe)`
+  globals.
+- **Config reloads are hot.** `ConfigFileWatcher` + `reload-config`
+  both call through the same parsing path in `parseConfig.swift`.
+  Preserve runtime toggle state when adding new config fields
+  (mirror the `AutoRaise` pattern: sticky flag on the controller,
+  not in config).
+- **`runLightSession` is single-flight.** It cancels any in-flight
+  heavy refresh. If you add a code path that mutates the tree, route
+  it through `runLightSession` or `refreshModel()` so the
+  `on-focus-changed` / broadcast machinery stays consistent.
+- **Rebase, don't merge.** The fork's `main` is kept rebased on
+  `nikitabobko/main`. No merge commits. Expected conflict set on
+  rebase is listed in
+  [dev-docs/fork-maintenance.md](dev-docs/fork-maintenance.md#expected-conflict-set)
+  — consult it before resolving conflicts yourself.
+- **Licensing split matters at file granularity.** Contributions to
+  `Sources/AutoRaiseCore/**` are GPL-2.0-or-later; everywhere else is
+  MIT. The PR template calls this out.

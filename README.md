@@ -13,21 +13,21 @@ Videos:
 - [YouTube Guide by Josean Martinez](https://www.youtube.com/watch?v=-FoWClVHG5g)
 
 Docs:
-- [AeroSpace Guide](https://nikitabobko.github.io/AeroSpace/guide)
-- [AeroSpace Commands](https://nikitabobko.github.io/AeroSpace/commands)
-- [AeroSpace Goodies](https://nikitabobko.github.io/AeroSpace/goodies)
+- [AeroSpace Guide](https://adrianlsy.github.io/AeroSpace/guide)
+- [AeroSpace Commands](https://adrianlsy.github.io/AeroSpace/commands)
+- [AeroSpace Goodies](https://adrianlsy.github.io/AeroSpace/goodies)
 
 ## Key features
 
 - **Hover-to-raise (AutoRaise)** _— fork-specific._ Focus follows your mouse cursor into any window on the currently-focused workspace. Port of [sbmpost/AutoRaise](https://github.com/sbmpost/AutoRaise), scoped to AeroSpace's existing focus machinery. See the [auto-raise guide](https://adrianlsy.github.io/AeroSpace/guide#auto-raise).
-- Tiling window manager based on a [tree paradigm](https://nikitabobko.github.io/AeroSpace/guide#tree)
+- Tiling window manager based on a [tree paradigm](https://adrianlsy.github.io/AeroSpace/guide#tree)
 - [i3](https://i3wm.org/) inspired
 - Fast workspaces switching without animations and without the necessity to disable SIP
-- AeroSpace employs its [own emulation of virtual workspaces](https://nikitabobko.github.io/AeroSpace/guide#emulation-of-virtual-workspaces) instead of relying on native macOS Spaces due to [their considerable limitations](https://nikitabobko.github.io/AeroSpace/guide#emulation-of-virtual-workspaces)
-- Plain text configuration (dotfiles friendly). See: [default-config.toml](https://nikitabobko.github.io/AeroSpace/guide#default-config)
+- AeroSpace employs its [own emulation of virtual workspaces](https://adrianlsy.github.io/AeroSpace/guide#emulation-of-virtual-workspaces) instead of relying on native macOS Spaces due to [their considerable limitations](https://adrianlsy.github.io/AeroSpace/guide#emulation-of-virtual-workspaces)
+- Plain text configuration (dotfiles friendly). See: [default-config.toml](https://adrianlsy.github.io/AeroSpace/guide#default-config)
 - CLI first (manpages and shell completion included)
 - Doesn't require disabling SIP (System Integrity Protection)
-- [Proper multi-monitor support](https://nikitabobko.github.io/AeroSpace/guide#multiple-monitors) (i3-like paradigm)
+- [Proper multi-monitor support](https://adrianlsy.github.io/AeroSpace/guide#multiple-monitors) (i3-like paradigm)
 
 ## Installation
 
@@ -47,9 +47,9 @@ brew install --cask nikitabobko/tap/aerospace
 
 The two casks `conflicts_with` each other — install one, not both.
 
-In multi-monitor setup please make sure that monitors [are properly arranged](https://nikitabobko.github.io/AeroSpace/guide#proper-monitor-arrangement).
+In multi-monitor setup please make sure that monitors [are properly arranged](https://adrianlsy.github.io/AeroSpace/guide#proper-monitor-arrangement).
 
-Other installation options: https://nikitabobko.github.io/AeroSpace/guide#installation
+Other installation options: https://adrianlsy.github.io/AeroSpace/guide#installation
 
 > [!NOTE]
 > By using AeroSpace, you acknowledge that it's not [notarized](https://developer.apple.com/documentation/security/notarizing_macos_software_before_distribution).
@@ -62,13 +62,14 @@ Other installation options: https://nikitabobko.github.io/AeroSpace/guide#instal
 > I specifically don't like the way Apple does notarization.
 > I don't have time to deal with Apple.
 >
-> [Homebrew installation script](https://github.com/nikitabobko/homebrew-tap/blob/main/Casks/aerospace.rb) is configured to
+> [Homebrew installation script](https://github.com/AdrianLSY/homebrew-tap/blob/main/Casks/aerospace-adrianlsy.rb) is configured to
 > automatically delete `com.apple.quarantine` attribute, that's why the app should work out of the box, without any warnings that
 > "Apple cannot check AeroSpace for malicious software"
 
 ## Community, discussions, issues
 
-AeroSpace project doesn't accept Issues directly - we ask you to create a [Discussion](https://github.com/nikitabobko/AeroSpace/discussions) first.
+Bug reports and feature requests can be filed at this fork's [Issues](https://github.com/AdrianLSY/AeroSpace/issues).
+For upstream AeroSpace bugs, you can also file at [upstream discussions](https://github.com/nikitabobko/AeroSpace/discussions).
 Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for more details.
 
 Community discussions happen at GitHub Discussions.
@@ -144,7 +145,7 @@ A notes on how to setup the project, build it, how to run the tests, etc. can be
 **Non Values**
 - Play nicely with existing macOS features.
   If limitations are imposed then AeroSpace won't play nicely with existing macOS features
-  (For example, AeroSpace doesn't acknowledge the existence of macOS Spaces, and it uses [emulation of its own workspaces](https://nikitabobko.github.io/AeroSpace/guide#emulation-of-virtual-workspaces))
+  (For example, AeroSpace doesn't acknowledge the existence of macOS Spaces, and it uses [emulation of its own workspaces](https://adrianlsy.github.io/AeroSpace/guide#emulation-of-virtual-workspaces))
 - Ricing.
   AeroSpace provides only a very minimal support for ricing - gaps and a few callbacks for integrations with bars.
   The current maintainer doesn't care about ricing.
@@ -161,16 +162,8 @@ A notes on how to setup the project, build it, how to run the tests, etc. can be
 
 ## Sponsorship
 
-AeroSpace is developed and maintained in my free time.
-If you find it useful, [consider sponsoring](https://github.com/sponsors/nikitabobko#sponsors).
-
-## People who have write access
-
-In alphabetical order:
-
-- [@mobile-ar](https://github.com/mobile-ar)
-- [@nikitabobko](https://github.com/nikitabobko)
-- [@rickyz](https://github.com/rickyz)
+Upstream AeroSpace is developed and maintained by [@nikitabobko](https://github.com/nikitabobko).
+If you find AeroSpace useful, [consider sponsoring the upstream project](https://github.com/sponsors/nikitabobko#sponsors).
 
 ## Tip of the day
 
