@@ -42,6 +42,7 @@ This means arg-parsing code lives in `Sources/Common/cmdArgs/` so it can be link
 ### SPM layout (`Package.swift`)
 
 - `Sources/PrivateApi/` — C shim exposing the single private API used (`_AXUIElementGetWindow`). Everything else is public macOS Accessibility API.
+- `Sources/AutoRaiseCore/` — ObjC++ hover-raise engine ported from [AutoRaise](https://github.com/sbmpost/AutoRaise) (GPL-2.0-or-later). `AutoRaise.mm` keeps upstream's CGEventTap / AX walk / `raiseGeneration` retry discipline; `AutoRaiseBridge.mm` exposes a small C API (`autoraise_start/stop/reload/on_*_did_*/set_route_callback/is_running`) consumed from Swift. Linking it into the AppBundle makes the combined binary GPL-2.0-or-later (see `LICENSE.txt` / `LICENSE-GPL`).
 - `Sources/Common/` — code shared between client and server (cmdArgs, model types, util).
 - `Sources/AppBundle/` — server logic; exposed as a library because SPM can't build macOS app bundles. The actual `.app` is built by Xcode via `AeroSpace.xcodeproj` (generated from `project.yml`) and the tiny `xcode-app-bundle-launcher/` wrapper.
 - `Sources/AeroSpaceApp/` — SPM executable target that links AppBundle; used by the **debug** flow (`run-debug.sh`). Release uses the Xcode target.
@@ -57,6 +58,14 @@ This means arg-parsing code lives in `Sources/Common/cmdArgs/` so it can be link
 - `layout/` — pure layout algorithm (`layoutRecursive.swift`) and the per-session `refresh.swift` that reconciles tree state to actual macOS window rects.
 - `mouse/`, `ui/`, `shell/` — mouse handling, tray/menu UI, and shell-combinator support (`&&`, `||`, `;`, `eval`).
 - Top-level files: `initAppBundle.swift` (entry point from the Xcode app bundle), `server.swift` (UNIX socket listener), `runLoop.swift` (main actor run-session scheduling), `GlobalObserver.swift` (AX notification subscriptions), `focus*.swift` (focus state + cache).
+- `autoraise/` — Swift driver for the AutoRaiseCore bridge. `AutoRaiseController` (`@MainActor enum`) owns the tap lifecycle, reconciling three state sources: `[auto-raise]` config (startup + ConfigFileWatcher reload), the `enable-auto-raise` / `disable-auto-raise` runtime commands, and `NSWorkspace` observers fanned out from `GlobalObserver.onNotif`. A sticky `runtimeDisabled` flag makes `disable-auto-raise` survive config reloads. `RaiseRouter.route(windowId:)` is the Swift-side raise callback — resolves the `CGWindowID` to an AeroSpace `Window`, drops raises whose target workspace isn't `focus.workspace` (current-workspace-only rule), then calls `window.focusWindow()` so the tree model, monitor active-workspace state, and `on-focus-changed` callbacks stay consistent.
+
+### AutoRaise integration
+
+- **Wire direction.** The bridge is Swift-calls-ObjC++ for lifecycle and ObjC++-calls-Swift for raises. `AutoRaiseController` calls `autoraise_start(bridgeConfig)` / `autoraise_stop()` / `autoraise_reload(bridgeConfig)`; inside the ObjC++ side, `raiseAndActivate` forwards the hovered window's `CGWindowID` back via the function pointer installed with `autoraise_set_route_callback`. The callback is `@convention(c)` + `MainActor.assumeIsolated { RaiseRouter.route(...) }`; safe because the `CGEventTap` and the 50ms/100ms `dispatch_after` retries both live on `CFRunLoopGetMain()`.
+- **Observers are unified.** Upstream AutoRaise subscribed to `NSWorkspace.activeSpaceDidChange` / `didActivateApplication` via its own `MDWorkspaceWatcher`. That subscription is stripped in the port; `GlobalObserver.onNotif` fans those notifications to `AutoRaiseController.onActiveSpaceDidChange()` / `.onAppDidActivate()` which call into `autoraise_on_*`. Keeps AeroSpace's refresh session and AutoRaise's internal state machines reacting to the same tick.
+- **Warp / cursor-scale is dropped.** `warpX`, `warpY`, `scale`, `altTaskSwitcher`, and the `CGSSetCursorScale` private-API path were stripped in Phase 2 of the port. Users who want mouse-follows-focus compose `on-focus-changed` with the `move-mouse` command instead (documented in `docs/guide.adoc` § auto-raise).
+- **Globals stay globals.** `AutoRaise.mm` keeps its file-scope `axObserver` / `eventTap` / `lastCheckTime` / `suppressRaisesUntil` / `raiseGeneration` / ignore-list state. `static` was stripped so `AutoRaiseBridge.mm` can access them via `extern`; the library is a de-facto singleton and we only ever have one tap in one process.
 
 ### Adding / modifying a command (checklist from `dev-docs/architecture.md`)
 
