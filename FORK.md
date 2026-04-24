@@ -54,11 +54,14 @@ for details.
 - **Rebase-based.** Fork's `main` stays rebased on `nikitabobko/main`.
   Upstream commits arrive as-is; fork-specific commits sit on top. No merge
   commits in the fork's `main`.
-- **Version scheme.** `<upstream-version>-adrianlsy.<n>`:
-  - `v0.18.7-adrianlsy.1` — first fork release after upstream's `0.18.7`.
-  - `v0.18.7-adrianlsy.2` — fork bugfix with no upstream change.
-  - When upstream releases `0.18.8` and the fork rebases, the next fork
-    tag resets to `v0.18.8-adrianlsy.1`.
+- **Version scheme.** `v<upstream-version>-Beta.adrianlsy.<n>` — mirrors
+  upstream's `-Beta` pre-release marker (the combined binary is genuinely
+  a beta of a beta). SemVer-compliant dot-separated pre-release chain:
+  - `v0.20.0-Beta.adrianlsy.1` — first fork release after upstream's
+    `v0.20.0-Beta`.
+  - `v0.20.0-Beta.adrianlsy.2` — fork bugfix with no upstream change.
+  - When upstream releases `v0.21.0-Beta` and the fork rebases, the next
+    fork tag resets to `v0.21.0-Beta.adrianlsy.1`.
 - **Where to file bugs:**
   - Bugs in AutoRaise integration, fork-specific docs, or the fork's
     release tooling →

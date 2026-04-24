@@ -20,10 +20,11 @@ if test -z "$build_version"; then
     exit 1
 fi
 
-# Fork versions must match <upstream>-adrianlsy.<n>
-if ! echo "$build_version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+-adrianlsy\.[0-9]+$'; then
-    echo "--build-version must match <upstream>-adrianlsy.<n>, got: $build_version" > /dev/stderr
-    echo "Example: 0.18.7-adrianlsy.1" > /dev/stderr
+# Fork versions must match <upstream>-Beta.adrianlsy.<n>
+# (mirrors upstream's "-Beta" pre-release marker — this fork is a beta of a beta).
+if ! echo "$build_version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+-Beta\.adrianlsy\.[0-9]+$'; then
+    echo "--build-version must match <upstream>-Beta.adrianlsy.<n>, got: $build_version" > /dev/stderr
+    echo "Example: 0.20.0-Beta.adrianlsy.1" > /dev/stderr
     exit 1
 fi
 

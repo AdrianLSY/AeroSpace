@@ -23,8 +23,10 @@ jobs:
         run: |
           tag="${GITHUB_REF#refs/tags/}"
           build_version="${tag#v}"
-          if ! echo "$build_version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+-adrianlsy\.[0-9]+$'; then
-            echo "Invalid tag format: $tag (expected v<upstream>-adrianlsy.<n>)" >&2
+          # Fork versions must match <upstream>-Beta.adrianlsy.<n>, mirroring
+          # upstream's "-Beta" pre-release marker.
+          if ! echo "$build_version" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+-Beta\.adrianlsy\.[0-9]+$'; then
+            echo "Invalid tag format: $tag (expected v<upstream>-Beta.adrianlsy.<n>, e.g. v0.20.0-Beta.adrianlsy.1)" >&2
             exit 1
           fi
           {

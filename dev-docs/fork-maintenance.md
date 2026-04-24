@@ -51,16 +51,25 @@ Files that stay upstream-shaped — do not rebrand on rebase:
 ### Tag naming
 
 ```
-v<upstream-version>-adrianlsy.<n>
+v<upstream-version>-Beta.adrianlsy.<n>
 ```
 
 - `<upstream-version>` is the upstream version the fork is currently
-  rebased on (e.g. `0.18.7`).
+  rebased on (e.g. `0.20.0`, matching upstream's `v0.20.0-Beta` tag).
+- `-Beta.` mirrors upstream's pre-release marker. It stays in the fork
+  tag so the version string is honest ("beta of a beta") and SemVer sorts
+  the fork tag below a hypothetical stable `v0.20.0`.
 - `<n>` is the fork patch counter; resets to `1` per upstream version.
-- Fork tags sort *below* the equivalent upstream tag in strict SemVer
-  pre-release ordering. Homebrew doesn't care; for a fork whose tags
-  never interleave with upstream's in a single channel this is a
-  non-issue.
+- Dot-separated chain (`-Beta.adrianlsy.N`) is idiomatic SemVer
+  pre-release. Homebrew accepts it; tooling that treats dash-suffixes as
+  pre-releases behaves correctly for a fork whose tags never interleave
+  with upstream's in a single channel.
+- If upstream ever drops the `-Beta` marker (e.g. cuts a 1.0 release),
+  update the regex in
+  [script/publish-release-adrianlsy.sh](../script/publish-release-adrianlsy.sh)
+  and
+  [.github/workflows/release-adrianlsy.yml](../.github/workflows/release-adrianlsy.yml)
+  to match the new upstream shape.
 
 ### What fires on tag push
 
@@ -79,14 +88,14 @@ Pushing a matching tag to `AdrianLSY/AeroSpace` triggers two workflows:
 git checkout main
 git pull
 ./test.sh                                   # sanity check
-git tag -a v0.18.7-adrianlsy.1 -m "Release v0.18.7-adrianlsy.1"
-git push origin v0.18.7-adrianlsy.1
+git tag -a v0.20.0-Beta.adrianlsy.1 -m "Release v0.20.0-Beta.adrianlsy.1"
+git push origin v0.20.0-Beta.adrianlsy.1
 ```
 
 Then:
 
 - Watch the release workflow in Actions. If it fails, fix and re-tag as
-  `-adrianlsy.<n+1>` — don't mutate existing tags.
+  `-Beta.adrianlsy.<n+1>` — don't mutate existing tags.
 - Review the auto-opened tap PR at
   `AdrianLSY/homebrew-tap`. For the first few releases, merge manually
   after visually verifying the generated `.rb` (`sha256`, `url`,
@@ -104,7 +113,7 @@ local debugging, use
 
 ```bash
 ./script/publish-release-adrianlsy.sh \
-  --build-version 0.18.7-adrianlsy.1 \
+  --build-version 0.20.0-Beta.adrianlsy.1 \
   --tap-git-repo-path /path/to/AdrianLSY/homebrew-tap
 ```
 
