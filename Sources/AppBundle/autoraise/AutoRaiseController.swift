@@ -17,6 +17,7 @@ import Common
     private static var routeCallbackInstalled: Bool = false
 
     static var isEnabled: Bool { autoraise_is_running() }
+    static var isRuntimeDisabled: Bool { runtimeDisabled }
 
     // User-triggered start — called at boot (gated on config.enabled) and by
     // `enable-auto-raise`. Ignores config.enabled at this layer: the caller
