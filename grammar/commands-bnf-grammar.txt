@@ -21,11 +21,15 @@ aerospace -h;
 
     | debug-windows [--window-id <window_id>]
 
+    | disable-auto-raise [--fail-if-noop]
+
     | echo [--stderr|--window <window_id>]... --
 
     | enable toggle
     | enable [--fail-if-noop] on [--fail-if-noop]
     | enable [--fail-if-noop] off [--fail-if-noop]
+
+    | enable-auto-raise [--fail-if-noop]
 
     | eval [--stdin]
 

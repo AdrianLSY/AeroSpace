@@ -32,3 +32,5 @@
 # XCode User settings
 xcuserdata/
 xcshareddata/
+
+/openspec

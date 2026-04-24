@@ -83,6 +83,11 @@ func runLightSession<T>(
         if focusBefore != focusAfter {
             focusAfter?.nativeFocus() // syncFocusToMacOs
         }
+        // Re-run the cursor hit test after AeroSpace-driven layout changes.
+        // Skipped for focus-follows-mouse sessions: upstream's FFM already
+        // resolved a window from the pointer, so running the hook here would
+        // issue a second, independent raise for the same pointer movement.
+        if !event.isFocusFollowsMouse { AutoRaiseController.onLayoutDidChange() }
         if !event.isFocusFollowsMouse { scheduleCancellableCompleteRefreshSession(event) }
         return result
     }
