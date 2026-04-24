@@ -16,20 +16,33 @@ import Common
 //     bridge and snapshots the running state; `enable on` restores it. The
 //     snapshot is NOT sticky — it's only consulted across a single
 //     off→on cycle.
-@MainActor enum AutoRaiseController {
-    private static var lastConfig: AutoRaiseConfig?
-    private static var runtimeDisabled: Bool = false
-    private static var routeCallbackInstalled: Bool = false
+//
+// The class has a `shared` singleton used by production call sites via
+// static forwarders below. Tests instantiate a fresh controller with a
+// `FakeAutoRaiseBridge` to exercise the state machine without touching the
+// real CGEventTap. See openspec change autoraise-review-followups §D3.
+@MainActor
+final class AutoRaiseController {
+    static let shared = AutoRaiseController()
+
+    private let bridge: AutoRaiseBridgeProtocol
+    private var lastConfig: AutoRaiseConfig?
+    private var runtimeDisabled: Bool = false
+    private var routeCallbackInstalled: Bool = false
     // Non-nil while the bridge is paused by `enable off`. Carries the config
     // that was in effect at pause time so `enable on` can restart cleanly.
-    private static var masterPauseSnapshot: AutoRaiseConfig?
+    private var masterPauseSnapshot: AutoRaiseConfig?
 
-    static var isEnabled: Bool { autoraise_is_running() }
+    init(bridge: AutoRaiseBridgeProtocol = LiveAutoRaiseBridge()) {
+        self.bridge = bridge
+    }
+
+    var isEnabled: Bool { bridge.isRunning }
 
     // True when `disable-auto-raise` has disabled the bridge AND the bridge
     // is currently not running. Used by `disable-auto-raise` to detect true
     // no-op invocations (already stopped AND sticky flag set).
-    static var isNoopForDisableCommand: Bool { !isEnabled && runtimeDisabled }
+    var isNoopForDisableCommand: Bool { !isEnabled && runtimeDisabled }
 
     // User-triggered start — called at boot (gated on config.enabled) and by
     // `enable-auto-raise`. Ignores config.enabled at this layer: the caller
@@ -37,28 +50,27 @@ import Common
     // Returns true iff the bridge is running after the call — false means the
     // tap could not be installed (typically: Accessibility permission missing).
     @discardableResult
-    static func start(config: AutoRaiseConfig) -> Bool {
+    func start(config: AutoRaiseConfig) -> Bool {
         runtimeDisabled = false
         lastConfig = config
         installRouteCallbackOnce()
-        let bridge = config.toBridge()
-        if autoraise_is_running() {
-            autoraise_reload(bridge)
+        if bridge.isRunning {
+            bridge.reload(config)
             return true
         }
-        return autoraise_start(bridge)
+        return bridge.start(config)
     }
 
     // User-triggered stop — `disable-auto-raise`. Sets the sticky flag so a
     // subsequent config reload doesn't silently re-enable.
-    static func stop() {
+    func stop() {
         runtimeDisabled = true
-        if autoraise_is_running() { autoraise_stop() }
+        if bridge.isRunning { bridge.stop() }
     }
 
     // Config-file-watcher reload. Respects the sticky runtime-disabled flag;
     // otherwise mirrors start/stop based on config.enabled.
-    static func reload(config: AutoRaiseConfig) {
+    func reload(config: AutoRaiseConfig) {
         lastConfig = config
         if runtimeDisabled { return }
         if masterPauseSnapshot != nil {
@@ -70,14 +82,13 @@ import Common
         }
         if config.enabled {
             installRouteCallbackOnce()
-            let bridge = config.toBridge()
-            if autoraise_is_running() {
-                autoraise_reload(bridge)
+            if bridge.isRunning {
+                bridge.reload(config)
             } else {
-                _ = autoraise_start(bridge)
+                _ = bridge.start(config)
             }
         } else {
-            if autoraise_is_running() { autoraise_stop() }
+            if bridge.isRunning { bridge.stop() }
         }
     }
 
@@ -85,25 +96,25 @@ import Common
     // the currently-applied config (if the bridge was running) so the
     // corresponding `enable on` can restart with it. Does NOT mutate
     // runtimeDisabled — a user-level disable survives a master-off/on cycle.
-    static func pauseForMaster() {
-        guard autoraise_is_running(), let config = lastConfig else { return }
+    func pauseForMaster() {
+        guard bridge.isRunning, let config = lastConfig else { return }
         masterPauseSnapshot = config
-        autoraise_stop()
+        bridge.stop()
     }
 
     // Called by EnableCommand when the master toggle flips to on. If a
     // snapshot is pending AND the user hasn't sticky-disabled, restart.
-    static func resumeFromMaster() {
+    func resumeFromMaster() {
         guard let config = masterPauseSnapshot else { return }
         masterPauseSnapshot = nil
         if runtimeDisabled { return }
         installRouteCallbackOnce()
-        _ = autoraise_start(config.toBridge())
+        _ = bridge.start(config)
     }
 
     // Fanned out from GlobalObserver (design.md §D6).
-    static func onActiveSpaceDidChange() { autoraise_on_active_space_did_change() }
-    static func onAppDidActivate() { autoraise_on_app_did_activate() }
+    func onActiveSpaceDidChange() { bridge.onActiveSpaceDidChange() }
+    func onAppDidActivate() { bridge.onAppDidActivate() }
 
     // Called at the end of runLightSession. AeroSpace's own commands can pull
     // the window out from under the cursor (move-node-to-workspace, close,
@@ -117,19 +128,51 @@ import Common
     // itself, so `lastAppliedLayoutPhysicalRect` is the authoritative source
     // for "where is window X on screen right now". Walk the focused
     // workspace's tree instead and route directly.
-    static func onLayoutDidChange() {
+    func onLayoutDidChange() {
         guard isEnabled else { return }
         let cursor = CGEvent(source: nil)?.location ?? .zero
-        let workspace = focus.workspace
-        guard let window = workspace.allLeafWindowsRecursive.first(where: {
-            $0.lastAppliedLayoutPhysicalRect?.contains(cursor) == true
-        }) else { return }
+        guard let window = Self.findWindowUnderCursor(
+            cursor: cursor,
+            workspace: focus.workspace,
+        ) else { return }
         RaiseRouter.route(windowId: CGWindowID(window.windowId))
     }
 
-    private static func installRouteCallbackOnce() {
+    // Pure helper: given a cursor point and a workspace, find the leaf window
+    // whose last-applied layout rect contains the cursor. Extracted from
+    // onLayoutDidChange for testability (no CGEvent / focus-globals
+    // dependency). Windows without a `lastAppliedLayoutPhysicalRect` (never
+    // laid out) are skipped — the missing rect means AeroSpace hasn't
+    // positioned the window, so we can't claim the cursor is "over" it.
+    static func findWindowUnderCursor(cursor: CGPoint, workspace: Workspace) -> Window? {
+        workspace.allLeafWindowsRecursive.first(where: {
+            $0.lastAppliedLayoutPhysicalRect?.contains(cursor) == true
+        })
+    }
+
+    private func installRouteCallbackOnce() {
         if routeCallbackInstalled { return }
-        autoraise_set_route_callback(RaiseRouter.cCallback)
+        bridge.installRouteCallback()
         routeCallbackInstalled = true
     }
+
+    // --- Static forwarders ------------------------------------------------
+    // Production call sites (GlobalObserver, EnableCommand, ReloadConfigCommand,
+    // EnableAutoRaiseCommand, DisableAutoRaiseCommand, initAppBundle.swift,
+    // refresh.swift) stay pointed at `AutoRaiseController.xxx`; each shim
+    // forwards to `shared`. Tests bypass these and call instance methods
+    // on a test-owned controller directly.
+
+    static var isEnabled: Bool { shared.isEnabled }
+    static var isNoopForDisableCommand: Bool { shared.isNoopForDisableCommand }
+
+    @discardableResult
+    static func start(config: AutoRaiseConfig) -> Bool { shared.start(config: config) }
+    static func stop() { shared.stop() }
+    static func reload(config: AutoRaiseConfig) { shared.reload(config: config) }
+    static func pauseForMaster() { shared.pauseForMaster() }
+    static func resumeFromMaster() { shared.resumeFromMaster() }
+    static func onActiveSpaceDidChange() { shared.onActiveSpaceDidChange() }
+    static func onAppDidActivate() { shared.onAppDidActivate() }
+    static func onLayoutDidChange() { shared.onLayoutDidChange() }
 }
