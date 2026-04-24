@@ -17,7 +17,7 @@ All of these are top-level shell scripts — invoke them from the repo root:
 - `./build-debug.sh` — SPM debug build into `.debug/` (produces `aerospace` CLI and `AeroSpaceApp` server binaries). Skips xcodeproj/cmd-help/shell-parser regeneration for speed.
 - `./test.sh` — full CI pipeline: builds with `-warnings-as-errors`, runs swift tests, sanity-checks the CLI binary, runs the linter, and verifies `generate.sh` produces no uncommitted changes. **This is the gate for PRs.**
 - `./swift-test.sh` — just the swift test target. Run a single test with `swift test --filter <TestClass>.<method>` or `swift test --filter <TestClass>` (scripts wrap `swift test`, so flags pass through).
-- `./lint.sh` — runs SwiftFormat + SwiftLint (with `--fix`) and then Periphery (dead-code detection, `--strict`). Periphery is skipped on macOS 14 (dylib incompatibility) and on macOS 26 (a Periphery-SwiftSyntax mixed-language issue triggered by `AutoRaiseCore` — tracked at `peripheryapp/periphery#1105`).
+- `./lint.sh` — runs SwiftFormat + SwiftLint (with `--fix`) and then Periphery (dead-code detection, `--strict`). Periphery is skipped on macOS 14 (dylib incompatibility) and on macOS 15 + 26 (a Periphery-SwiftSyntax mixed-language issue triggered by `AutoRaiseCore` — tracked at `peripheryapp/periphery#1105`). Effectively, Periphery currently cannot run anywhere on this codebase until #1105 lands.
 - `./format.sh` — SwiftFormat + SwiftLint `--fix` only (subset of lint.sh).
 - `./run-debug.sh [args...]` — builds and runs `AeroSpaceApp` (the server).
 - `./run-cli.sh [args...]` — builds (if needed) and runs `aerospace` CLI with forwarded args.
