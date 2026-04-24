@@ -23,7 +23,13 @@ enum RaiseRouter {
         // enters screen regions owned by a non-active workspace.
         guard let targetWorkspace = window.visualWorkspace,
               targetWorkspace == focus.workspace else { return }
+        // focusWindow() syncs AeroSpace's internal model; nativeFocus() does the
+        // macOS-side AX raise + app activate. Normal commands get the native
+        // sync via the refresh session that follows runCmdSeq, but AutoRaise's
+        // raise path doesn't go through a command — so we pair them explicitly,
+        // matching the pattern in GlobalObserver.
         _ = window.focusWindow()
+        window.nativeFocus()
     }
 
     // C function pointer handed to autoraise_set_route_callback. Must be
