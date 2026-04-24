@@ -11,7 +11,7 @@ struct DisableAutoRaiseCommand: Command {
         // `config.enabled = false`, calling stop() still matters — it sets the
         // sticky flag so a later config reload with `enabled = true` won't
         // silently re-enable.
-        let isTrueNoop = !AutoRaiseController.isEnabled && AutoRaiseController.isRuntimeDisabled
+        let isTrueNoop = AutoRaiseController.isNoopForDisableCommand
         AutoRaiseController.stop()
         if isTrueNoop {
             switch args.failIfNoop {
