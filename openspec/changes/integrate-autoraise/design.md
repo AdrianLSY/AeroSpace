@@ -130,7 +130,9 @@ The config key `[auto-raise].enabled` controls startup state; the commands overr
 
 ### D9. Event tap lifecycle
 
-`AutoRaiseController.start` installs the `CGEventTap`; `stop` calls `CGEventTapEnable(tap, false)` and releases. The tap is listen-only (must return the event unmodified, same as upstream) and observes `kCGEventMouseMoved`, `kCGEventKeyDown`, `kCGEventFlagsChanged`.
+`AutoRaiseController.start` installs the `CGEventTap`; `stop` calls `CGEventTapEnable(tap, false)` and releases. The tap is listen-only (must return the event unmodified, same as upstream) and observes only `kCGEventMouseMoved`.
+
+We don't intercept `kCGEventKeyDown` / `kCGEventFlagsChanged` to implement the `disable-key` check: upstream's approach of polling current modifier state via `CGEventCreateKeyboardEvent(NULL, 0, true)` + `CGEventGetFlags` is preserved in `performRaiseCheck`, so there's no need to intercept the key stream just to know which modifiers are held. Narrower mask = less tap overhead and no `kCGEventFlagsChanged` re-entrancy to worry about.
 
 The tap's recovery path (when the system disables it under load) is preserved: the handler re-enables via `CGEventTapEnable(tap, true)` on `kCGEventTapDisabledByTimeout` / `kCGEventTapDisabledByUserInput`.
 

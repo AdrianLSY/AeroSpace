@@ -139,8 +139,8 @@ AeroSpace's AutoRaise integration SHALL run in the same process as the rest of A
 
 AeroSpace's AutoRaise integration SHALL NOT implement mouse warping on app activation, cursor-scale animation, or the `altTaskSwitcher`/`warpX`/`warpY`/`scale` options present in upstream AutoRaise. Users wanting mouse-follows-focus behavior can compose AeroSpace's existing `move-mouse` command with `on-focus-changed` callbacks.
 
-#### Scenario: Upstream warp keys are rejected
+#### Scenario: Unknown keys (including upstream-only AutoRaise options) are rejected
 
-- **Given** a config containing `warpX = 0.5` under `[auto-raise]`
+- **Given** a config containing an unknown key under `[auto-raise]` — for example `altTaskSwitcher = true` (an upstream-only option that isn't part of the AeroSpace schema)
 - **When** AeroSpace parses the config
-- **Then** a config error is reported indicating the key is unknown
+- **Then** a config error is reported indicating the key is unknown (`auto-raise.<key>: Unknown key`)
