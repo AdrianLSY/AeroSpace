@@ -73,9 +73,9 @@ static BOOL bridgeRunning = NO;
 static void applyConfig(AutoRaiseBridgeConfig *config) {
     pollMillis = config.pollMillis;
     disableKey = config.disableKey;
-    ignoreSpaceChanged = config.ignoreSpaceChanged ? true : false;
-    invertDisableKey = config.invertDisableKey ? true : false;
-    invertIgnoreApps = config.invertIgnoreApps ? true : false;
+    ignoreSpaceChanged = config.ignoreSpaceChanged;
+    invertDisableKey = config.invertDisableKey;
+    invertIgnoreApps = config.invertIgnoreApps;
 
     NSMutableArray<NSString *> *apps = [config.ignoreApps mutableCopy];
     if (![apps containsObject: @"AssistiveControl"]) {
@@ -167,6 +167,15 @@ void autoraise_stop(void) {
         eventTap = NULL;
     }
     if (axObserver != NULL) {
+        // Remove the run-loop source before releasing the observer. The source
+        // was added to CFRunLoopGetCurrent() (= main run loop, since the tap
+        // runs there) in performRaiseCheck; dropping the observer without
+        // removing the source leaves a zombie source attached to the loop.
+        CFRunLoopRemoveSource(
+            CFRunLoopGetMain(),
+            AXObserverGetRunLoopSource(axObserver),
+            kCFRunLoopCommonModes
+        );
         CFRelease(axObserver);
         axObserver = NULL;
     }

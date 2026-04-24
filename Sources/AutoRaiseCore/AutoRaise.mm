@@ -147,11 +147,8 @@ inline void activate(pid_t pid) {
 
 // AeroSpace integration: route the raise through Swift via the bridge callback.
 // Swift resolves the CGWindowID to an AeroSpace Window, enforces the
-// current-workspace rule, and calls setFocus(to:). The `window_pid` parameter
-// is retained only to avoid churning the retry-block call sites; Swift
-// rediscovers the pid from the window.
-inline void raiseAndActivate(AXUIElementRef _window, pid_t window_pid) {
-    (void) window_pid;
+// current-workspace rule, and calls setFocus(to:).
+inline void raiseAndActivate(AXUIElementRef _window) {
     CGWindowID window_id = kCGNullWindowID;
     if (_AXUIElementGetWindow(_window, &window_id) != kAXErrorSuccess) { return; }
     if (routeRaise != NULL) { routeRaise((uint32_t) window_id); }
@@ -617,6 +614,16 @@ void performRaiseCheck(CGPoint mousePoint) {
             lastDestroyedMouseWindow_id = kCGNullWindowID;
 
             if (axObserver) {
+                // Remove the run-loop source before releasing the observer.
+                // Upstream doesn't do this — the zombie source stays attached
+                // to the run loop until process exit. Mirror the cleanup we do
+                // in autoraise_stop so stop/restart cycles don't accumulate
+                // them either.
+                CFRunLoopRemoveSource(
+                    CFRunLoopGetMain(),
+                    AXObserverGetRunLoopSource(axObserver),
+                    kCFRunLoopCommonModes
+                );
                 CFRelease(axObserver);
                 axObserver = NULL;
             }
@@ -639,7 +646,7 @@ void performRaiseCheck(CGPoint mousePoint) {
                 );
 
                 CFRunLoopAddSource(
-                    CFRunLoopGetCurrent(),
+                    CFRunLoopGetMain(),
                     AXObserverGetRunLoopSource(axObserver),
                     kCFRunLoopCommonModes
                 );
@@ -697,20 +704,18 @@ void performRaiseCheck(CGPoint mousePoint) {
     }
 
     if (needs_raise) {
-        raiseAndActivate(_mouseWindow, mouseWindow_pid);
+        raiseAndActivate(_mouseWindow);
 
         // Schedule two retry raises for apps that don't respect the first one
         // (Finder, some Electron apps). Each retry captures `gen` and only fires
         // if no newer raise has been issued in the meantime.
-        pid_t captured_pid = mouseWindow_pid;
-
         AXUIElementRef _win1 = (AXUIElementRef) CFRetain(_mouseWindow);
         dispatch_after(
             dispatch_time(DISPATCH_TIME_NOW, (int64_t) RAISE_RETRY_1_MS * NSEC_PER_MSEC),
             dispatch_get_main_queue(),
             ^{
                 if (gen == raiseGeneration) {
-                    raiseAndActivate(_win1, captured_pid);
+                    raiseAndActivate(_win1);
                 }
                 CFRelease(_win1);
             }
@@ -722,7 +727,7 @@ void performRaiseCheck(CGPoint mousePoint) {
             dispatch_get_main_queue(),
             ^{
                 if (gen == raiseGeneration) {
-                    raiseAndActivate(_win2, captured_pid);
+                    raiseAndActivate(_win2);
                 }
                 CFRelease(_win2);
             }
