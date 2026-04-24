@@ -105,6 +105,28 @@ import Common
     static func onActiveSpaceDidChange() { autoraise_on_active_space_did_change() }
     static func onAppDidActivate() { autoraise_on_app_did_activate() }
 
+    // Called at the end of runLightSession. AeroSpace's own commands can pull
+    // the window out from under the cursor (move-node-to-workspace, close,
+    // layout, flatten-workspace-tree, …) without a macOS-level space change,
+    // so the mouse-event-driven auto-raise path never fires.
+    //
+    // We deliberately skip AutoRaiseCore's hit-test here. layoutWorkspaces
+    // sets window frames via AXUIElementSetAttributeValue, which propagates
+    // to each target app's AX server asynchronously — an immediate AX
+    // hit-test races with that round-trip. AeroSpace just wrote the layout
+    // itself, so `lastAppliedLayoutPhysicalRect` is the authoritative source
+    // for "where is window X on screen right now". Walk the focused
+    // workspace's tree instead and route directly.
+    static func onLayoutDidChange() {
+        guard isEnabled else { return }
+        let cursor = CGEvent(source: nil)?.location ?? .zero
+        let workspace = focus.workspace
+        guard let window = workspace.allLeafWindowsRecursive.first(where: {
+            $0.lastAppliedLayoutPhysicalRect?.contains(cursor) == true
+        }) else { return }
+        RaiseRouter.route(windowId: CGWindowID(window.windowId))
+    }
+
     private static func installRouteCallbackOnce() {
         if routeCallbackInstalled { return }
         autoraise_set_route_callback(RaiseRouter.cCallback)
