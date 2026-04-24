@@ -1,15 +1,12 @@
-> **This is [AdrianLSY's fork](https://github.com/AdrianLSY/AeroSpace)** of [nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace).
-> It adds [hover-to-raise via AutoRaise](FORK.md#what-this-fork-adds) as its headline feature.
-> Install: `brew install --cask AdrianLSY/tap/aerospace-adrianlsy`.
-> See [FORK.md](FORK.md) for details and [dev-docs/fork-maintenance.md](dev-docs/fork-maintenance.md) for the rebase protocol.
-
----
-
 # AeroSpace Beta [![Build](https://github.com/AdrianLSY/AeroSpace/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/AdrianLSY/AeroSpace/actions/workflows/build.yml)
 
 <img src="./resources/Assets.xcassets/AppIcon.appiconset/icon.png" width="40%" align="right">
 
 AeroSpace is an i3-like tiling window manager for macOS
+
+**This is [my fork](https://github.com/AdrianLSY/AeroSpace)** of [nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace).
+It adds [hover-to-raise via AutoRaise](FORK.md#what-this-fork-adds).
+See [FORK.md](FORK.md) for details and [dev-docs/fork-maintenance.md](dev-docs/fork-maintenance.md) for the rebase protocol.
 
 Videos:
 - [YouTube 91 sec Demo](https://www.youtube.com/watch?v=UOl7ErqWbrk)
