@@ -598,8 +598,14 @@ void performRaiseCheck(CGPoint mousePoint) {
         return;
     }
 
+    // AeroSpace deviation from upstream: upstream ignores _AXUIElementGetWindow's
+    // return value, so on failure `mouseWindow_id` is uninitialized stack garbage
+    // and the subsequent equality checks silently misbehave. Guard the read.
     CGWindowID mouseWindow_id;
-    _AXUIElementGetWindow(_mouseWindow, &mouseWindow_id);
+    if (_AXUIElementGetWindow(_mouseWindow, &mouseWindow_id) != kAXErrorSuccess) {
+        CFRelease(_mouseWindow);
+        return;
+    }
     bool mouseWindowPresent = mouseWindow_id != lastDestroyedMouseWindow_id;
 
     if (mouseWindowPresent) {
@@ -613,24 +619,29 @@ void performRaiseCheck(CGPoint mousePoint) {
                 axObserver = NULL;
             }
 
-            AXObserverCreate(
+            // AeroSpace deviation from upstream: upstream ignores AXObserverCreate's
+            // return value. On failure axObserver stays NULL and the subsequent
+            // AXObserverAddNotification + CFRunLoopAddSource(NULL) path can crash.
+            // Skip observer setup on failure; the window will fall through to the
+            // lastDestroyedMouseWindow_id check next tick.
+            if (AXObserverCreate(
                 mouseWindow_pid,
                 AXCallback,
                 &axObserver
-            );
+            ) == kAXErrorSuccess) {
+                AXObserverAddNotification(
+                    axObserver,
+                    _mouseWindow,
+                    kAXUIElementDestroyedNotification,
+                    (void *) ((uint64_t) mouseWindow_id)
+                );
 
-            AXObserverAddNotification(
-                axObserver,
-                _mouseWindow,
-                kAXUIElementDestroyedNotification,
-                (void *) ((uint64_t) mouseWindow_id)
-            );
-
-            CFRunLoopAddSource(
-                CFRunLoopGetCurrent(),
-                AXObserverGetRunLoopSource(axObserver),
-                kCFRunLoopCommonModes
-            );
+                CFRunLoopAddSource(
+                    CFRunLoopGetCurrent(),
+                    AXObserverGetRunLoopSource(axObserver),
+                    kCFRunLoopCommonModes
+                );
+            }
         }
     }
 
@@ -659,10 +670,17 @@ void performRaiseCheck(CGPoint mousePoint) {
             kAXFocusedWindowAttribute,
             (CFTypeRef *) &_focusedWindow);
         if (_focusedWindow) {
+            // AeroSpace deviation from upstream: guard the private-API read so an
+            // uninitialized `focusedWindow_id` doesn't coincidentally match
+            // `mouseWindow_id` (would suppress a legitimate raise) or mismatch it
+            // (would trigger a spurious raise).
             CGWindowID focusedWindow_id;
-            _AXUIElementGetWindow(_focusedWindow, &focusedWindow_id);
-            needs_raise = mouseWindow_id != focusedWindow_id;
-            needs_raise = needs_raise && !contained_within(_focusedWindow, _mouseWindow);
+            if (_AXUIElementGetWindow(_focusedWindow, &focusedWindow_id) == kAXErrorSuccess) {
+                needs_raise = mouseWindow_id != focusedWindow_id;
+                needs_raise = needs_raise && !contained_within(_focusedWindow, _mouseWindow);
+            } else {
+                needs_raise = false;
+            }
             CFRelease(_focusedWindow);
         } else {
             AXUIElementRef _activatedWindow = NULL;
