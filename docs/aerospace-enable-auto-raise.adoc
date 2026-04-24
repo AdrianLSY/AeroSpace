@@ -26,6 +26,12 @@ config reload will honor the config's `enabled` value again.
 When hover-raise is already running, the command succeeds without changing
 state. Pass `--fail-if-noop` to exit non-zero in that case.
 
+`enable-auto-raise` is a runtime toggle, not a reload. Editing `[auto-raise]`
+keys in the config file does not take effect when `enable-auto-raise` is
+re-run against an already-running bridge — use
+xref:./aerospace-reload-config.adoc[`reload-config`] (or the config file
+watcher) to apply TOML changes.
+
 // =========================================================== Options
 include::util/conditional-options-header.adoc[]
 

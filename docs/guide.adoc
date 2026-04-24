@@ -674,7 +674,7 @@ Keep the callback cheap, or disable auto-raise for the workspaces / monitors whe
 [#auto-raise-commands]
 === Runtime toggle
 
-* xref:./commands.adoc#enable-auto-raise[`enable-auto-raise`] — start hover-raise using the loaded `[auto-raise]` config. Clears any prior runtime-disable.
+* xref:./commands.adoc#enable-auto-raise[`enable-auto-raise`] — start hover-raise using the loaded `[auto-raise]` config. Clears any prior runtime-disable. Note: this is a toggle, not a reload — if the bridge is already running, the command does not re-read `[auto-raise]` from disk. Use xref:./commands.adoc#reload-config[`reload-config`] to apply TOML edits.
 * xref:./commands.adoc#disable-auto-raise[`disable-auto-raise`] — stop hover-raise and set a sticky flag. Subsequent config reloads (via xref:./commands.adoc#reload-config[`reload-config`] or the file watcher) will NOT re-enable until `enable-auto-raise` is run again.
 * Both commands are idempotent by default. Pass `--fail-if-noop` to get a non-zero exit when the command doesn't change state — useful for scripts.
 * The master xref:./commands.adoc#enable[`enable off`] command also pauses hover-raise — mouse movement stops driving focus while window management is disabled. `enable on` resumes hover-raise at its prior running state. A sticky runtime-disable from `disable-auto-raise` survives the off/on cycle.
