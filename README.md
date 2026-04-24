@@ -1,4 +1,11 @@
-# AeroSpace Beta [![Build](https://github.com/nikitabobko/AeroSpace/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/nikitabobko/AeroSpace/actions/workflows/build.yml)
+> **This is [AdrianLSY's fork](https://github.com/AdrianLSY/AeroSpace)** of [nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace).
+> It adds [hover-to-raise via AutoRaise](FORK.md#what-this-fork-adds) as its headline feature.
+> Install: `brew install --cask AdrianLSY/tap/aerospace-adrianlsy`.
+> See [FORK.md](FORK.md) for details and [dev-docs/fork-maintenance.md](dev-docs/fork-maintenance.md) for the rebase protocol.
+
+---
+
+# AeroSpace Beta [![Build](https://github.com/AdrianLSY/AeroSpace/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/AdrianLSY/AeroSpace/actions/workflows/build.yml)
 
 <img src="./resources/Assets.xcassets/AppIcon.appiconset/icon.png" width="40%" align="right">
 
@@ -15,6 +22,7 @@ Docs:
 
 ## Key features
 
+- **Hover-to-raise (AutoRaise)** _— fork-specific._ Focus follows your mouse cursor into any window on the currently-focused workspace. Port of [sbmpost/AutoRaise](https://github.com/sbmpost/AutoRaise), scoped to AeroSpace's existing focus machinery. See the [auto-raise guide](https://adrianlsy.github.io/AeroSpace/guide#auto-raise).
 - Tiling window manager based on a [tree paradigm](https://nikitabobko.github.io/AeroSpace/guide#tree)
 - [i3](https://i3wm.org/) inspired
 - Fast workspaces switching without animations and without the necessity to disable SIP
@@ -26,11 +34,21 @@ Docs:
 
 ## Installation
 
-Install via [Homebrew](https://brew.sh/) to get autoupdates (Preferred)
+Install via [Homebrew](https://brew.sh/) to get autoupdates (Preferred).
+
+### This fork (AdrianLSY/AeroSpace)
+
+```
+brew install --cask AdrianLSY/tap/aerospace-adrianlsy
+```
+
+### Upstream (nikitabobko/AeroSpace)
 
 ```
 brew install --cask nikitabobko/tap/aerospace
 ```
+
+The two casks `conflicts_with` each other — install one, not both.
 
 In multi-monitor setup please make sure that monitors [are properly arranged](https://nikitabobko.github.io/AeroSpace/guide#proper-monitor-arrangement).
 
