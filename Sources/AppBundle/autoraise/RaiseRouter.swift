@@ -13,6 +13,10 @@ import Common
 enum RaiseRouter {
     @MainActor
     static func route(windowId: CGWindowID) {
+        // Belt-and-braces for the @convention(c) → MainActor.assumeIsolated hop
+        // below: if AutoRaiseCore ever routes a raise off the main thread, we'd
+        // rather crash here than silently violate the actor contract.
+        assert(Thread.isMainThread)
         guard let window = Window.get(byId: UInt32(windowId)) else { return }
         // Drop raises targeting a window on a non-focused workspace.
         // Matches i3 behavior; also avoids workspace flips when the cursor
