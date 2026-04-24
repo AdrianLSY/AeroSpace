@@ -3,7 +3,7 @@ name: release-adrianlsy
 on:
   push:
     tags:
-      - 'v*-adrianlsy.*'
+      - 'v*-Beta.adrianlsy.*'
 
 jobs:
   release:

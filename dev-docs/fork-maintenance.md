@@ -149,7 +149,7 @@ AdrianLSY/homebrew-tap/
 
 - Pages source = GitHub Actions. URL:
   https://adrianlsy.github.io/AeroSpace.
-- Deploys only on tagged releases (`v*-adrianlsy.*`) — docs match a
+- Deploys only on tagged releases (`v*-Beta.adrianlsy.*`) — docs match a
   shipping version rather than chasing `main`.
 - To preview doc changes locally: `./build-docs.sh && open .site/guide.html`.
 - Enable Pages once: repo Settings → Pages → Source: "GitHub Actions".

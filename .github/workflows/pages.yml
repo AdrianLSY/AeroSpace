@@ -3,7 +3,7 @@ name: pages
 on:
   push:
     tags:
-      - 'v*-adrianlsy.*'
+      - 'v*-Beta.adrianlsy.*'
   workflow_dispatch:
 
 permissions:
