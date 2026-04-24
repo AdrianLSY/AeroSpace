@@ -22,16 +22,19 @@ import Common
     // User-triggered start — called at boot (gated on config.enabled) and by
     // `enable-auto-raise`. Ignores config.enabled at this layer: the caller
     // decided to start, we start. Clears the sticky runtime-disabled flag.
-    static func start(config: AutoRaiseConfig) {
+    // Returns true iff the bridge is running after the call — false means the
+    // tap could not be installed (typically: Accessibility permission missing).
+    @discardableResult
+    static func start(config: AutoRaiseConfig) -> Bool {
         runtimeDisabled = false
         lastConfig = config
         installRouteCallbackOnce()
         let bridge = config.toBridge()
         if autoraise_is_running() {
             autoraise_reload(bridge)
-        } else {
-            autoraise_start(bridge)
+            return true
         }
+        return autoraise_start(bridge)
     }
 
     // User-triggered stop — `disable-auto-raise`. Sets the sticky flag so a
@@ -52,7 +55,7 @@ import Common
             if autoraise_is_running() {
                 autoraise_reload(bridge)
             } else {
-                autoraise_start(bridge)
+                _ = autoraise_start(bridge)
             }
         } else {
             if autoraise_is_running() { autoraise_stop() }

@@ -29,7 +29,12 @@ import Foundation
         startUnixSocketServer()
         GlobalObserver.initObserver()
         if config.autoRaise.enabled {
-            AutoRaiseController.start(config: config.autoRaise)
+            // Discard the return value: a boot-time event-tap failure has no
+            // user-facing surface to report to. The Accessibility-permission
+            // prompt is handled above in checkAccessibilityPermissions(), and
+            // the user can retry via `enable-auto-raise` once permission is
+            // granted (which will surface failures via the command's stderr).
+            _ = AutoRaiseController.start(config: config.autoRaise)
         }
         Workspace.garbageCollectUnusedWorkspaces() // init workspaces
         _ = Workspace.all.first?.focusWorkspace()

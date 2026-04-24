@@ -107,8 +107,8 @@ bool autoraise_is_running(void) {
     return bridgeRunning ? true : false;
 }
 
-void autoraise_start(AutoRaiseBridgeConfig *config) {
-    if (bridgeRunning) { return; }
+bool autoraise_start(AutoRaiseBridgeConfig *config) {
+    if (bridgeRunning) { return true; }
 
     applyConfig(config);
     resetRuntimeState();
@@ -129,9 +129,9 @@ void autoraise_start(AutoRaiseBridgeConfig *config) {
     );
     if (eventTap == NULL) {
         // Tap creation failed — typically Accessibility permission not granted
-        // yet. Leave bridgeRunning false; Swift side may retry after the user
-        // grants permission.
-        return;
+        // yet. Leave bridgeRunning false; Swift side surfaces the failure via
+        // the return value so the enable-auto-raise command can report it.
+        return false;
     }
 
     eventTapRunLoopSource = CFMachPortCreateRunLoopSource(
@@ -144,6 +144,7 @@ void autoraise_start(AutoRaiseBridgeConfig *config) {
     CGEventTapEnable(eventTap, true);
 
     bridgeRunning = YES;
+    return true;
 }
 
 void autoraise_stop(void) {

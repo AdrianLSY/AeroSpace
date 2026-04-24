@@ -43,9 +43,12 @@ extern "C" {
 
 #ifdef __OBJC__
 // Install the CGEventTap, apply config, and begin observing hover events.
-// Idempotent: a second call while already running is a no-op. The bridge
-// auto-appends AssistiveControl to ignoreApps (see upstream AutoRaise main()).
-void autoraise_start(AutoRaiseBridgeConfig *config);
+// Idempotent: a second call while already running is a no-op and returns true.
+// The bridge auto-appends AssistiveControl to ignoreApps (see upstream
+// AutoRaise main()). Returns false iff CGEventTapCreate failed — typically
+// because the process lacks Accessibility permission. In that case nothing
+// is mutated beyond the config globals (applyConfig still ran).
+bool autoraise_start(AutoRaiseBridgeConfig *config);
 
 // Re-apply config without tearing down the tap. Runtime-toggle state
 // (started / stopped via the commands) is NOT affected by reload —

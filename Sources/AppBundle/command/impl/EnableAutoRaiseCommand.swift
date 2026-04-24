@@ -13,7 +13,14 @@ struct EnableAutoRaiseCommand: Command {
                     return .succ(io.err("auto-raise is already enabled. Tip: use --fail-if-noop to exit with non-zero code"))
             }
         }
-        AutoRaiseController.start(config: config.autoRaise)
+        if !AutoRaiseController.start(config: config.autoRaise) {
+            io.err(
+                "Failed to start auto-raise: could not install the event tap. "
+                    + "The most likely cause is that AeroSpace is missing Accessibility permission. "
+                    + "Grant it in System Settings → Privacy & Security → Accessibility and try again.",
+            )
+            return .fail
+        }
         return .succ
     }
 }
