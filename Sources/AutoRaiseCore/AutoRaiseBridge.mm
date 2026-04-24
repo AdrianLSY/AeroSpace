@@ -17,6 +17,7 @@
 extern "C" {
     extern CFMachPortRef eventTap;
     extern AXObserverRef axObserver;
+    extern AXUIElementRef _dock_app;
     extern uint64_t lastDestroyedMouseWindow_id;
     extern NSArray * ignoreApps;
     extern NSArray * ignoreTitles;
@@ -168,6 +169,13 @@ void autoraise_stop(void) {
     if (axObserver != NULL) {
         CFRelease(axObserver);
         axObserver = NULL;
+    }
+    // findDockApplication on next start unconditionally overwrites _dock_app
+    // without a release, so we drop the previous one here to avoid leaking one
+    // AX reference per stop/restart cycle.
+    if (_dock_app != NULL) {
+        CFRelease(_dock_app);
+        _dock_app = NULL;
     }
 
     // Bump the generation so any in-flight retries that captured a pre-stop

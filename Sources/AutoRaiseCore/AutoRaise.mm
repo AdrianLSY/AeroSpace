@@ -82,7 +82,9 @@ uint64_t lastDestroyedMouseWindow_id = kCGNullWindowID;
 
 CFMachPortRef eventTap = NULL;
 static AXUIElementRef _accessibility_object = AXUIElementCreateSystemWide();
-static AXUIElementRef _dock_app = NULL;
+// `static` stripped so AutoRaiseBridge can release it on stop (see the pattern
+// applied to other file-scope state below).
+AXUIElementRef _dock_app = NULL;
 NSArray * ignoreApps = NULL;
 NSArray * ignoreTitles = NULL;
 NSArray * stayFocusedBundleIds = NULL;
