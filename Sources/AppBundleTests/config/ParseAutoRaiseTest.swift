@@ -11,6 +11,7 @@ final class ParseAutoRaiseTest: XCTestCase {
         assertEquals(config.autoRaise.enabled, false)
         assertEquals(config.autoRaise.pollMillis, 8)
         assertEquals(config.autoRaise.disableKey, .control)
+        assertEquals(config.autoRaise.keepFloatingOnTop, true)
     }
 
     func testFullRoundTrip() {
@@ -26,6 +27,7 @@ final class ParseAutoRaiseTest: XCTestCase {
                 ignore-titles = ["^Picture-in-Picture$", "window$"]
                 stay-focused-bundle-ids = ["com.apple.SecurityAgent"]
                 disable-key = "option"
+                keep-floating-on-top = false
             """,
         )
         assertEquals(errors, [])
@@ -38,6 +40,7 @@ final class ParseAutoRaiseTest: XCTestCase {
         assertEquals(config.autoRaise.ignoreTitles, ["^Picture-in-Picture$", "window$"])
         assertEquals(config.autoRaise.stayFocusedBundleIds, ["com.apple.SecurityAgent"])
         assertEquals(config.autoRaise.disableKey, .option)
+        assertEquals(config.autoRaise.keepFloatingOnTop, false)
     }
 
     func testPollMillisMinimum() {

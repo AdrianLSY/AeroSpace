@@ -23,6 +23,20 @@ enum RaiseRouter {
         // enters screen regions owned by a non-active workspace.
         guard let targetWorkspace = window.visualWorkspace,
               targetWorkspace == focus.workspace else { return }
+        // Keep floating windows on top: don't let a hover-raise bury a focused
+        // floating window under a tiling window. macOS has no SIP-clean way to
+        // pin a foreign window's level, so "on top" means "stays focused" — we
+        // simply decline to raise the tiling window rather than fight z-order.
+        // This is soft, not modal: a deliberate click reaches native focus via
+        // updateFocusCache (which never goes through this router), so the user
+        // can still move focus off the float by clicking. Hovering onto another
+        // floating window is still honored (target.isFloating).
+        if config.autoRaise.keepFloatingOnTop,
+           focus.windowOrNil?.isFloating == true,
+           !window.isFloating
+        {
+            return
+        }
         // focusWindow() syncs AeroSpace's internal model; nativeFocus() does the
         // macOS-side AX raise + app activate. Normal commands get the native
         // sync via the refresh session that follows runCmdSeq, but AutoRaise's

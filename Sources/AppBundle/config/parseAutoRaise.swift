@@ -11,6 +11,7 @@ private let autoRaiseParser: [String: any ParserProtocol<AutoRaiseConfig>] = [
     "ignore-titles": Parser(\.ignoreTitles, parseIgnoreTitles),
     "stay-focused-bundle-ids": Parser(\.stayFocusedBundleIds, parseArrayOfStrings),
     "disable-key": Parser(\.disableKey, parseAutoRaiseDisableKey),
+    "keep-floating-on-top": Parser(\.keepFloatingOnTop, parseBool),
 ]
 
 func parseAutoRaise(_ raw: Json, _ backtrace: ConfigBacktrace, _ errors: inout [ConfigParseError]) -> AutoRaiseConfig {

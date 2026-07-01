@@ -90,6 +90,19 @@ extension Window {
 extension Workspace {
     @MainActor func focusWorkspace() -> Bool { setFocus(to: toLiveFocus()) }
 
+    /// Focus this workspace, bringing a floating window to the foreground when
+    /// `[auto-raise] keep-floating-on-top` is enabled. Focusing the float (which
+    /// activates its app via the runLightSession native-focus sync) is the only
+    /// SIP-clean way to surface it — macOS won't let us pin a foreign window's
+    /// level. Used on workspace switch so floats don't stay buried under tiling
+    /// windows. Falls back to normal `focusWorkspace()` when there are no floats.
+    @MainActor func focusWorkspaceRaisingFloating() -> Bool {
+        if config.autoRaise.keepFloatingOnTop, let float = mostRecentFloatingWindow {
+            return float.focusWindow()
+        }
+        return focusWorkspace()
+    }
+
     func toLiveFocus() -> LiveFocus {
         // todo unfortunately mostRecentWindowRecursive may recursively reach empty rootTilingContainer
         //      while floating or macos unconventional windows might be presented

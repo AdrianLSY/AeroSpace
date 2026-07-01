@@ -22,6 +22,13 @@ extension Workspace {
         children.filterIsInstance(of: Window.self)
     }
 
+    /// The most-recently-focused floating window, or nil if the workspace has none.
+    /// Floating windows are the workspace's direct `Window` children (tiling windows
+    /// live under a `TilingContainer`), so an MRU child that `is Window` is a float.
+    @MainActor var mostRecentFloatingWindow: Window? {
+        mostRecentChild { $0 is Window } as? Window
+    }
+
     @MainActor var macOsNativeFullscreenWindowsContainer: MacosFullscreenWindowsContainer {
         let containers = children.filterIsInstance(of: MacosFullscreenWindowsContainer.self)
         return switch containers.count {

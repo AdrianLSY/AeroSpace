@@ -19,4 +19,47 @@ final class WorkspaceCommandTest: XCTestCase {
         testParseCommandSucc("workspace --stdin next", WorkspaceCmdArgs(target: .relative(.next)).copy(\.explicitStdinFlag, true))
         testParseCommandSucc("workspace --no-stdin next", WorkspaceCmdArgs(target: .relative(.next)).copy(\.explicitStdinFlag, false))
     }
+
+    // keep-floating-on-top: switching to a workspace with a floating window
+    // surfaces the float, even when a tiling window is the most-recent overall.
+    func testSwitchFocusesFloatingWindow() {
+        Workspace.get(byName: "a").apply {
+            TestWindow.new(id: 2, parent: $0) // floating
+            TestWindow.new(id: 1, parent: $0.rootTilingContainer) // tiling (most-recent overall)
+        }
+        _ = Workspace.get(byName: "b").apply { TestWindow.new(id: 3, parent: $0.rootTilingContainer) }.focusWorkspace()
+
+        _ = Workspace.get(byName: "a").focusWorkspaceRaisingFloating()
+
+        assertEquals(focus.workspace.name, "a")
+        assertEquals(focus.windowOrNil?.windowId, 2)
+    }
+
+    // With the option off, switching keeps the normal most-recent-window behavior.
+    func testSwitchWithKeepFloatingDisabledFocusesTiling() {
+        config.autoRaise.keepFloatingOnTop = false
+        Workspace.get(byName: "a").apply {
+            TestWindow.new(id: 2, parent: $0) // floating
+            TestWindow.new(id: 1, parent: $0.rootTilingContainer) // tiling (most-recent overall)
+        }
+        _ = Workspace.get(byName: "b").apply { TestWindow.new(id: 3, parent: $0.rootTilingContainer) }.focusWorkspace()
+
+        _ = Workspace.get(byName: "a").focusWorkspaceRaisingFloating()
+
+        assertEquals(focus.workspace.name, "a")
+        assertEquals(focus.windowOrNil?.windowId, 1)
+    }
+
+    // No floats → normal focusWorkspace() fallback.
+    func testSwitchWithoutFloatsFallsBackToTiling() {
+        Workspace.get(byName: "a").apply {
+            TestWindow.new(id: 1, parent: $0.rootTilingContainer)
+        }
+        _ = Workspace.get(byName: "b").apply { TestWindow.new(id: 3, parent: $0.rootTilingContainer) }.focusWorkspace()
+
+        _ = Workspace.get(byName: "a").focusWorkspaceRaisingFloating()
+
+        assertEquals(focus.workspace.name, "a")
+        assertEquals(focus.windowOrNil?.windowId, 1)
+    }
 }

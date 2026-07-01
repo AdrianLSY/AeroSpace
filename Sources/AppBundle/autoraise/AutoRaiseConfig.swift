@@ -12,6 +12,15 @@ struct AutoRaiseConfig: ConvenienceCopyable, Equatable, Sendable {
     var ignoreTitles: [String] = []
     var stayFocusedBundleIds: [String] = []
     var disableKey: AutoRaiseDisableKey = .control
+    // Keep floating windows on top (Swift-side only; not sent to the bridge).
+    // Two effects, both in AeroSpace's tree model rather than macOS window levels
+    // (true always-on-top would require disabling SIP — see RaiseRouter/design):
+    //   1. A hover-raise never buries a focused floating window under a tiling
+    //      window (RaiseRouter.route). Soft, not modal: a real click still moves
+    //      focus, because clicks land via updateFocusCache, not this router.
+    //   2. Switching to a workspace that has floating windows focuses the
+    //      most-recent one, surfacing it (Workspace.focusWorkspaceRaisingFloating).
+    var keepFloatingOnTop: Bool = true
 }
 
 enum AutoRaiseDisableKey: String, Equatable, Sendable {

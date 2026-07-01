@@ -114,6 +114,12 @@ open class TreeNode: Equatable, AeroAny {
 
     var mostRecentChild: TreeNode? { _mruChildren.mostRecent ?? children.last }
 
+    /// The most-recently-focused direct child matching `predicate`, in MRU order.
+    /// Falls back to the last matching child for children not in the MRU stack.
+    func mostRecentChild(where predicate: (TreeNode) -> Bool) -> TreeNode? {
+        _mruChildren.first(where: predicate) ?? children.last(where: predicate)
+    }
+
     @discardableResult
     func unbindFromParent() -> BindingData {
         unbindIfBound() ?? dieT("\(self) is already unbound. The stacktrace where it was unbound:\n\(unboundStacktrace ?? "nil")")

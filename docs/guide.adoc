@@ -613,6 +613,9 @@ AeroSpace bundles a port of https://github.com/sbmpost/AutoRaise[AutoRaise], so 
 * Only windows belonging to the currently-focused workspace are raised.
 Hovering a window that lives on a non-focused workspace (for example on another monitor) never switches workspace, matching i3 behavior.
 * Raises go through the same focus machinery as xref:./commands.adoc#focus[`focus`] command — the tree's most-recent-child pointer, monitor active-workspace state, and xref:#on-focus-changed-callbacks[`on-focus-changed`] callbacks stay consistent.
+* Floating windows are protected from being buried (`keep-floating-on-top`, on by default).
+Hovering a tiling window while a floating window is focused will not raise the tiling window over it, and switching to a workspace that has a floating window brings it to the foreground.
+See xref:#auto-raise-keep-floating-on-top[below].
 
 [#auto-raise-on-focus-changed-gotcha]
 [IMPORTANT]
@@ -637,6 +640,7 @@ Keep the callback cheap, or disable auto-raise for the workspaces / monitors whe
     ignore-titles           = []             # default: []. ICU regex applied to window title
     stay-focused-bundle-ids = []             # default: []. Application bundle IDs
     disable-key             = "control"      # default: "control". one of: control|option|disabled
+    keep-floating-on-top    = true           # default: true
 ----
 
 [cols="1,2"]
@@ -669,7 +673,26 @@ Keep the callback cheap, or disable auto-raise for the workspaces / monitors whe
 
 |`disable-key`
 |Modifier that temporarily disables hover-raise while held. One of `"control"`, `"option"`, or `"disabled"` (no disable modifier). Apple's `cmd` and `shift` are not available here because they're already overloaded by macOS.
+
+|`keep-floating-on-top`
+|Keep floating windows (dialogs, pickers, fixed-size popups) from getting buried. See xref:#auto-raise-keep-floating-on-top[below] for the two behaviors and their limits.
 |===
+
+[#auto-raise-keep-floating-on-top]
+=== Keep floating windows on top
+
+`keep-floating-on-top` (default `true`) stops floating windows from being buried under tiling windows. It has two effects:
+
+* **Hover doesn't bury a float.** While a floating window is focused, moving the cursor over a tiling window does not raise that tiling window over the float — the hover-raise is dropped, so the float stays focused and on top.
+* **Switching a workspace surfaces its float.** Switching to a workspace that has a floating window focuses the most-recently-used one, bringing it to the foreground (plain xref:./commands.adoc#focus[`focus`] onto a specific window is unaffected).
+
+[NOTE]
+====
+This is a *soft* behavior, deliberately not a true "always on top":
+
+* It is not modal. A real click, or focusing another window via keyboard / command, still moves focus off the float — only mouse *hover* is suppressed. Hovering from one floating window onto another is honored.
+* macOS does not let an app pin another app's window above the frontmost app without disabling SIP (System Integrity Protection) and injecting code into `Dock.app` (the approach yabai uses). AeroSpace never does this, so "on top" here means "kept focused", not a raised window level. A window from a background app that steals focus on its own (for example a newly launched app) can still come forward — this feature only governs mouse-hover raises and workspace switches.
+====
 
 [#auto-raise-commands]
 === Runtime toggle

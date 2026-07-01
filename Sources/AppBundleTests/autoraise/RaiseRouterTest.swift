@@ -50,4 +50,51 @@ final class RaiseRouterTest: XCTestCase {
         assertEquals(focus.workspace, workspaceA)
         assertEquals(focus.windowOrNil?.windowId, 1)
     }
+
+    // keep-floating-on-top: a hover-raise must not bury a focused floating
+    // window (id 1, direct child of the workspace) under a tiling window (id 2).
+    // The raise is simply dropped, so the float stays focused / on top.
+    func testKeepFloatingOnTopDropsHoverRaiseOfTilingWindow() {
+        let workspaceA = Workspace.get(byName: "a").apply {
+            _ = TestWindow.new(id: 1, parent: $0).focusWindow() // floating
+            TestWindow.new(id: 2, parent: $0.rootTilingContainer) // tiling
+        }
+        assertEquals(focus.windowOrNil?.windowId, 1)
+        assertEquals(focus.windowOrNil?.isFloating, true)
+
+        RaiseRouter.route(windowId: CGWindowID(2))
+
+        assertEquals(focus.workspace, workspaceA)
+        assertEquals(focus.windowOrNil?.windowId, 1)
+    }
+
+    // Hovering from one floating window onto another is still honored — only
+    // floating→tiling raises are suppressed.
+    func testKeepFloatingOnTopAllowsRaiseBetweenFloatingWindows() {
+        let workspaceA = Workspace.get(byName: "a").apply {
+            _ = TestWindow.new(id: 1, parent: $0).focusWindow() // floating
+            TestWindow.new(id: 2, parent: $0) // floating
+        }
+        assertEquals(focus.windowOrNil?.windowId, 1)
+
+        RaiseRouter.route(windowId: CGWindowID(2))
+
+        assertEquals(focus.workspace, workspaceA)
+        assertEquals(focus.windowOrNil?.windowId, 2)
+    }
+
+    // With the option off, a hover-raise buries the float, as it did before.
+    func testKeepFloatingOnTopDisabledAllowsBurial() {
+        config.autoRaise.keepFloatingOnTop = false
+        let workspaceA = Workspace.get(byName: "a").apply {
+            _ = TestWindow.new(id: 1, parent: $0).focusWindow() // floating
+            TestWindow.new(id: 2, parent: $0.rootTilingContainer) // tiling
+        }
+        assertEquals(focus.windowOrNil?.windowId, 1)
+
+        RaiseRouter.route(windowId: CGWindowID(2))
+
+        assertEquals(focus.workspace, workspaceA)
+        assertEquals(focus.windowOrNil?.windowId, 2)
+    }
 }
