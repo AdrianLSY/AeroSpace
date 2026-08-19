@@ -2,7 +2,7 @@ import AppKit
 import AutoRaiseCore
 import Common
 
-struct AutoRaiseConfig: ConvenienceCopyable, Equatable, Sendable {
+struct AutoRaiseConfig: ConvenienceMutable, Equatable, Sendable {
     var enabled: Bool = false
     var pollMillis: Int = 8
     var ignoreSpaceChanged: Bool = false
