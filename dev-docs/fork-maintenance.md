@@ -19,40 +19,29 @@ Verified against the v0.21.3 rebase (146 upstream commits, 16 conflicts).
 A file conflicts only when upstream also touches it, so treat this as
 "expect these, and check the rest merges clean" rather than a guarantee.
 
-**Swift integration points — the noisiest area, and the one that used to
-be documented as quiet.** The fork's Swift changes are *not* confined to
-its own directories: seven upstream-owned files carry a single fork hunk
-each, and upstream churns all seven.
+**The fork no longer patches any upstream Swift file.** Since AutoRaise was
+removed, `Sources/**` carries no fork delta at all, so no Swift conflict is
+expected. If one appears, something has drifted — investigate rather than
+resolving it by hand.
 
-| File | Fork hunk | Resolve by |
-|------|-----------|------------|
-| `Sources/AppBundle/command/impl/ReloadConfigCommand.swift` | `AutoRaiseController.reload(config:)` | Take upstream wholesale, re-insert the call next to `syncFocusFollowsMouse(config)` |
-| `Sources/AppBundle/config/Config.swift` | `var autoRaise: AutoRaiseConfig` | Take upstream, re-add the one field |
-| `Sources/AppBundle/config/parseConfig.swift` | `"auto-raise"` table entry; `parseArrayOfStrings` made non-`private`; both-enabled warning | Take upstream, drop `private`, re-apply |
-| `Sources/AppBundle/command/impl/EnableCommand.swift` | `pauseForMaster` / `resumeFromMaster` | Take upstream's calls, re-wrap |
-| `Sources/AppBundle/layout/refresh.swift` | `AutoRaiseController.onLayoutDidChange()` | Take upstream, re-site the hook under `if !event.isFocusFollowsMouse` |
-| `Sources/AppBundle/command/cmdManifest.swift` | Two `case` arms | Alphabetical adjacency — keep both sides |
-| `Sources/Common/cmdArgs/cmdArgsManifest.swift` | Enum cases + parser arms | Alphabetical adjacency — keep both sides |
-
-**A clean rebase does not mean a compiling tree.** Files that merge
-cleanly can still reference upstream symbols that were deleted. Budget a
-compile-fix pass; `Sources/AppBundle/config/parseAutoRaise.swift` in
-particular tracks the config-parser API and needed a full rewrite in
-v0.21.3.
+Historical note: up to `v0.21.3-Beta.adrianlsy.1` the fork carried seven
+single-hunk patches into upstream-owned Swift files, and they conflicted on
+essentially every rebase. That was the single largest maintenance cost and is
+now gone.
 
 **Generated files — never hand-merge.**
 
 | File | Resolve by |
 |------|------------|
-| `Sources/Common/cmdHelpGenerated.swift`, `Sources/Cli/subcommandDescriptionsGenerated.swift` | Take either side, then run bare `./generate.sh` and commit. `./test.sh` proves it via `script/check-uncommitted-files.sh`. **Not** `./build-debug.sh`, which passes `--ignore-cmd-help` |
+| `Sources/Common/cmdHelpGenerated.swift`, `Sources/Cli/subcommandDescriptionsGenerated.swift` | No longer expected to conflict (the fork adds no commands). If they do: take either side, run bare `./generate.sh`, commit. **Not** `./build-debug.sh`, which passes `--ignore-cmd-help` |
 
 **Docs and examples.**
 
 | File | Conflict type | Resolve by |
 |------|---------------|------------|
-| `README.md` | Prefix banner + Key-features reordering + Fork-install block | Keep fork header/banner; accept upstream edits to body; verify AutoRaise bullet is still at top of "Key features" |
+| `README.md` | Fork banner + docs-site URLs + Build-badge URL | Keep the fork banner and rebranding; accept upstream edits to the body |
 | `CONTRIBUTING.md` | Fork section prepended above `---` divider | Keep fork preamble; accept upstream edits below the divider |
-| `docs/guide.adoc` | Fork's `#auto-raise` section lands where upstream adds sections | Keep both sides |
+| `docs/guide.adoc` | One rebranded releases URL | Keep the fork's URL; accept upstream edits everywhere else |
 | `docs/commands.adoc` | Hand-maintained command index; both sides append | Alphabetical adjacency — keep both sides |
 | `grammar/commands-bnf-grammar.txt` | Hand-maintained (despite the name, **not** generated) | Alphabetical adjacency — keep both sides |
 | `docs/config-examples/*.toml` | Fork rebrands doc URLs to `adrianlsy.github.io` | Take upstream's structure, re-apply the URL rebrand. Rebrand any *new* upstream URLs too — these files ship inside the `.app` |
@@ -62,9 +51,11 @@ v0.21.3.
 
 `.github/ISSUE_TEMPLATE/fork-*.yml`, `upstream-redirect.md`,
 `.github/workflows/release-adrianlsy.yml`, `.github/workflows/pages.yml`,
-`script/publish-release-adrianlsy.sh`, `FORK.md`, `LICENSE-GPL`,
-`dev-docs/fork-maintenance.md`, `Sources/AutoRaiseCore/**`,
-`Sources/AppBundle/autoraise/**`, `Sources/AppBundleTests/autoraise/**`.
+`script/publish-release-adrianlsy.sh`, `FORK.md`,
+`dev-docs/fork-maintenance.md`, `CLAUDE.md`, `.claude/**`.
+
+(`CLAUDE.md` and `.claude/**` have no upstream equivalent, so they can never
+conflict — they used to be listed in the conflict table by mistake.)
 
 **Deletions to re-verify** (upstream still ships these; confirm they are
 still absent after each rebase):
@@ -84,10 +75,10 @@ a conflict, but do re-check: `script/build-brew-cask.sh`,
 
 Files that stay upstream-shaped — do not rebrand on rebase:
 
-- `docs/guide.adoc` — entire file except the AutoRaise section (which
-  lives at `#auto-raise`). Upstream owns the guide.
-- `docs/aerospace-*.adoc` command pages — except fork-specific ones
-  (`aerospace-enable-auto-raise.adoc`, `aerospace-disable-auto-raise.adoc`).
+- `docs/guide.adoc` — upstream owns the guide. The fork's only delta is the
+  rebranded releases URL.
+- `docs/aerospace-*.adoc` command pages — all upstream-owned; the fork adds
+  no commands.
 - `dev-docs/architecture.md`, `dev-docs/development.md` — upstream-owned.
   Note both carry **pre-existing upstream errors** that survive rebases
   and are not rebase damage: `development.md` lists a `swiftformat.sh`
@@ -218,9 +209,10 @@ No fixed schedule. Rebase when:
 
 After every rebase:
 
-1. Re-run `./test.sh` before cutting a fork release — upstream changes
-   can interact with AutoRaise (focus lifecycle, refresh session, command
-   dispatch, config parsing).
+1. Re-run `./test.sh` before cutting a fork release. Also run
+   `./build-docs.sh` and `./build-shell-completion.sh` — neither is covered
+   by `./test.sh`, so docs and completion breakage otherwise surfaces only at
+   release time.
 2. Skim `CLAUDE.md` for accuracy — upstream renames/moves of subsystems
    can stale fork-specific architecture notes.
 3. If upstream introduced a new file that overlaps with fork territory

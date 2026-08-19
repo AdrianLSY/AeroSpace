@@ -1,12 +1,12 @@
 name: Bug (fork-specific)
-description: A bug in AutoRaise, fork docs, or fork release tooling
+description: A bug in fork docs or fork release tooling
 labels: ["bug", "triage"]
 body:
   - type: markdown
     attributes:
       value: |
         Thanks for filing! This template is for bugs in **fork-specific**
-        features (AutoRaise, fork docs, fork release tooling), but we also
+        concerns (fork docs, fork release tooling), but we also
         accept reports for upstream AeroSpace behavior here.
 
         If a bug is clearly in upstream behavior (tiling, focus, multi-monitor,

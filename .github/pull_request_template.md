@@ -8,4 +8,3 @@
 - [ ] Each commit is atomic; commit messages explain what / why / how.
 - [ ] `./test.sh` exits 0.
 - [ ] No merge commits; rebase + force-push.
-- [ ] If touching `Sources/AutoRaiseCore/**`, contribution is licensed GPL-2.0-or-later (not MIT). The combined binary is already GPL-2.0-or-later.

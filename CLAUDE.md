@@ -6,11 +6,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 AeroSpace is an i3-like tiling window manager for macOS. This repo is the
 **AdrianLSY fork** of [nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace)
-that adds hover-to-raise (AutoRaise). Fork-specific code lives in
-`Sources/AutoRaiseCore/` (ObjC++, GPL-2.0-or-later) and
-`Sources/AppBundle/autoraise/` (Swift). Everything else mirrors upstream
-and is MIT; the combined binary ships under GPL-2.0-or-later because of
-the AutoRaise linkage.
+that ships its own builds, Homebrew tap, and docs site. There are **no
+functional differences from upstream** — the fork's delta is branding,
+CI/release tooling, and issue templates. Everything is MIT, mirroring
+upstream.
 
 See [FORK.md](FORK.md), [CONTRIBUTING.md](CONTRIBUTING.md), and
 [dev-docs/fork-maintenance.md](dev-docs/fork-maintenance.md) for fork
@@ -164,46 +163,8 @@ respect `--window-id` / `--workspace` / `AEROSPACE_WINDOW_ID` /
 `AEROSPACE_WORKSPACE` env first and fall back to the global only when
 none applies. Focus changes go through `setFocus(to:)` (updates the
 tree model) paired with `Window.nativeFocus()` (AX-side raise + app
-activate) — see `GlobalObserver`, `RaiseRouter`, and the end of
-`runLightSession` for how the pair is used consistently.
-
-### AutoRaise integration (fork-specific)
-
-The AutoRaise port has two layers:
-
-- **`Sources/AutoRaiseCore/`** (ObjC++, GPL-2.0-or-later). `AutoRaise.mm`
-  is the ported upstream; `AutoRaiseBridge.{h,mm}` is the C API the
-  Swift side calls. The ObjC++ globals in `AutoRaise.mm` are the
-  source of truth at runtime — the bridge writes config fields and
-  resets runtime-state fields on each start. The CGEventTap and
-  retry timers are pinned to the **main run loop** so raise routing
-  can stay synchronous.
-- **`Sources/AppBundle/autoraise/`** (Swift). `AutoRaiseController` is
-  a `@MainActor` singleton that reconciles four state sources:
-  1. `[auto-raise]` TOML section (startup + file-watcher reloads).
-  2. `enable-auto-raise` / `disable-auto-raise` CLI commands
-     (`runtimeDisabled` is **sticky across config reloads** — see
-     comments in `AutoRaiseController.swift`).
-  3. Master `enable on/off` via `pauseForMaster`/`resumeFromMaster`
-     (snapshots running state; *not* sticky).
-  4. NSWorkspace observer fan-out from `GlobalObserver` (active-space
-     / app-activated notifications).
-
-  `RaiseRouter.route(windowId:)` is the C→Swift callback:
-  resolve `CGWindowID` → `Window`, drop if target is on a non-focused
-  workspace, then call `focusWindow()` + `nativeFocus()`. Integration
-  points in the upstream codebase:
-  - `initAppBundle.swift` — boot-time start.
-  - `GlobalObserver.swift` — fan-out to `onActiveSpaceDidChange` /
-    `onAppDidActivate`.
-  - `EnableCommand.swift` — pause/resume on master toggle.
-  - `refresh.swift` — `onLayoutDidChange` hook at end of
-    `runLightSession`, used for the cursor-over-window hit test after
-    AeroSpace-driven layout changes.
-
-  The `AutoRaiseBridgeProtocol` seam exists so
-  `AutoRaiseControllerTest` can drive the state machine with
-  `FakeAutoRaiseBridge` without installing a real CGEventTap.
+activate) — see `GlobalObserver` and the end of `runLightSession` for
+how the pair is used consistently.
 
 ### Private API
 
@@ -231,9 +192,8 @@ them by hand:
   globals.
 - **Config reloads are hot.** `ConfigFileWatcher` + `reload-config`
   both call through the same parsing path in `parseConfig.swift`.
-  Preserve runtime toggle state when adding new config fields
-  (mirror the `AutoRaise` pattern: sticky flag on the controller,
-  not in config).
+  Preserve runtime toggle state when adding new config fields — keep a
+  sticky flag on the owning controller rather than in the config.
 - **`runLightSession` is single-flight.** It cancels any in-flight
   heavy refresh. If you add a code path that mutates the tree, route
   it through `runLightSession` or `refreshModel()` so the
@@ -243,6 +203,3 @@ them by hand:
   rebase is listed in
   [dev-docs/fork-maintenance.md](dev-docs/fork-maintenance.md#expected-conflict-set)
   — consult it before resolving conflicts yourself.
-- **Licensing split matters at file granularity.** Contributions to
-  `Sources/AutoRaiseCore/**` are GPL-2.0-or-later; everywhere else is
-  MIT. The PR template calls this out.

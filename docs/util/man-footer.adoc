@@ -5,17 +5,15 @@
 
 == BUGS
 
-Fork-specific bugs (AutoRaise, fork docs, release tooling) can be reported to https://github.com/AdrianLSY/AeroSpace/issues
+Fork-specific bugs (fork docs, release tooling) can be reported to https://github.com/AdrianLSY/AeroSpace/issues
 
 Upstream AeroSpace bugs can also be filed there, or at https://github.com/nikitabobko/AeroSpace/discussions/categories/potential-bugs
 
 == License
 
 Copyright (C) 2023 Nikita Bobko +
-Most source files are licensed under the MIT License. +
-`Sources/AutoRaiseCore/` is licensed under GPL-2.0-or-later. +
-The combined binary is distributed under GPL-2.0-or-later. +
-Full license texts and bundled dependency licenses are in the 'legal' directory of the distributed zip archive.
+Free use of this software is granted under the terms of the MIT License +
+You can find the full text of AeroSpace license and its dependencies in the 'legal' directory of the distributed zip archive.
 
 == AUTHOR
 

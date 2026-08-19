@@ -733,6 +733,19 @@ final class ConfigTest: XCTestCase {
         assertEquals(colemakResult.config.keyMapping, KeyMapping(preset: .colemak, rawKeyNotationToKeyCode: [:]))
         assertEquals(colemakResult.config.keyMapping.resolve()["f"], .e)
     }
+
+    // Re-homed from the deleted ParseAutoRaiseTest. Those tests only asserted the
+    // absence of the both-mechanisms-enabled warning; with AutoRaise gone, the
+    // assertion worth keeping is that upstream's focus-follows-mouse key parses.
+    func testFocusFollowsMouse() {
+        let enabled = parseConfig("focus-follows-mouse.enabled = true")
+        assertEquals(enabled.errors, [])
+        assertTrue(enabled.config.focusFollowsMouse.enabled)
+
+        let byDefault = parseConfig("")
+        assertEquals(byDefault.errors, [])
+        assertEquals(byDefault.config.focusFollowsMouse.enabled, false)
+    }
 }
 
 extension ParseConfigResult {
