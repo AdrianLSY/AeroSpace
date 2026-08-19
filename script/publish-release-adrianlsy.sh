@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Manual release fallback for AdrianLSY/AeroSpace.
 # Preferred path is the .github/workflows/release-adrianlsy.yml CI pipeline;
 # use this only when the pipeline is unavailable or needs local debugging.

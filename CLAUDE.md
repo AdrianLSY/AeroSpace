@@ -24,9 +24,13 @@ All scripts live at repo root; invoke them with `./name.sh`. They all
 `cd` to repo root and `source script/setup.sh`, which pins toolchains
 via `swiftly` when available.
 
+**Requires `bash` >= 5 on PATH** (`brew install bash`) — `script/setup.sh`
+aborts otherwise, and it nukes `PATH` down to `.deps/bin:/bin:/usr/bin`,
+so tools outside that set are invisible to every script.
+
 **Primary dev loop**
 - `./build-debug.sh` — SPM debug build into `.debug/`. Fast inner loop.
-  Skips xcodeproj/cmd-help/shell-parser regeneration by default.
+  Skips xcodeproj and cmd-help regeneration by default.
 - `./swift-test.sh` — `swift test` with pruned output. Add
   `--filter <TestCaseName>` or `--filter <TestCaseName>/<testMethod>`
   to target a single test (pass-through to `swift test`).
@@ -34,10 +38,13 @@ via `swiftly` when available.
   full test suite, CLI smoke tests, `./lint.sh`, `./generate.sh`, and a
   check that no generated files are uncommitted. Run this before
   opening a PR (required by `.github/pull_request_template.md`).
-- `./format.sh` — swiftformat + swiftlint `--fix`.
-- `./lint.sh [--check-uncommitted-files]` — format + periphery dead-code
-  scan. Note: periphery is skipped on macOS 14/15/26 (see comments
-  inside `lint.sh` for details — it can't run anywhere right now).
+- `./format.sh` — swiftformat only. Takes no options.
+- `./lint.sh` — format + a `Task.init` ban + swiftlint + periphery
+  dead-code scan. Takes no options. Note: periphery is skipped on macOS
+  14/15/26 (see comments inside `lint.sh` — it can't run anywhere right
+  now). swiftlint runs in check mode here, **not** `--fix`, so nothing
+  auto-fixes lint violations any more. The uncommitted-files check is now
+  a standalone `./script/check-uncommitted-files.sh`.
 - `./run-debug.sh [args]` — rebuild + launch `.debug/AeroSpaceApp`.
 - `./run-cli.sh [args]` — rebuild + invoke `.debug/aerospace` with
   forwarded args against the already-running server.
@@ -45,23 +52,31 @@ via `swiftly` when available.
 **Release / packaging**
 - `./build-release.sh` — Xcode-driven universal release build into
   `.release/`. Debug builds never use Xcode; release builds must.
-- `./install-from-sources.sh` — builds release + installs as
-  `aerospace-adrianlsy` Homebrew cask (fork-specific uninstall list;
-  do not rebrand on rebase).
+- `./install-from-sources.sh` — builds release + installs the
+  `aerospace-dev` cask locally. The fork's only change is adding
+  `aerospace-adrianlsy` to the pre-install uninstall list so the local
+  dev build wins; do not rebrand on rebase. The `aerospace-adrianlsy`
+  cask itself is produced only by `.github/workflows/release-adrianlsy.yml`
+  / `script/publish-release-adrianlsy.sh`.
 - `./build-docs.sh` / `./build-shell-completion.sh` — generate the
   docs site (`.site/`), man pages (`.man/`), and shell completions
   (`.shell-completion/`).
 
 **Code generation**
-- `./generate.sh` regenerates `AeroSpace.xcodeproj` and several Swift
-  source files. Regenerated outputs (named `*Generated.swift` in
+- `./generate.sh` regenerates `xcode/AeroSpace.xcodeproj` and several
+  Swift source files. Regenerated outputs (named `*Generated.swift` in
   `Sources/Common/` and `Sources/Cli/`) **must be committed** —
   `./test.sh` fails if they drift. Re-run after:
-  - editing `project.yml` (xcodeproj)
+  - editing `xcode/project.yml` (xcodeproj)
   - adding/removing/renaming `docs/aerospace-*.adoc` (subcommand
     descriptions in the CLI `--help`)
-  - editing shell grammar under `grammar/` (regenerate with
-    `./script/generate-shell-parser.sh`)
+
+  The shell parser is no longer generated. Upstream replaced the ANTLR
+  grammar with a hand-written lexer/parser at
+  `Sources/AppBundle/shell/shell{Lexer,Parser}.swift`; `grammar/` now
+  holds only the hand-maintained `commands-bnf-grammar.txt`, which feeds
+  shell-completion generation and must be edited by hand when adding a
+  command.
 - `swift-version` is pinned in `.swift-version`; `swiftly` in
   `script/setup.sh` enforces it.
 
@@ -83,8 +98,8 @@ server link them.
 
 Library code and the CLI build **purely via SPM** (`Package.swift`).
 SPM cannot produce a macOS App Bundle, so the App Bundle is built via
-Xcode against the generated `AeroSpace.xcodeproj` (generated from
-`project.yml` via `xcodegen`). Push as much code as possible into the
+Xcode against the generated `xcode/AeroSpace.xcodeproj` (generated from
+`xcode/project.yml` via `xcodegen`). Push as much code as possible into the
 SPM library (`Sources/AppBundle`) — the Xcode target is just a thin
 entry point. Open `Package.swift` in Xcode, not `.xcodeproj`, unless
 you're debugging the release build.
@@ -205,8 +220,7 @@ them by hand:
 - `Sources/Common/gitHashGenerated.swift`
 - `Sources/Common/cmdHelpGenerated.swift`
 - `Sources/Cli/subcommandDescriptionsGenerated.swift`
-- `AeroSpace.xcodeproj/` (regenerated from `project.yml`)
-- `ShellParserGenerated/Sources/**` (regenerated from `grammar/*.g4`)
+- `xcode/AeroSpace.xcodeproj/` (regenerated from `xcode/project.yml`)
 
 ## Conventions that will catch you out
 

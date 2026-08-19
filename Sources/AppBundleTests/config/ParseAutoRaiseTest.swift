@@ -84,6 +84,48 @@ final class ParseAutoRaiseTest: XCTestCase {
         XCTAssertTrue(result.strErrors[0].hasPrefix("[ERROR] auto-raise.ignore-titles[1]: Invalid regex '[unclosed': "))
     }
 
+    // Spec: hover-focus / "Hover-driven focus mechanisms are mutually exclusive".
+    // Upstream's focus-follows-mouse and the fork's [auto-raise] both focus the
+    // window under the pointer, so enabling both must warn (never hard-error, or a
+    // running config would break on upgrade).
+    private static let bothEnabledMarker = "Enable only one of them."
+
+    func testBothHoverMechanismsEnabledWarns() {
+        let result = parseConfig(
+            """
+            focus-follows-mouse.enabled = true
+            [auto-raise]
+                enabled = true
+            """,
+        )
+        assertEquals(result.errors, [])
+        assertTrue(result.allowReloadConfig)
+        assertEquals(result.strWarnings.count(where: { $0.contains(Self.bothEnabledMarker) }), 1)
+    }
+
+    func testOnlyAutoRaiseEnabledDoesNotWarn() {
+        let result = parseConfig(
+            """
+            [auto-raise]
+                enabled = true
+            """,
+        )
+        assertEquals(result.errors, [])
+        assertTrue(result.strWarnings.allSatisfy { !$0.contains(Self.bothEnabledMarker) })
+    }
+
+    func testOnlyFocusFollowsMouseEnabledDoesNotWarn() {
+        let result = parseConfig("focus-follows-mouse.enabled = true")
+        assertEquals(result.errors, [])
+        assertTrue(result.strWarnings.allSatisfy { !$0.contains(Self.bothEnabledMarker) })
+    }
+
+    func testNeitherHoverMechanismEnabledDoesNotWarn() {
+        let result = parseConfig("")
+        assertEquals(result.errors, [])
+        assertTrue(result.strWarnings.allSatisfy { !$0.contains(Self.bothEnabledMarker) })
+    }
+
     // Upstream AutoRaise warp-related keys (warpX/warpY/scale/altTaskSwitcher)
     // must be rejected — see spec "Upstream warp keys are rejected". Using an
     // integer value here so the parser surfaces the unknown-key error rather
