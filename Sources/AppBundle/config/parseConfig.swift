@@ -313,6 +313,29 @@ struct ParseConfigResult {
             "See https://nikitabobko.github.io/AeroSpace/guide#config-version for the migration guide."
         c.warnings.append(.init(.emptyRoot, msg))
     }
+    // Fork-specific: 'focus-follows-mouse' (upstream) and '[auto-raise]' (this fork)
+    // are separate TOML tables, so nothing at parse level stops a user from enabling
+    // both. Both resolve a window from the pointer and drive focus to it. A warning,
+    // not an error — the config still loads, matching how other diagnostics behave.
+    if config.focusFollowsMouse.enabled && config.autoRaise.enabled {
+        c.warnings.append(.init(
+            .emptyRoot,
+            """
+            Both 'focus-follows-mouse.enabled' and '[auto-raise] enabled' are set to true. \
+            Enable only one of them.
+
+            Both features focus the window under the mouse pointer, so enabling both duplicates \
+            the work and lets the two fight over focus.
+
+            - 'focus-follows-mouse' is upstream's built-in. It reacts to mouse movement only, and \
+            it can move focus across monitors.
+            - '[auto-raise]' is this fork's AutoRaise port. It adds a disable-key, ignore lists and \
+            re-evaluation after layout changes, but only ever raises windows on the focused workspace.
+
+            See https://adrianlsy.github.io/AeroSpace/guide#auto-raise
+            """,
+        ))
+    }
     return ParseConfigResult(config: config, errors: c.errors, warnings: c.warnings)
 }
 

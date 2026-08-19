@@ -807,6 +807,40 @@ These are two different behaviors that are easy to confuse:
 
 Both can be enabled simultaneously. When they are, the `move-mouse` fired from `on-focus-changed` does not re-trigger hover-raise — it resettles the cursor inside the already-focused window.
 
+[#auto-raise-vs-focus-follows-mouse]
+=== Auto raise vs. `focus-follows-mouse`
+
+AeroSpace ships two independent ways to focus the window under the pointer.
+`focus-follows-mouse` is upstream's built-in; `[auto-raise]` is this fork's port of AutoRaise.
+
+**Enable one or the other, not both.**
+Both resolve a window from the pointer position and drive focus to it, so enabling both duplicates the work and lets the two fight over focus.
+Setting `focus-follows-mouse.enabled = true` together with `[auto-raise] enabled = true` produces a config warning (the config still loads).
+
+[cols="1,1,1"]
+|===
+|  |`focus-follows-mouse` |`[auto-raise]`
+
+|Triggers on
+|Mouse movement only
+|Mouse movement, macOS Space changes, app activation, and AeroSpace-driven layout changes
+
+|Across monitors
+|Yes — focuses the window under the pointer on any monitor
+|**No** — only windows on the currently-focused workspace are raised, so hovering a window on another monitor does nothing
+
+|Configuration
+|One key: `enabled`
+|Nine keys, including `disable-key`, `ignore-apps`, `ignore-titles` and `poll-millis`
+
+|Runtime toggle
+|Config file + xref:./commands.adoc#reload-config[`reload-config`]
+|xref:./commands.adoc#enable-auto-raise[`enable-auto-raise`] / xref:./commands.adoc#disable-auto-raise[`disable-auto-raise`]
+|===
+
+The practical trade-off: `focus-follows-mouse` works across monitors but reacts only to physical mouse movement, so if the window under a stationary cursor changes (you switch workspace with a keybinding, or a window closes and the tiler reflows) focus does not follow until you move the mouse.
+`[auto-raise]` does re-evaluate in those cases and offers a disable modifier and ignore lists, but never crosses a workspace boundary.
+
 [#auto-raise-license]
 [NOTE]
 ====
