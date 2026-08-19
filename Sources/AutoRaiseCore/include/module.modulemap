@@ -1,4 +1,0 @@
-module AutoRaiseCore {
-  header "AutoRaiseBridge.h"
-  export *
-}

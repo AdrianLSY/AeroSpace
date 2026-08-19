@@ -1,8 +1,8 @@
 # Contributing to this fork
 
 This document applies to **AdrianLSY/AeroSpace**, a fork of
-[nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace) that adds
-AutoRaise hover-to-raise. Contribution rules for the fork differ from
+[nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace) that ships
+its own builds and docs site. Contribution rules for the fork differ from
 upstream — upstream's rules are reproduced below the divider (with minor
 annotations) for anyone wanting to upstream a change.
 
@@ -10,13 +10,8 @@ annotations) for anyone wanting to upstream a change.
 
 Fork-specific contributions are welcome for:
 
-- Bugs in the AutoRaise integration (`Sources/AutoRaiseCore/`,
-  `Sources/AppBundle/autoraise/`).
 - Fork-specific docs (this file, [FORK.md](./FORK.md),
-  [dev-docs/fork-maintenance.md](./dev-docs/fork-maintenance.md), the
-  `#auto-raise` section of [docs/guide.adoc](./docs/guide.adoc),
-  [docs/aerospace-enable-auto-raise.adoc](./docs/aerospace-enable-auto-raise.adoc),
-  [docs/aerospace-disable-auto-raise.adoc](./docs/aerospace-disable-auto-raise.adoc)).
+  [dev-docs/fork-maintenance.md](./dev-docs/fork-maintenance.md)).
 - Release tooling (`script/publish-release-adrianlsy.sh`,
   `.github/workflows/release-adrianlsy.yml`, `.github/workflows/pages.yml`).
 - Fork issue templates and the fork-specific parts of
@@ -44,16 +39,8 @@ issue template can help route you there. Either place works.
 
 ## Licensing
 
-- Contributions to `Sources/AutoRaiseCore/**` are
-  **GPL-2.0-or-later**, derived from
-  [sbmpost/AutoRaise](https://github.com/sbmpost/AutoRaise).
-- Contributions elsewhere in the fork are **MIT**, matching upstream.
-- The combined binary is **GPL-2.0-or-later** because of the
-  AutoRaiseCore linkage. See [LICENSE.txt](./LICENSE.txt) and
-  [LICENSE-GPL](./LICENSE-GPL).
-
-By contributing to a file, you agree to license your contribution under
-that file's existing license.
+The fork adds no licensing delta: everything is **MIT**, matching upstream.
+See [LICENSE.txt](./LICENSE.txt).
 
 ## Commit hygiene
 
@@ -119,7 +106,7 @@ There are 2 options:
 1. Send email patches to: `echo YWVyb3NwYWNlLXBhdGNoZXNAYm9ia28ueHl6Cg== | base64 --decode`
 2. Send GitHub PRs
 
-**License Agreement**. By contributing changes to this repository, you agree to license your contributions under the MIT license. (**Note:** this applies to upstream only. This fork's AutoRaiseCore code is GPL-2.0-or-later — see the [Licensing](#licensing) section above for the fork's terms.)
+**License Agreement**. By contributing changes to this repository, you agree to license your contributions under the MIT license.
 
 Maintainers can apply your patch with arbitrary modifications.
 

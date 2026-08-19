@@ -18,14 +18,10 @@ extension CmdArgs {
                 command = ConfigCommand(args: self as! ConfigCmdArgs)
             case .debugWindows:
                 command = DebugWindowsCommand(args: self as! DebugWindowsCmdArgs)
-            case .disableAutoRaise:
-                command = DisableAutoRaiseCommand(args: self as! DisableAutoRaiseCmdArgs)
             case .echo:
                 command = EchoCommand(args: self as! EchoCmdArgs)
             case .enable:
                 command = EnableCommand(args: self as! EnableCmdArgs)
-            case .enableAutoRaise:
-                command = EnableAutoRaiseCommand(args: self as! EnableAutoRaiseCmdArgs)
             case .eval:
                 command = EvalCommand(args: self as! EvalCmdArgs)
             case .execAndForget:

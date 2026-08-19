@@ -5,7 +5,7 @@
 AeroSpace is an i3-like tiling window manager for macOS
 
 **This is [my fork](https://github.com/AdrianLSY/AeroSpace)** of [nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace).
-It adds [hover-to-raise via AutoRaise](FORK.md#what-this-fork-adds).
+It ships its own Homebrew tap, docs site, and releases; behavior matches upstream ([what this fork is](FORK.md#what-this-fork-is)).
 See [FORK.md](FORK.md) for details and [dev-docs/fork-maintenance.md](dev-docs/fork-maintenance.md) for the rebase protocol.
 
 Videos:
@@ -19,7 +19,6 @@ Docs:
 
 ## Key features
 
-- **Hover-to-raise (AutoRaise)** _— fork-specific._ Focus follows your mouse cursor into any window on the currently-focused workspace. Port of [sbmpost/AutoRaise](https://github.com/sbmpost/AutoRaise), scoped to AeroSpace's existing focus machinery. See the [auto-raise guide](https://adrianlsy.github.io/AeroSpace/guide#auto-raise).
 - Tiling window manager based on a [tree paradigm](https://adrianlsy.github.io/AeroSpace/guide#tree)
 - [i3](https://i3wm.org/) inspired
 - Fast workspaces switching without animations and without the necessity to disable SIP
@@ -178,11 +177,3 @@ Source: [reddit](https://www.reddit.com/r/MacOS/comments/k6hiwk/keyboard_modifie
 - [Amethyst](https://github.com/ianyh/Amethyst) - tiling window manager à la xmonad
 - [InstantSpaceSwitcher](https://github.com/jurplel/InstantSpaceSwitcher) - Instant space switching by synthesizing trackpad gesture with an artificially high velocity
 - [yabai](https://github.com/koekeishiya/yabai) - a tiling window manager for macOS based on binary space partitioning
-
-## License
-
-AeroSpace sources are MIT-licensed ([LICENSE.txt](./LICENSE.txt)), with the
-exception of `Sources/AutoRaiseCore/` — ported from
-[AutoRaise](https://github.com/sbmpost/AutoRaise) and licensed under
-GPL-2.0-or-later. The combined AeroSpace binary is therefore distributed under
-GPL-2.0-or-later; see [LICENSE-GPL](./LICENSE-GPL) for the full text.
