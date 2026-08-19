@@ -5,7 +5,7 @@ struct DisableAutoRaiseCommand: Command {
     let args: DisableAutoRaiseCmdArgs
     /*conforms*/ let shouldResetClosedWindowsCache = false
 
-    func run(_ env: CmdEnv, _ io: CmdIo) async throws -> BinaryExitCode {
+    func run(_ env: CmdEnv, _ io: CmdIo) async -> BinaryExitCode {
         // True noop only when the bridge is already stopped AND the sticky
         // runtime-disabled flag is already set. If the bridge is off because
         // `config.enabled = false`, calling stop() still matters — it sets the
