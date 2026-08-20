@@ -17,6 +17,17 @@ context; [dev-docs/development.md](dev-docs/development.md) for env
 setup and tooling; [dev-docs/architecture.md](dev-docs/architecture.md)
 for the upstream architecture primer.
 
+`development.md` and `architecture.md` are **upstream-owned and
+byte-identical to upstream** — editing them would create a fork delta,
+so don't. Two known-stale spots to read past: `architecture.md`'s
+infrastructure overview still describes a `xcode-app-bundle-launcher/`
+directory and a root-level `AeroSpace.xcodeproj`/`project.yml` (really:
+entry point `Sources/AeroSpaceApp/AeroSpaceApp.swift`, project at
+`xcode/AeroSpace.xcodeproj` generated from `xcode/project.yml`), and
+`development.md`'s script list names a `swiftformat.sh` that is now
+`format.sh` while omitting `lint.sh` and `swift-test.sh`. Fix those
+upstream, not here.
+
 ## Commands
 
 All scripts live at repo root; invoke them with `./name.sh`. They all
@@ -30,9 +41,16 @@ so tools outside that set are invisible to every script.
 **Primary dev loop**
 - `./build-debug.sh` — SPM debug build into `.debug/`. Fast inner loop.
   Skips xcodeproj and cmd-help regeneration by default.
-- `./swift-test.sh` — `swift test` with pruned output. Add
-  `--filter <TestCaseName>` or `--filter <TestCaseName>/<testMethod>`
-  to target a single test (pass-through to `swift test`).
+- `./swift-test.sh` — `swift test` with pruned output. **Takes no
+  arguments.** Line 5 invokes bare `swift test` with no `"$@"`, so
+  anything you pass — `--filter` included — is silently dropped and the
+  whole suite runs. To target a single test, bypass the script:
+  `swift test --filter <TestCaseName>[/<testMethod>]`, prefixed with
+  `swiftly run` when `swiftly` is installed so the pinned toolchain is
+  used — `script/setup.sh` does the same and warns when it falls back to
+  whatever `swift` is on PATH. The script is upstream-owned and
+  byte-identical to upstream, so don't add `"$@"` forwarding here — that
+  belongs in an upstream PR.
 - `./test.sh` — CI-equivalent: debug build with warnings-as-errors,
   full test suite, CLI smoke tests, `./lint.sh`, `./generate.sh`, and a
   check that no generated files are uncommitted. Run this before
@@ -41,9 +59,16 @@ so tools outside that set are invisible to every script.
 - `./lint.sh` — format + a `Task.init` ban + swiftlint + periphery
   dead-code scan. Takes no options. Note: periphery is skipped on macOS
   14/15/26 (see comments inside `lint.sh` — it can't run anywhere right
-  now). swiftlint runs in check mode here, **not** `--fix`, so nothing
-  auto-fixes lint violations any more. The uncommitted-files check is now
-  a standalone `./script/check-uncommitted-files.sh`.
+  now). The macOS 15/26 branch is the fork's only delta in this file and
+  its stated cause is stale: the comment blames `AutoRaiseCore` (ObjC++),
+  which `d42555f6` deleted — `lint.sh` is now the only remaining mention
+  of it in the repo. The skip was left in place deliberately, because
+  removing it re-arms `periphery scan --strict` inside `./test.sh` for
+  the first time in the fork's history and may surface unrelated dead
+  code; see that commit's message. swiftlint runs in check mode here,
+  **not** `--fix`, so nothing auto-fixes lint violations any more. The
+  uncommitted-files check is now a standalone
+  `./script/check-uncommitted-files.sh`.
 - `./run-debug.sh [args]` — rebuild + launch `.debug/AeroSpaceApp`.
 - `./run-cli.sh [args]` — rebuild + invoke `.debug/aerospace` with
   forwarded args against the already-running server.
@@ -151,9 +176,14 @@ in `refresh.swift`).
 - `Workspace`, `TilingContainer`, `Window` / `MacWindow` — concrete
   nodes. `Window.get(byId:)` has a unit-test branch that walks
   workspaces instead of `MacWindow.allWindowsMap`.
-- `MacosUnconventionalWindowsContainer` holds fullscreen/minimized/
-  hidden-app windows off the main tree; `normalizeLayoutReason.swift`
-  shuttles windows in and out based on macOS state.
+- `tree/MacosUnconventionalWindowsContainer.swift` declares no type of
+  that name — it holds four sibling containers,
+  `MacosFullscreenWindowsContainer`, `MacosHiddenAppsWindowsContainer`,
+  `MacosMinimizedWindowsContainer`, and `MacosPopupWindowsContainer`,
+  which keep fullscreen / hidden-app / minimized / popup windows off the
+  main tree. `Sources/AppBundle/normalizeLayoutReason.swift` (one level
+  up, **not** under `tree/`) shuttles windows in and out based on macOS
+  state.
 
 ### Focus
 
