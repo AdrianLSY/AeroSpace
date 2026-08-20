@@ -7,6 +7,15 @@ outcome: "useful"
 source_nodes: ["Common", "server.swift", "_main.swift", "parseCommand.swift"]
 ---
 
+> **ERRATA — 2026-08-20.** This memo is a dated snapshot; its findings were true at
+> commit `d42555f6`, the tree the graph was built from. The graph has since been
+> re-mapped to `be847df0` and the claims below were re-verified against it.
+>
+> **Count superseded.** #6 added `Sources/AppBundleTests/CompletionGrammarTest.swift`, whose
+> line 2 is `@testable import Common`. The test-file count is now **46**, not 45, for a total of
+> **159** import edges, not 158; "grep count matches exactly" no longer holds. AppBundle (111)
+> and Cli (2) are unchanged.
+
 # Q: Why does Common connect Command Framework Imports to 57 other communities?
 
 ## Answer

@@ -7,6 +7,22 @@ outcome: "useful"
 source_nodes: ["CLAUDE.md Project Guidance", "swift-test.sh", "architecture.md", "development.md", "lint.sh"]
 ---
 
+> **ERRATA — 2026-08-20.** This memo is a dated snapshot; its findings were true at
+> commit `d42555f6`, the tree the graph was built from. The graph has since been
+> re-mapped to `be847df0` and the claims below were re-verified against it.
+>
+> **Two of six findings are CLOSED; four remain actionable.**
+>
+> - Finding (1) `swift-test.sh --filter` — closed by #4 (`95a4f91f`). The script is unchanged
+>   (line 5 still runs bare `swift test`), but `CLAUDE.md:45-56` now documents that limitation
+>   instead of promising pass-through, so there is no doc-vs-code contradiction left.
+> - Finding (5) `MacosUnconventionalWindowsContainer` / `normalizeLayoutReason.swift` — closed
+>   by #4. `CLAUDE.md:180-187` now states the file declares no type of that name, lists the four
+>   sibling containers, and places `normalizeLayoutReason.swift` one level up from `tree/`.
+>
+> The opening tally "all 6 actionable findings" and "11/15 sampled claims HOLD" are therefore
+> both superseded.
+
 # Q: Docs-vs-code drift audit: which CLAUDE.md / dev-docs claims still hold?
 
 ## Answer

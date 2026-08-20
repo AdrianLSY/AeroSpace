@@ -7,6 +7,15 @@ outcome: "useful"
 source_nodes: ["TreeNode", "moveWithMouse.swift", "resizeWithMouse.swift", "onFocusChanged()", "KnownBundleId", "RunLoopJob", "MacApp"]
 ---
 
+> **ERRATA — 2026-08-20.** This memo is a dated snapshot; its findings were true at
+> commit `d42555f6`, the tree the graph was built from. The graph has since been
+> re-mapped to `be847df0` and the claims below were re-verified against it.
+>
+> **Citation was already off by one — not caused by #3–#6.** `config.onFocusChanged.run` is at
+> `Sources/AppBundle/focus.swift:170`, not `:171` (line 171 is the closing brace of
+> `onFocusChanged(_:_:_:)`, which spans 165-171). `focus.swift` is byte-identical between
+> `d42555f6` and `be847df0`. The two companion citations in the same sentence are exact.
+
 # Q: Subsystem coupling map: how do AeroSpace subsystems actually depend on each other beyond imports?
 
 ## Answer

@@ -5,8 +5,24 @@
       "input_tokens": 829560,
       "output_tokens": 38130,
       "files": 366
+    },
+    {
+      "date": "2026-08-20T12:07:00+00:00",
+      "input_tokens": 247501,
+      "output_tokens": 0,
+      "files": 27,
+      "mode": "update",
+      "note": "incremental re-extract to be847df0; harness reports a combined per-agent token total, recorded here as input"
+    },
+    {
+      "date": "2026-08-20T12:20:00+00:00",
+      "input_tokens": 107671,
+      "output_tokens": 0,
+      "files": 9,
+      "mode": "update",
+      "note": "re-ingest of memos amended with 2026-08-20 errata"
     }
   ],
-  "total_input_tokens": 829560,
+  "total_input_tokens": 1184732,
   "total_output_tokens": 38130
 }

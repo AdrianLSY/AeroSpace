@@ -7,6 +7,17 @@ outcome: "useful"
 source_nodes: ["assertEquals()", "assert.swift", "ConfigTest", "LayoutCommandTest"]
 ---
 
+> **ERRATA — 2026-08-20.** This memo is a dated snapshot; its findings were true at
+> commit `d42555f6`, the tree the graph was built from. The graph has since been
+> re-mapped to `be847df0` and the claims below were re-verified against it.
+>
+> **Count superseded.** There are now **283** distinct test methods calling `assertEquals`,
+> not 281. #5 added `testDeprecatedAliasIsValidatedLikeTheCanonicalName()`
+> (`MoveWorkspaceToMonitorCommandTest.swift:14`) and #6 added
+> `testNotHelpDoesNotLeakTestUsage()` (`TestCommandTest.swift:35`), each in a file that already
+> had callers. The edge-correctness verdict (all edges correct, sole declaration at
+> `assert.swift:34`) is unaffected.
+
 # Q: Are the 281 inferred relationships involving assertEquals() actually correct?
 
 ## Answer
