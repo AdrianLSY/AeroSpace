@@ -13,7 +13,11 @@ public struct TestNotCmdArgs: CmdArgs {
 }
 
 func parseTestNotCmdArgs(_ args: StrArrSlice) -> ParsedCmd<TestNotCmdArgs> {
-    parseSpecificCmdArgs(TestCmdArgs(rawArgs: args), args).map {
-        TestNotCmdArgs(rawArgs: args).copy(\.testArgs, $0)
+    // test-not borrows TestCmdArgs to parse its operands, so parseSpecificCmdArgs
+    // sees T == TestCmdArgs and would answer -h/--help with test's usage.
+    return switch parseSpecificCmdArgs(TestCmdArgs(rawArgs: args), args) {
+        case .cmd(let testArgs): .cmd(TestNotCmdArgs(rawArgs: args).copy(\.testArgs, testArgs))
+        case .help: .help(TestNotCmdArgs.info.help)
+        case .failure(let failure): .failure(failure)
     }
 }
