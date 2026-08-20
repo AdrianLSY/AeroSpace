@@ -1,0 +1,1142 @@
+{
+  "generated_at": "2026-08-20T06:27:47.663990+00:00",
+  "nodes": {
+    "_github_workflows_pages_build": {
+      "code_fingerprint": "47dfef5688789a17873cabec49b83e044cbe1aab59212a113fe4a59d56c93787",
+      "label": "Pages Workflow: build Job",
+      "last": "2026-08-20T06:21:50.624555+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.624555+00:00",
+          "outcome": "useful",
+          "q": "How does the fork release pipeline work end to end, and where are the rebase risks?"
+        }
+      ],
+      "score": 0.999904526,
+      "source_file": ".github/workflows/pages.yml",
+      "status": "tentative",
+      "uses": 1
+    },
+    "_github_workflows_release_adrianlsy_release": {
+      "code_fingerprint": "80e4425ed9f989e42e36b4f1087e249a4d6786fcdf11ce210750166231f5ca32",
+      "label": "release-adrianlsy Release Job",
+      "last": "2026-08-20T06:21:50.624555+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.624555+00:00",
+          "outcome": "useful",
+          "q": "How does the fork release pipeline work end to end, and where are the rebase risks?"
+        }
+      ],
+      "score": 0.999904526,
+      "source_file": ".github/workflows/release-adrianlsy.yml",
+      "status": "tentative",
+      "uses": 1
+    },
+    "claude_project_guidance": {
+      "code_fingerprint": "64115bb653c8e2f3059d98f71004fe2384658a976cdb9b77b958f259b23e217b",
+      "label": "CLAUDE.md Project Guidance",
+      "last": "2026-08-20T00:42:41.118612+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.118612+00:00",
+          "outcome": "useful",
+          "q": "Docs-vs-code drift audit: which CLAUDE.md / dev-docs claims still hold?"
+        }
+      ],
+      "score": 0.994478002,
+      "source_file": "CLAUDE.md",
+      "status": "tentative",
+      "uses": 1
+    },
+    "common": {
+      "code_fingerprint": "1ac343067179c7082b2d22f448a222d899ff2403d9ccc0a082ad1e63e62461fb",
+      "label": "Common",
+      "last": "2026-08-20T00:14:33.236991+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.236991+00:00",
+          "outcome": "useful",
+          "q": "Why does Common connect Command Framework Imports to 57 other communities?"
+        }
+      ],
+      "score": 0.994029226,
+      "source_file": "Sources/Cli/cliUtil.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "github_gh_actions_runner_xcode_select_sh__entry": {
+      "code_fingerprint": "d15f9fdc4c115c3ec875c872cee3791dc5e800f5f5596c7f3b67cddf92b0641c",
+      "label": "gh-actions-runner-xcode-select.sh script",
+      "last": "2026-08-20T00:14:33.434166+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.434166+00:00",
+          "outcome": "useful",
+          "q": "What connects the 631 weakly-connected nodes (gh-actions-runner-xcode-select.sh, PackageDescription, .asMap) to the rest of the system?"
+        }
+      ],
+      "score": 0.994029278,
+      "source_file": ".github/gh-actions-runner-xcode-select.sh",
+      "status": "tentative",
+      "uses": 1
+    },
+    "install_from_sources": {
+      "code_fingerprint": "864dd120c76a4152cd475a34f6fa0e10dfa75607e46b5455e5fd29a4ffb0ea6f",
+      "label": "install-from-sources.sh",
+      "last": "2026-08-20T06:21:50.624555+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.624555+00:00",
+          "outcome": "useful",
+          "q": "How does the fork release pipeline work end to end, and where are the rebase risks?"
+        }
+      ],
+      "score": 0.999904526,
+      "source_file": "install-from-sources.sh",
+      "status": "tentative",
+      "uses": 1
+    },
+    "legal_readme_bundled_dependencies": {
+      "code_fingerprint": "5ec7be5ad017c78c06813ec13b2de2c631cebf2aaf4f7747320fbcac5eb6a768",
+      "label": "Bundled Dependencies License Index",
+      "last": "2026-08-20T00:14:33.189234+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.189234+00:00",
+          "outcome": "useful",
+          "q": "What is the exact relationship between Bundled Dependencies License Index and tomlplusplus MIT License?"
+        }
+      ],
+      "score": 0.994029213,
+      "source_file": "legal/README.md",
+      "status": "tentative",
+      "uses": 1
+    },
+    "legal_third_party_license_license_tomlplusplus_mit": {
+      "code_fingerprint": "529bc3900a9571e49db285b0df432397e70b881cc3bf48de6667ae74ff4b06d8",
+      "label": "tomlplusplus MIT License (Mark Gillard)",
+      "last": "2026-08-20T00:14:33.189234+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.189234+00:00",
+          "outcome": "useful",
+          "q": "What is the exact relationship between Bundled Dependencies License Index and tomlplusplus MIT License?"
+        }
+      ],
+      "score": 0.994029213,
+      "source_file": "legal/third-party-license/LICENSE-tomlplusplus.txt",
+      "status": "tentative",
+      "uses": 1
+    },
+    "lint": {
+      "code_fingerprint": "1f909c4f507332a8897b1360f0b9df2e032dd9c4630bfe00efd6abd9aa6af7a9",
+      "label": "lint.sh",
+      "last": "2026-08-20T00:42:41.118612+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.118612+00:00",
+          "outcome": "useful",
+          "q": "Docs-vs-code drift audit: which CLAUDE.md / dev-docs claims still hold?"
+        }
+      ],
+      "score": 0.994478002,
+      "source_file": "lint.sh",
+      "status": "tentative",
+      "uses": 1
+    },
+    "packagedescription": {
+      "code_fingerprint": "6466a3de6b03a7f9499cc6ad528be037cd42ee688a16c00bd96a3fa208099b1e",
+      "label": "PackageDescription",
+      "last": "2026-08-20T00:14:33.434166+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.434166+00:00",
+          "outcome": "useful",
+          "q": "What connects the 631 weakly-connected nodes (gh-actions-runner-xcode-select.sh, PackageDescription, .asMap) to the rest of the system?"
+        }
+      ],
+      "score": 0.994029278,
+      "source_file": "Package.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "script_build_brew_cask": {
+      "code_fingerprint": "396b1587496afaad110f73de930f2feba0b0639aae8496acb56401ce6c18e42e",
+      "label": "build-brew-cask.sh",
+      "last": "2026-08-20T06:21:50.624555+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.624555+00:00",
+          "outcome": "useful",
+          "q": "How does the fork release pipeline work end to end, and where are the rebase risks?"
+        }
+      ],
+      "score": 0.999904526,
+      "source_file": "script/build-brew-cask.sh",
+      "status": "tentative",
+      "uses": 1
+    },
+    "script_publish_release_adrianlsy": {
+      "code_fingerprint": "15cc5d9424a8032be2f3fc4507a9fbe52b3d4ae39881c5be7a7028718b7c15af",
+      "label": "publish-release-adrianlsy.sh",
+      "last": "2026-08-20T06:21:50.624555+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.624555+00:00",
+          "outcome": "useful",
+          "q": "How does the fork release pipeline work end to end, and where are the rebase risks?"
+        }
+      ],
+      "score": 0.999904526,
+      "source_file": "script/publish-release-adrianlsy.sh",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_command_cmdenv_cmdenv_asmap": {
+      "code_fingerprint": "5a4edc0ae7301ff70a63d1b4cb9eb628410326bb237c47feb3f07e769d7f13ae",
+      "label": ".asMap",
+      "last": "2026-08-20T00:14:33.434166+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.434166+00:00",
+          "outcome": "useful",
+          "q": "What connects the 631 weakly-connected nodes (gh-actions-runner-xcode-select.sh, PackageDescription, .asMap) to the rest of the system?"
+        }
+      ],
+      "score": 0.994029278,
+      "source_file": "Sources/AppBundle/command/CmdEnv.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_command_cmdmanifest": {
+      "code_fingerprint": "bd43de3f6eb9ff3708dad90fb1a6ac795210b059afc571c6ebd9ea7e7614e9e5",
+      "label": "cmdManifest.swift",
+      "last": "2026-08-20T06:21:50.673345+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.673345+00:00",
+          "outcome": "useful",
+          "q": "Why does CmdArgs bridge 34 communities, and what does it add beyond the Command bridge?"
+        }
+      ],
+      "score": 0.999904539,
+      "source_file": "Sources/AppBundle/command/cmdManifest.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_command_command_command": {
+      "code_fingerprint": "d0f83c7fecc770754b883cd7478927d0b5bc8b86ecb99ec2ea8622ac485276ac",
+      "label": "Command",
+      "last": "2026-08-20T06:21:50.673345+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.673345+00:00",
+          "outcome": "useful",
+          "q": "Why does CmdArgs bridge 34 communities, and what does it add beyond the Command bridge?"
+        },
+        {
+          "date": "2026-08-20T00:42:41.265150+00:00",
+          "outcome": "useful",
+          "q": "Group structures: hyperedges, protocol conformance patterns, distributed class bodies"
+        },
+        {
+          "date": "2026-08-20T00:14:33.285658+00:00",
+          "outcome": "useful",
+          "q": "Why does Command connect Command Execution Core to 20 other communities?"
+        }
+      ],
+      "score": 2.988411818,
+      "source_file": "Sources/AppBundle/command/Command.swift",
+      "status": "preferred",
+      "uses": 3
+    },
+    "sources_appbundle_command_impl_evalcommand_evalcommand": {
+      "code_fingerprint": "f780828b746ba99cf2da437ab6e058cdf52c6f8ce0b875843be4d479e84bb523",
+      "label": "EvalCommand",
+      "last": "2026-08-20T00:14:33.383813+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.383813+00:00",
+          "outcome": "useful",
+          "q": "Are the 220 inferred relationships involving parseCommand() actually correct?"
+        }
+      ],
+      "score": 0.994029265,
+      "source_file": "Sources/AppBundle/command/impl/EvalCommand.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_command_impl_focuscommand_focuscommand": {
+      "code_fingerprint": "d10252ca05309e420daec619be59523ad3b36e26ec9c90590a5b50be0226d643",
+      "label": "FocusCommand",
+      "last": "2026-08-20T00:14:33.285658+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.285658+00:00",
+          "outcome": "useful",
+          "q": "Why does Command connect Command Execution Core to 20 other communities?"
+        }
+      ],
+      "score": 0.994029239,
+      "source_file": "Sources/AppBundle/command/impl/FocusCommand.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_command_impl_focuscommand_treenode_findleafwindowrecursive": {
+      "code_fingerprint": "d10252ca05309e420daec619be59523ad3b36e26ec9c90590a5b50be0226d643",
+      "label": ".findLeafWindowRecursive()",
+      "last": "2026-08-19T13:51:28.764689+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-19T13:51:28.764689+00:00",
+          "outcome": "useful",
+          "q": "Why does TreeNode connect TreeNode Base Class to 17 communities (Refresh Session Engine, Frozen Tree Snapshots, Recursive Layout Engine, ...)?"
+        }
+      ],
+      "score": 0.98414115,
+      "source_file": "Sources/AppBundle/command/impl/FocusCommand.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_command_impl_movecommand_movecommand": {
+      "code_fingerprint": "5fb436d9963c45bd12e131f1405316b38e6cacb6443a8df5b85c5072a938c963",
+      "label": "MoveCommand",
+      "last": "2026-08-20T06:10:48.419571+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:10:48.419571+00:00",
+          "outcome": "useful",
+          "q": "How does the AX-threading backbone work (MacApp + RunLoopJob): scheduler, per-app wrapper, end-to-end command path, inbound events?"
+        },
+        {
+          "date": "2026-08-20T00:14:33.285658+00:00",
+          "outcome": "useful",
+          "q": "Why does Command connect Command Execution Core to 20 other communities?"
+        }
+      ],
+      "score": 1.993756712,
+      "source_file": "Sources/AppBundle/command/impl/MoveCommand.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_appbundle_command_parsecommand": {
+      "code_fingerprint": "305bb4d91a8f240426d95581004262110a0e313fcc4ef62fa5b42d5d45c9e3c8",
+      "label": "parseCommand.swift",
+      "last": "2026-08-20T00:14:33.236991+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.236991+00:00",
+          "outcome": "useful",
+          "q": "Why does Common connect Command Framework Imports to 57 other communities?"
+        }
+      ],
+      "score": 0.994029226,
+      "source_file": "Sources/AppBundle/command/parseCommand.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_config_config_config": {
+      "code_fingerprint": "2a00c14fa91a0937125f9d5212e1a4403be4d43f05f9e79c251643228898875d",
+      "label": "Config",
+      "last": "2026-08-20T00:14:33.285658+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.285658+00:00",
+          "outcome": "useful",
+          "q": "Why does Command connect Command Execution Core to 20 other communities?"
+        }
+      ],
+      "score": 0.994029239,
+      "source_file": "Sources/AppBundle/config/Config.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_config_hotkeybinding_hotkeybinding": {
+      "code_fingerprint": "da49c8d12afcf72ee407bf571ed66e4cbfd79c021b52f7f16b94f9560185440d",
+      "label": "HotkeyBinding",
+      "last": "2026-08-20T00:14:33.285658+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.285658+00:00",
+          "outcome": "useful",
+          "q": "Why does Command connect Command Execution Core to 20 other communities?"
+        }
+      ],
+      "score": 0.994029239,
+      "source_file": "Sources/AppBundle/config/HotkeyBinding.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_focus_onfocuschanged": {
+      "code_fingerprint": "960066dd492ac5808e7ba02d7be07e2ea11747528771f8e421d59184196d78a3",
+      "label": "onFocusChanged()",
+      "last": "2026-08-20T00:42:41.070672+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.070672+00:00",
+          "outcome": "useful",
+          "q": "Subsystem coupling map: how do AeroSpace subsystems actually depend on each other beyond imports?"
+        }
+      ],
+      "score": 0.994477989,
+      "source_file": "Sources/AppBundle/focus.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_globalobserver": {
+      "code_fingerprint": "67bba5c61281d850f1a7d5ad831121418c554d4efe0943b6ebe3e69d9180e125",
+      "label": "GlobalObserver.swift",
+      "last": "2026-08-20T06:10:48.419571+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:10:48.419571+00:00",
+          "outcome": "useful",
+          "q": "How does the AX-threading backbone work (MacApp + RunLoopJob): scheduler, per-app wrapper, end-to-end command path, inbound events?"
+        },
+        {
+          "date": "2026-08-20T00:42:41.215236+00:00",
+          "outcome": "useful",
+          "q": "Refresh-session invariant: do all tree mutations route through runLightSession/refreshModel?"
+        }
+      ],
+      "score": 1.9942055,
+      "source_file": "Sources/AppBundle/GlobalObserver.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_appbundle_initappbundle": {
+      "code_fingerprint": "913a991f5f018c8425c3aa62e958e600f5c4d666ee1feaa25451c836216b41af",
+      "label": "initAppBundle.swift",
+      "last": "2026-08-20T00:42:41.215236+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.215236+00:00",
+          "outcome": "useful",
+          "q": "Refresh-session invariant: do all tree mutations route through runLightSession/refreshModel?"
+        }
+      ],
+      "score": 0.994478028,
+      "source_file": "Sources/AppBundle/initAppBundle.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_layout_layoutrecursive_treenode_layoutrecursive": {
+      "code_fingerprint": "97c0fcffd5b9af8b0f9d6fd562adbc0d75621400c7333419a506918d0e61a4fe",
+      "label": ".layoutRecursive()",
+      "last": "2026-08-20T06:10:48.419571+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:10:48.419571+00:00",
+          "outcome": "useful",
+          "q": "How does the AX-threading backbone work (MacApp + RunLoopJob): scheduler, per-app wrapper, end-to-end command path, inbound events?"
+        },
+        {
+          "date": "2026-08-19T13:51:28.764689+00:00",
+          "outcome": "useful",
+          "q": "Why does TreeNode connect TreeNode Base Class to 17 communities (Refresh Session Engine, Frozen Tree Snapshots, Recursive Layout Engine, ...)?"
+        }
+      ],
+      "score": 1.983868623,
+      "source_file": "Sources/AppBundle/layout/layoutRecursive.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_appbundle_layout_refresh": {
+      "code_fingerprint": "4a7e04a2a5cdd018356266f0044cf72e7f61cdaf13610624be76f357e4005269",
+      "label": "refresh.swift",
+      "last": "2026-08-20T00:42:41.215236+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.215236+00:00",
+          "outcome": "useful",
+          "q": "Refresh-session invariant: do all tree mutations route through runLightSession/refreshModel?"
+        }
+      ],
+      "score": 0.994478028,
+      "source_file": "Sources/AppBundle/layout/refresh.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_layout_refresh_runheavycompleterefreshsession": {
+      "code_fingerprint": "4a7e04a2a5cdd018356266f0044cf72e7f61cdaf13610624be76f357e4005269",
+      "label": "runHeavyCompleteRefreshSession()",
+      "last": "2026-08-20T00:42:41.215236+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.215236+00:00",
+          "outcome": "useful",
+          "q": "Refresh-session invariant: do all tree mutations route through runLightSession/refreshModel?"
+        }
+      ],
+      "score": 0.994478028,
+      "source_file": "Sources/AppBundle/layout/refresh.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_layout_refresh_runlightsession": {
+      "code_fingerprint": "4a7e04a2a5cdd018356266f0044cf72e7f61cdaf13610624be76f357e4005269",
+      "label": "runLightSession()",
+      "last": "2026-08-20T06:10:48.419571+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:10:48.419571+00:00",
+          "outcome": "useful",
+          "q": "How does the AX-threading backbone work (MacApp + RunLoopJob): scheduler, per-app wrapper, end-to-end command path, inbound events?"
+        },
+        {
+          "date": "2026-08-20T00:42:41.215236+00:00",
+          "outcome": "useful",
+          "q": "Refresh-session invariant: do all tree mutations route through runLightSession/refreshModel?"
+        }
+      ],
+      "score": 1.9942055,
+      "source_file": "Sources/AppBundle/layout/refresh.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_appbundle_model_axuielementwindowtype_axuielementwindowtype": {
+      "code_fingerprint": "1744a2720a18495a77f49c33c30ac2ac698a4f99e3775598cfe6510ced5c5261",
+      "label": "AxUiElementWindowType",
+      "last": "2026-08-20T06:21:50.575677+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.575677+00:00",
+          "outcome": "useful",
+          "q": "How does the KnownBundleId app compatibility table drive window classification?"
+        }
+      ],
+      "score": 0.999904513,
+      "source_file": "Sources/AppBundle/model/AxUiElementWindowType.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_model_knownbundleid_knownbundleid": {
+      "code_fingerprint": "0770d7e461ca6e1b802deee8d1816dbcb8d28c65fcc126602a06ba23616c1546",
+      "label": "KnownBundleId",
+      "last": "2026-08-20T06:21:50.575677+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.575677+00:00",
+          "outcome": "useful",
+          "q": "How does the KnownBundleId app compatibility table drive window classification?"
+        },
+        {
+          "date": "2026-08-20T00:42:41.070672+00:00",
+          "outcome": "useful",
+          "q": "Subsystem coupling map: how do AeroSpace subsystems actually depend on each other beyond imports?"
+        }
+      ],
+      "score": 1.994382502,
+      "source_file": "Sources/AppBundle/model/KnownBundleId.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_appbundle_model_rect_rect": {
+      "code_fingerprint": "8f262490d4f697b61c3dfb71f7037eddb49649816827ff89f9089660bf4def8a",
+      "label": "Rect",
+      "last": "2026-08-19T13:51:28.764689+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-19T13:51:28.764689+00:00",
+          "outcome": "useful",
+          "q": "Why does TreeNode connect TreeNode Base Class to 17 communities (Refresh Session Engine, Frozen Tree Snapshots, Recursive Layout Engine, ...)?"
+        }
+      ],
+      "score": 0.98414115,
+      "source_file": "Sources/AppBundle/model/Rect.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_mouse_movewithmouse": {
+      "code_fingerprint": "024c3df821298ac05dd044c6fd7ef5e8e4d9900f950d9295df5ea59ad3f41f12",
+      "label": "moveWithMouse.swift",
+      "last": "2026-08-20T00:42:41.070672+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.070672+00:00",
+          "outcome": "useful",
+          "q": "Subsystem coupling map: how do AeroSpace subsystems actually depend on each other beyond imports?"
+        }
+      ],
+      "score": 0.994477989,
+      "source_file": "Sources/AppBundle/mouse/moveWithMouse.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_mouse_resizewithmouse": {
+      "code_fingerprint": "6269839a585a47ce5f2d009daf305a50da72d78816b4d5145040266b908e09ec",
+      "label": "resizeWithMouse.swift",
+      "last": "2026-08-20T00:42:41.070672+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.070672+00:00",
+          "outcome": "useful",
+          "q": "Subsystem coupling map: how do AeroSpace subsystems actually depend on each other beyond imports?"
+        }
+      ],
+      "score": 0.994477989,
+      "source_file": "Sources/AppBundle/mouse/resizeWithMouse.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_runloop_runloopjob": {
+      "code_fingerprint": "9bd687ae1c1ae0fece4720728938b6b87f08d4e4ef45506381a4027d008480d2",
+      "label": "RunLoopJob",
+      "last": "2026-08-20T06:10:48.419571+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:10:48.419571+00:00",
+          "outcome": "useful",
+          "q": "How does the AX-threading backbone work (MacApp + RunLoopJob): scheduler, per-app wrapper, end-to-end command path, inbound events?"
+        },
+        {
+          "date": "2026-08-20T00:42:41.070672+00:00",
+          "outcome": "useful",
+          "q": "Subsystem coupling map: how do AeroSpace subsystems actually depend on each other beyond imports?"
+        }
+      ],
+      "score": 1.994205462,
+      "source_file": "Sources/AppBundle/runLoop.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_appbundle_server": {
+      "code_fingerprint": "d95661cc68d5cb027a9fde89999d0b0f08ba4b04f1faffdbf8925ba7463695a3",
+      "label": "server.swift",
+      "last": "2026-08-20T00:14:33.383813+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.383813+00:00",
+          "outcome": "useful",
+          "q": "Are the 220 inferred relationships involving parseCommand() actually correct?"
+        },
+        {
+          "date": "2026-08-20T00:14:33.236991+00:00",
+          "outcome": "useful",
+          "q": "Why does Common connect Command Framework Imports to 57 other communities?"
+        }
+      ],
+      "score": 1.988058491,
+      "source_file": "Sources/AppBundle/server.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_appbundle_shell_shelllexer": {
+      "code_fingerprint": "c2a188e1a357ca7435ee9dd4bf3402f190a981e696cdab9eacc3eb9cdee10bde",
+      "label": "shellLexer.swift",
+      "last": "2026-08-20T00:42:41.328163+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.328163+00:00",
+          "outcome": "useful",
+          "q": "Cohesion outliers: which communities are junk clusters vs real subsystems?"
+        }
+      ],
+      "score": 0.994478058,
+      "source_file": "Sources/AppBundle/shell/shellLexer.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_tree_frozen_frozentreenode_frozentreenode": {
+      "code_fingerprint": "cb8c1c25827e3c318bf17dd101e179206f415e11312366d16b832c9b7920983f",
+      "label": "FrozenTreeNode",
+      "last": "2026-08-19T13:51:28.764689+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-19T13:51:28.764689+00:00",
+          "outcome": "useful",
+          "q": "Why does TreeNode connect TreeNode Base Class to 17 communities (Refresh Session Engine, Frozen Tree Snapshots, Recursive Layout Engine, ...)?"
+        }
+      ],
+      "score": 0.98414115,
+      "source_file": "Sources/AppBundle/tree/frozen/FrozenTreeNode.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_tree_macapp_macapp": {
+      "code_fingerprint": "f28f3e3804730327a888ac267fc773f5ba30294471ba8c6a729e859fbb580b3e",
+      "label": "MacApp",
+      "last": "2026-08-20T06:10:48.419571+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:10:48.419571+00:00",
+          "outcome": "useful",
+          "q": "How does the AX-threading backbone work (MacApp + RunLoopJob): scheduler, per-app wrapper, end-to-end command path, inbound events?"
+        },
+        {
+          "date": "2026-08-20T00:42:41.070672+00:00",
+          "outcome": "useful",
+          "q": "Subsystem coupling map: how do AeroSpace subsystems actually depend on each other beyond imports?"
+        }
+      ],
+      "score": 1.994205462,
+      "source_file": "Sources/AppBundle/tree/MacApp.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_appbundle_tree_macosunconventionalwindowscontainer_macospopupwindowscontainer": {
+      "code_fingerprint": "19050804bd0da7bde190f223717d722f410ce91835851bee842b31931f19185a",
+      "label": "MacosPopupWindowsContainer",
+      "last": "2026-08-20T06:21:50.575677+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.575677+00:00",
+          "outcome": "useful",
+          "q": "How does the KnownBundleId app compatibility table drive window classification?"
+        }
+      ],
+      "score": 0.999904513,
+      "source_file": "Sources/AppBundle/tree/MacosUnconventionalWindowsContainer.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_tree_macwindow_unbindandgetbindingdatafornewwindow": {
+      "code_fingerprint": "7112d8429397f639a6f38877ee56b44efa3a1c29938eaeed083f85aa61b9e96f",
+      "label": "unbindAndGetBindingDataForNewWindow()",
+      "last": "2026-08-20T06:21:50.575677+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.575677+00:00",
+          "outcome": "useful",
+          "q": "How does the KnownBundleId app compatibility table drive window classification?"
+        }
+      ],
+      "score": 0.999904513,
+      "source_file": "Sources/AppBundle/tree/MacWindow.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_tree_treenode_bindingdata": {
+      "code_fingerprint": "33af98d1ae4d2c218fe8f608c496e39bacc9458561a61b6e02fbe7e7ce00fbc6",
+      "label": "BindingData",
+      "last": "2026-08-19T13:51:28.764689+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-19T13:51:28.764689+00:00",
+          "outcome": "useful",
+          "q": "Why does TreeNode connect TreeNode Base Class to 17 communities (Refresh Session Engine, Frozen Tree Snapshots, Recursive Layout Engine, ...)?"
+        }
+      ],
+      "score": 0.98414115,
+      "source_file": "Sources/AppBundle/tree/TreeNode.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_tree_treenode_treenode": {
+      "code_fingerprint": "33af98d1ae4d2c218fe8f608c496e39bacc9458561a61b6e02fbe7e7ce00fbc6",
+      "label": "TreeNode",
+      "last": "2026-08-20T00:42:41.265150+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.265150+00:00",
+          "outcome": "useful",
+          "q": "Group structures: hyperedges, protocol conformance patterns, distributed class bodies"
+        },
+        {
+          "date": "2026-08-20T00:42:41.070672+00:00",
+          "outcome": "useful",
+          "q": "Subsystem coupling map: how do AeroSpace subsystems actually depend on each other beyond imports?"
+        },
+        {
+          "date": "2026-08-20T00:14:33.285658+00:00",
+          "outcome": "useful",
+          "q": "Why does Command connect Command Execution Core to 20 other communities?"
+        },
+        {
+          "date": "2026-08-19T13:51:28.764689+00:00",
+          "outcome": "useful",
+          "q": "Why does TreeNode connect TreeNode Base Class to 17 communities (Refresh Session Engine, Frozen Tree Snapshots, Recursive Layout Engine, ...)?"
+        }
+      ],
+      "score": 3.967126418,
+      "source_file": "Sources/AppBundle/tree/TreeNode.swift",
+      "status": "preferred",
+      "uses": 4
+    },
+    "sources_appbundle_util_axsubscription_axsubscription": {
+      "code_fingerprint": "e9592dfc03b7a664758e0a67245b9b9bfea6265d1ee87c35320320d5e2fa0add",
+      "label": "AxSubscription",
+      "last": "2026-08-20T06:10:48.419571+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:10:48.419571+00:00",
+          "outcome": "useful",
+          "q": "How does the AX-threading backbone work (MacApp + RunLoopJob): scheduler, per-app wrapper, end-to-end command path, inbound events?"
+        }
+      ],
+      "score": 0.999727473,
+      "source_file": "Sources/AppBundle/util/AxSubscription.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_util_mrustack_mrustack": {
+      "code_fingerprint": "b62970d0ffa6e5e9513d809abdf52989b9cb6508575ffb6294341dd0e707f7d3",
+      "label": "MruStack",
+      "last": "2026-08-19T13:51:28.764689+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-19T13:51:28.764689+00:00",
+          "outcome": "useful",
+          "q": "Why does TreeNode connect TreeNode Base Class to 17 communities (Refresh Session Engine, Frozen Tree Snapshots, Recursive Layout Engine, ...)?"
+        }
+      ],
+      "score": 0.98414115,
+      "source_file": "Sources/AppBundle/util/MruStack.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_util_threadguardedvalue_threadguardedvalue": {
+      "code_fingerprint": "85638412c86e7689ff5aa160898bf430270f024451096ccd297eaeb3d60367d6",
+      "label": "ThreadGuardedValue",
+      "last": "2026-08-20T06:10:48.419571+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:10:48.419571+00:00",
+          "outcome": "useful",
+          "q": "How does the AX-threading backbone work (MacApp + RunLoopJob): scheduler, per-app wrapper, end-to-end command path, inbound events?"
+        }
+      ],
+      "score": 0.999727473,
+      "source_file": "Sources/AppBundle/util/ThreadGuardedValue.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundle_windowlevelcache": {
+      "code_fingerprint": "6993ce0c2021bfcfcfeda217f4e98a40e932391ee8d59e1f7d6a6c4016a43680",
+      "label": "windowLevelCache.swift",
+      "last": "2026-08-20T06:21:50.575677+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.575677+00:00",
+          "outcome": "useful",
+          "q": "How does the KnownBundleId app compatibility table drive window classification?"
+        }
+      ],
+      "score": 0.999904513,
+      "source_file": "Sources/AppBundle/windowLevelCache.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundletests_assert": {
+      "code_fingerprint": "87b1a09789a98cc971cb8220663266483e3df2c6d9524a5a9ad8f5e495809257",
+      "label": "assert.swift",
+      "last": "2026-08-20T00:14:33.333660+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.333660+00:00",
+          "outcome": "useful",
+          "q": "Are the 281 inferred relationships involving assertEquals() actually correct?"
+        }
+      ],
+      "score": 0.994029252,
+      "source_file": "Sources/AppBundleTests/assert.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundletests_assert_assertequals": {
+      "code_fingerprint": "87b1a09789a98cc971cb8220663266483e3df2c6d9524a5a9ad8f5e495809257",
+      "label": "assertEquals()",
+      "last": "2026-08-20T00:42:41.328163+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.328163+00:00",
+          "outcome": "useful",
+          "q": "Cohesion outliers: which communities are junk clusters vs real subsystems?"
+        },
+        {
+          "date": "2026-08-20T00:14:33.333660+00:00",
+          "outcome": "useful",
+          "q": "Are the 281 inferred relationships involving assertEquals() actually correct?"
+        }
+      ],
+      "score": 1.988507309,
+      "source_file": "Sources/AppBundleTests/assert.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_appbundletests_command_layoutcommandtest_layoutcommandtest": {
+      "code_fingerprint": "02a3390c83493e8ade649b43ddc3b43bcdb951ee4c9cd6b1189074381357a611",
+      "label": "LayoutCommandTest",
+      "last": "2026-08-20T00:14:33.333660+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.333660+00:00",
+          "outcome": "useful",
+          "q": "Are the 281 inferred relationships involving assertEquals() actually correct?"
+        }
+      ],
+      "score": 0.994029252,
+      "source_file": "Sources/AppBundleTests/command/LayoutCommandTest.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundletests_config_configtest_configtest": {
+      "code_fingerprint": "5340b0ef790722081c4c0ab4a2d19b194450f8eab7f167d3f73a8d567f522b98",
+      "label": "ConfigTest",
+      "last": "2026-08-20T00:14:33.333660+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.333660+00:00",
+          "outcome": "useful",
+          "q": "Are the 281 inferred relationships involving assertEquals() actually correct?"
+        }
+      ],
+      "score": 0.994029252,
+      "source_file": "Sources/AppBundleTests/config/ConfigTest.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_appbundletests_testutil": {
+      "code_fingerprint": "9bcfad4c577a67a016a388f9a0a2c027313751fd8bee5e2479069a8b248b3363",
+      "label": "testUtil.swift",
+      "last": "2026-08-20T00:14:33.383813+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.383813+00:00",
+          "outcome": "useful",
+          "q": "Are the 220 inferred relationships involving parseCommand() actually correct?"
+        }
+      ],
+      "score": 0.994029265,
+      "source_file": "Sources/AppBundleTests/testUtil.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_cli_main": {
+      "code_fingerprint": "8fe1799385c75fece6b779bdf04f18a4206234300a90c8c788d21c41aa3b7b81",
+      "label": "_main.swift",
+      "last": "2026-08-20T00:14:33.236991+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:14:33.236991+00:00",
+          "outcome": "useful",
+          "q": "Why does Common connect Command Framework Imports to 57 other communities?"
+        }
+      ],
+      "score": 0.994029226,
+      "source_file": "Sources/Cli/_main.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_cmdargs_cmdargsmanifest": {
+      "code_fingerprint": "a0d7c00304e6020175811ac740097f13a324bd1d0f1e12ce28553035461e6733",
+      "label": "cmdArgsManifest.swift",
+      "last": "2026-08-20T00:42:41.166784+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.166784+00:00",
+          "outcome": "useful",
+          "q": "Three/four-place command pipeline consistency: are CmdKind, toCommand(), docs adoc, and the BNF grammar in sync?"
+        }
+      ],
+      "score": 0.994478015,
+      "source_file": "Sources/Common/cmdArgs/cmdArgsManifest.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_cmdargs_cmdargsmanifest_cmdkind": {
+      "code_fingerprint": "a0d7c00304e6020175811ac740097f13a324bd1d0f1e12ce28553035461e6733",
+      "label": "CmdKind",
+      "last": "2026-08-20T00:42:41.166784+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.166784+00:00",
+          "outcome": "useful",
+          "q": "Three/four-place command pipeline consistency: are CmdKind, toCommand(), docs adoc, and the BNF grammar in sync?"
+        }
+      ],
+      "score": 0.994478015,
+      "source_file": "Sources/Common/cmdArgs/cmdArgsManifest.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_cmdargs_impl_echocmdargs_echocmdargs": {
+      "code_fingerprint": "127daa099009dbad36207f06e47d92c72c03fb73133b575c5577f262cd66a950",
+      "label": "EchoCmdArgs",
+      "last": "2026-08-20T00:42:41.166784+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.166784+00:00",
+          "outcome": "useful",
+          "q": "Three/four-place command pipeline consistency: are CmdKind, toCommand(), docs adoc, and the BNF grammar in sync?"
+        }
+      ],
+      "score": 0.994478015,
+      "source_file": "Sources/Common/cmdArgs/impl/EchoCmdArgs.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_cmdargs_impl_focuscmdargs_focuscmdargs": {
+      "code_fingerprint": "26be0faea4f1614fcbab8103e5a007719f053c425c7aeb7eb45293025ab302b6",
+      "label": "FocusCmdArgs",
+      "last": "2026-08-20T00:42:41.328163+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.328163+00:00",
+          "outcome": "useful",
+          "q": "Cohesion outliers: which communities are junk clusters vs real subsystems?"
+        }
+      ],
+      "score": 0.994478058,
+      "source_file": "Sources/Common/cmdArgs/impl/FocusCmdArgs.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_cmdargs_impl_movecmdargs_movecmdargs": {
+      "code_fingerprint": "fe316b74eac9694eaff046a239846a76006bfe01ba6ecedcb6d51ea270fa0c17",
+      "label": "MoveCmdArgs",
+      "last": "2026-08-20T00:42:41.328163+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.328163+00:00",
+          "outcome": "useful",
+          "q": "Cohesion outliers: which communities are junk clusters vs real subsystems?"
+        }
+      ],
+      "score": 0.994478058,
+      "source_file": "Sources/Common/cmdArgs/impl/MoveCmdArgs.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_cmdargs_impl_moveworkpsacetomonitorcmdargs_moveworkspacetomonitorcmdargs": {
+      "code_fingerprint": "281320da6e62a3e09eb56b9004819e969f64ae7b38bbc18353e2f1cbcbf71635",
+      "label": "MoveWorkspaceToMonitorCmdArgs",
+      "last": "2026-08-20T00:42:41.166784+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.166784+00:00",
+          "outcome": "useful",
+          "q": "Three/four-place command pipeline consistency: are CmdKind, toCommand(), docs adoc, and the BNF grammar in sync?"
+        }
+      ],
+      "score": 0.994478015,
+      "source_file": "Sources/Common/cmdArgs/impl/MoveWorkpsaceToMonitorCmdArgs.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_cmdargs_impl_subscribecmdargs_subscribecmdargs": {
+      "code_fingerprint": "3808ee2613d8b02dd05451bcee1620c14d364684b9ea17da9c31cf23fb0218fd",
+      "label": "SubscribeCmdArgs",
+      "last": "2026-08-20T06:21:50.673345+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.673345+00:00",
+          "outcome": "useful",
+          "q": "Why does CmdArgs bridge 34 communities, and what does it add beyond the Command bridge?"
+        },
+        {
+          "date": "2026-08-20T00:42:41.166784+00:00",
+          "outcome": "useful",
+          "q": "Three/four-place command pipeline consistency: are CmdKind, toCommand(), docs adoc, and the BNF grammar in sync?"
+        }
+      ],
+      "score": 1.994382554,
+      "source_file": "Sources/Common/cmdArgs/impl/SubscribeCmdArgs.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_common_cmdargs_parsecmdargs": {
+      "code_fingerprint": "a7aff2d412f5adf672251e5a32bf0219eefebb7e82f763a23c0def1106caf68f",
+      "label": "parseCmdArgs.swift",
+      "last": "2026-08-20T06:21:50.673345+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.673345+00:00",
+          "outcome": "useful",
+          "q": "Why does CmdArgs bridge 34 communities, and what does it add beyond the Command bridge?"
+        }
+      ],
+      "score": 0.999904539,
+      "source_file": "Sources/Common/cmdArgs/parseCmdArgs.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_cmdargs_parsecmdargs_cmdargs": {
+      "code_fingerprint": "a7aff2d412f5adf672251e5a32bf0219eefebb7e82f763a23c0def1106caf68f",
+      "label": "CmdArgs",
+      "last": "2026-08-20T06:21:50.673345+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.673345+00:00",
+          "outcome": "useful",
+          "q": "Why does CmdArgs bridge 34 communities, and what does it add beyond the Command bridge?"
+        },
+        {
+          "date": "2026-08-20T00:42:41.265150+00:00",
+          "outcome": "useful",
+          "q": "Group structures: hyperedges, protocol conformance patterns, distributed class bodies"
+        }
+      ],
+      "score": 1.99438258,
+      "source_file": "Sources/Common/cmdArgs/parseCmdArgs.swift",
+      "status": "preferred",
+      "uses": 2
+    },
+    "sources_common_model_axappthreadtoken_axappthreadtoken": {
+      "code_fingerprint": "d874787f164110b9d9d653d3ebd188c0e884eca862e11240b91d1d9ea82318b6",
+      "label": "AxAppThreadToken",
+      "last": "2026-08-20T06:10:48.419571+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:10:48.419571+00:00",
+          "outcome": "useful",
+          "q": "How does the AX-threading backbone work (MacApp + RunLoopJob): scheduler, per-app wrapper, end-to-end command path, inbound events?"
+        }
+      ],
+      "score": 0.999727473,
+      "source_file": "Sources/Common/model/AxAppThreadToken.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_util_arrslice_arrslice": {
+      "code_fingerprint": "5ff4baff535b2ffe4675d96b8b0866ab23862448ad3c35d1c26979beb081a8b4",
+      "label": "ArrSlice",
+      "last": "2026-08-20T00:42:41.328163+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.328163+00:00",
+          "outcome": "useful",
+          "q": "Cohesion outliers: which communities are junk clusters vs real subsystems?"
+        }
+      ],
+      "score": 0.994478058,
+      "source_file": "Sources/Common/util/ArrSlice.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "sources_common_util_commonutil_refreshsessionevent": {
+      "code_fingerprint": "991855c581c187490cc1859492e99c5a038a1fba52a08851d86982febb8b7855",
+      "label": "RefreshSessionEvent",
+      "last": "2026-08-20T06:21:50.673345+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T06:21:50.673345+00:00",
+          "outcome": "useful",
+          "q": "Why does CmdArgs bridge 34 communities, and what does it add beyond the Command bridge?"
+        }
+      ],
+      "score": 0.999904539,
+      "source_file": "Sources/Common/util/commonUtil.swift",
+      "status": "tentative",
+      "uses": 1
+    },
+    "swift_test": {
+      "code_fingerprint": "5b8769ddc859c46bbe5d88c9712d9ddae0352bbc954ef0a42bdbcc14bba67c69",
+      "label": "swift-test.sh",
+      "last": "2026-08-20T00:42:41.118612+00:00",
+      "provenance": [
+        {
+          "date": "2026-08-20T00:42:41.118612+00:00",
+          "outcome": "useful",
+          "q": "Docs-vs-code drift audit: which CLAUDE.md / dev-docs claims still hold?"
+        }
+      ],
+      "score": 0.994478002,
+      "source_file": "swift-test.sh",
+      "status": "tentative",
+      "uses": 1
+    }
+  },
+  "version": 1
+}
