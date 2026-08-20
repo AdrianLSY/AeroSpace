@@ -24,3 +24,12 @@ xcuserdata/
 xcshareddata/
 
 /openspec
+
+# graphify knowledge graph. The graph itself is committed so it is queryable
+# from a fresh clone. These are not: cache/ is a regenerable cache keyed to the
+# graphify version, *.bak are throwaway snapshots, and .graphify_python /
+# .graphify_root store absolute paths that are wrong on any other machine.
+/graphify-out/cache/
+/graphify-out/*.bak
+/graphify-out/.graphify_python
+/graphify-out/.graphify_root
