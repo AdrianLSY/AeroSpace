@@ -6,10 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 AeroSpace is an i3-like tiling window manager for macOS. This repo is the
 **AdrianLSY fork** of [nikitabobko/AeroSpace](https://github.com/nikitabobko/AeroSpace)
-that ships its own builds, Homebrew tap, and docs site. There are **no
-functional differences from upstream** — the fork's delta is branding,
-CI/release tooling, and issue templates. Everything is MIT, mirroring
-upstream.
+that ships its own builds, Homebrew tap, and docs site. The fork's delta is
+branding, CI/release tooling, issue templates, and a small set of **upstream
+CLI bug fixes carried locally** (see
+[FORK.md](FORK.md#upstream-cli-fixes-carried-locally)). Window-management
+behavior is identical to upstream. Everything is MIT, mirroring upstream.
 
 See [FORK.md](FORK.md), [CONTRIBUTING.md](CONTRIBUTING.md), and
 [dev-docs/fork-maintenance.md](dev-docs/fork-maintenance.md) for fork

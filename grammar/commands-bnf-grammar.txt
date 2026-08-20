@@ -21,13 +21,13 @@ aerospace -h;
 
     | debug-windows [--window-id <window_id>]
 
-    | echo [--stderr|--window <window_id>]... --
+    | echo [--stderr|--window-id <window_id>]... -- <string>...
 
     | enable toggle
     | enable [--fail-if-noop] on [--fail-if-noop]
     | enable [--fail-if-noop] off [--fail-if-noop]
 
-    | eval [--stdin]
+    | eval [--stdin] [--] <aerospace_shell_expr>
 
     | false
 
@@ -68,10 +68,11 @@ aerospace -h;
     | move-node-to-workspace [--wrap-around|--focus-follows-window|--stdin|--no-stdin]... (next|prev) [--wrap-around|--focus-follows-window|--stdin|--no-stdin]...
     | move-node-to-workspace [--fail-if-noop|--window-id <window_id>|--focus-follows-window]... <workspace> [--fail-if-noop|--window-id <window_id>|--focus-follows-window]...
 
-    | move-workspace-to-monitor [--wrap-around] (left|down|up|right|next|prev) [--wrap-around]
-    | move-workspace-to-monitor [--wrap-around] <monitor_pattern>... [--wrap-around]
+    | move-workspace-to-monitor [--wrap-around|--workspace <workspace>]... (left|down|up|right|next|prev) [--wrap-around|--workspace <workspace>]...
+    | move-workspace-to-monitor [--workspace <workspace>] <monitor_pattern>... [--workspace <workspace>]
+    | move-workspace-to-monitor [--workspace <workspace>] -- <monitor_pattern>...
 
-    | reload-config [--no-gui | --dry-run]...
+    | reload-config [--no-gui | --dry-run | --warnings-as-errors]...
 
     | resize [--window-id <window_id>] (smart|smart-opposite|width|height) [+|-]<number> [--window-id <window_id>]
 
@@ -115,7 +116,8 @@ aerospace -h;
     | list-workspaces [<list_workspaces1_flag>]... --monitor <monitor_id>... [<list_workspaces1_flag>]...
     | list-workspaces [--format <output_format>|--count|--json]... (--all|--focused) [--format <output_format>|--count|--json]...
 
-    | subscribe [--all|--no-send-initial] <event>... [--all|--no-send-initial]
+    | subscribe [--no-send-initial] --all [--no-send-initial]
+    | subscribe [--no-send-initial] <event>... [--no-send-initial]
     ;
 
 <window_id> ::= {{{ aerospace list-windows --all --format '%{window-id}%{tab}%{app-name} - %{window-title}' }}};
@@ -123,6 +125,8 @@ aerospace -h;
 <mode_id> ::= {{{ aerospace config --get mode --keys }}};
 <workspace> ::= {{{ aerospace list-workspaces --monitor all --empty no }}};
 <number> ::= {{{ true }}};
+<string> ::= {{{ true }}};
+<aerospace_shell_expr> ::= {{{ true }}};
 <monitor_pattern> ::= {{{ true }}};
 <layouts> ::= h_tiles|v_tiles|h_accordion|v_accordion|tiles|accordion|horizontal|vertical|tiling|floating;
 

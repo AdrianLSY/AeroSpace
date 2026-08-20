@@ -5,8 +5,9 @@ macOS. It tracks upstream closely and ships its own builds.
 
 ## What this fork is
 
-This fork carries **no functional changes** to AeroSpace. It exists to provide
-an independently built and released distribution:
+Apart from a few **upstream CLI bug fixes** (see below), this fork carries no
+functional changes to AeroSpace. It exists to provide an independently built
+and released distribution:
 
 - **Its own Homebrew tap and cask** (`AdrianLSY/tap`, `aerospace-adrianlsy`),
   released on its own cadence from this repo's CI.
@@ -16,8 +17,32 @@ an independently built and released distribution:
 - **Its own issue templates and triage**, accepting both fork-specific and
   upstream behavior reports.
 
-Behavior matches upstream exactly, so upstream's
+Window-management behavior matches upstream exactly, so upstream's
 [user guide](https://adrianlsy.github.io/AeroSpace/guide) applies in full.
+
+### Upstream CLI fixes carried locally
+
+These are upstream bugs, reproducible on stock AeroSpace, that this fork
+fixes ahead of upstream. None of them changes window-management behavior.
+
+- **Shell completion suggested a flag that does not exist.** `aerospace
+  echo --<TAB>` offered `--window`; the real flag is `--window-id`, and
+  `--window` always failed with `Unknown flag '--window'`.
+- **Shell completion omitted real flags.** `move-workspace-to-monitor
+  --workspace` and `reload-config --warnings-as-errors` were never
+  suggested, and `eval`/`echo` were missing their mandatory arguments.
+- **Shell completion suggested combinations that always fail.**
+  `subscribe --all` offered event names, but `--all` and an explicit
+  `<event>` are mutually exclusive; `move-workspace-to-monitor` offered
+  `--wrap-around` alongside a monitor pattern, which the CLI rejects.
+- **`move-workspace-to-display` skipped argument validation.** The
+  deprecated alias accepted `--wrap-around` together with a monitor
+  pattern — rejected under the canonical `move-workspace-to-monitor` name —
+  and then silently ignored the flag.
+
+Upstream routes bug reports to
+[Discussions](https://github.com/nikitabobko/AeroSpace/discussions/categories/potential-bugs)
+rather than Issues; these have not been filed there yet.
 
 ### Previously: hover-to-raise (AutoRaise) — removed
 
