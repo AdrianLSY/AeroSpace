@@ -7,6 +7,20 @@ outcome: "useful"
 source_nodes: ["Bundled Dependencies License Index", "tomlplusplus MIT License (Mark Gillard)"]
 ---
 
+> **ERRATA — 2026-08-20.** This memo is a dated snapshot; its findings were true at
+> commit `d42555f6`, the tree the graph was built from. The graph has since been
+> re-mapped to `be847df0` and the claims below were re-verified against it.
+>
+> **CLOSED.** `legal/third-party-license/LICENSE-tomlplusplus.txt` was deleted by #3
+> (`a6f9167b`) — the recommendation in this memo has been carried out. The directory now
+> holds only `LICENSE-HotKey.txt`, `LICENSE-ISSoundAdditions.txt`, `LICENSE-TOMLDecoder.txt`
+> and `LICENSE-swift-collections.txt`.
+>
+> The claim that "repo-wide grep matches only the license file itself" no longer holds in
+> either direction: the file is gone, and the same PR added three prose mentions in
+> `dev-docs/fork-maintenance.md` (lines 79, 82, 112) recording the deletion as a deliberate
+> fork delta under "Deletions to re-verify".
+
 # Q: What is the exact relationship between Bundled Dependencies License Index and tomlplusplus MIT License?
 
 ## Answer

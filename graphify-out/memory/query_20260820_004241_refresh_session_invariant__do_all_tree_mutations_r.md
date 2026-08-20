@@ -7,6 +7,19 @@ outcome: "useful"
 source_nodes: ["runLightSession()", "runHeavyCompleteRefreshSession()", "refresh.swift", "initAppBundle.swift", "GlobalObserver.swift"]
 ---
 
+> **ERRATA — 2026-08-20.** This memo is a dated snapshot; its findings were true at
+> commit `d42555f6`, the tree the graph was built from. The graph has since been
+> re-mapped to `be847df0` and the claims below were re-verified against it.
+>
+> **Count was already wrong when written — not caused by #3–#6.** The tree has **13**
+> `runLightSession` call sites, not 12: `GlobalObserver.swift:26` and `:68`,
+> `initAppBundle.swift:31`, `server.swift:90`, `ui/MenuBar.swift:19`, `:34`, `:54`, `:116`,
+> `config/ConfigFileWatcher.swift:39`, `config/HotkeyBinding.swift:39`,
+> `mouse/moveWithMouse.swift:19`, `mouse/resizeWithMouse.swift:19`,
+> `mouse/focusFollowsMouse.swift:46` (excluding the declaration at `layout/refresh.swift:59`).
+> The "graph in-edges match grep 1:1" parenthetical therefore does not hold. The invariant
+> itself was re-checked and still holds.
+
 # Q: Refresh-session invariant: do all tree mutations route through runLightSession/refreshModel?
 
 ## Answer

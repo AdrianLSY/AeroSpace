@@ -7,6 +7,25 @@ outcome: "useful"
 source_nodes: ["CmdArgs", "Command", "TreeNode", "Window", "Workspace", "TilingContainer"]
 ---
 
+> **ERRATA — 2026-08-20.** This memo is a dated snapshot; its findings were true at
+> commit `d42555f6`, the tree the graph was built from. The graph has since been
+> re-mapped to `be847df0` and the claims below were re-verified against it.
+>
+> **Both reported graphify tool bugs are FIXED, and one count is wrong.**
+>
+> - (a) Hyperedge id collision — fixed. The committed graph carries 20 hyperedges with 20
+>   distinct ids; the two fork-release groups are `fork_release_pipeline` and
+>   `fork_release_pipeline_docs`. A uniquify pass in the graphify skill prevents recurrence.
+> - (b) CmdArgs node fragmentation — fixed. There is no node with id `cmdargs`; the single
+>   node labelled `CmdArgs` is the real declaration at `Sources/Common/cmdArgs/parseCmdArgs.swift:13`
+>   and it receives all 45 `implements` edges. This is a data patch, not an upstream fix: the
+>   extractor re-mints the placeholder whenever a `*CmdArgs.swift` file is re-extracted, and
+>   the merge was re-applied during the 2026-08-20 re-map. Expect it again after any
+>   `graphify extract --force`.
+> - Tier (3) extension counts: `extension Workspace` occurs in **5** files, not 6. TreeNode (6),
+>   Window (7) and TilingContainer (5) are correct. A loose grep returns 7 only because it also
+>   matches the unrelated `extension WorkspaceCmdArgs`.
+
 # Q: Group structures: hyperedges, protocol conformance patterns, distributed class bodies
 
 ## Answer

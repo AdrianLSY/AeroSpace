@@ -7,6 +7,16 @@ outcome: "useful"
 source_nodes: ["parseCommand()", "testUtil.swift", "server.swift", "EvalCommand"]
 ---
 
+> **ERRATA — 2026-08-20.** This memo is a dated snapshot; its findings were true at
+> commit `d42555f6`, the tree the graph was built from. The graph has since been
+> re-mapped to `be847df0` and the claims below were re-verified against it.
+>
+> **Counts superseded.** #5/#6 added three single-argument `parseCommand(` call sites
+> (`MoveWorkspaceToMonitorCommandTest.swift:16` and `:17`,
+> `TestCommandTest.swift:37`). Applying this memo's own counting model gives **334** raw call
+> sites today, not 331. The dedup rule it describes (one call edge per calling function)
+> still holds.
+
 # Q: Are the 220 inferred relationships involving parseCommand() actually correct?
 
 ## Answer
