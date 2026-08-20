@@ -39,6 +39,14 @@ fixes ahead of upstream. None of them changes window-management behavior.
   deprecated alias accepted `--wrap-around` together with a monitor
   pattern — rejected under the canonical `move-workspace-to-monitor` name —
   and then silently ignored the flag.
+- **`aerospace test-not --help` printed `test`'s usage.** The generated
+  `test-not` help text was committed but unreachable.
+- **Shell completion never offered the `--` separator.** `--` is how you
+  address a workspace or monitor literally named `next`, `prev`, `left`
+  and so on; seven commands accept it and none advertised it.
+- **Shell completion offered flags the argument forbids**, such as
+  `move-node-to-monitor --fail-if-noop` with a direction, or
+  `move-mouse --fail-if-noop` with a force-center target.
 
 Upstream routes bug reports to
 [Discussions](https://github.com/nikitabobko/AeroSpace/discussions/categories/potential-bugs)

@@ -32,6 +32,17 @@ final class TestCommandTest: XCTestCase {
         testParseCommandFail("test %{window-id} = %{invalid}", msg: "ERROR: Right hand side doesn\'t allow interpolation variables", exitCode: 2)
     }
 
+    func testNotHelpDoesNotLeakTestUsage() {
+        for raw in ["test-not --help", "test-not -h"] {
+            guard case .help(let help) = parseCommand(raw) else {
+                XCTFail("'\(raw)' must parse as help")
+                continue
+            }
+            assertEquals(help, TestNotCmdArgs.info.help)
+            XCTAssertNotEqual(help, TestCmdArgs.info.help)
+        }
+    }
+
     func testExec() async {
         Workspace.get(byName: name).rootTilingContainer.apply {
             assertEquals(TestWindow.new(id: 1, parent: $0).focusWindow(), true)
