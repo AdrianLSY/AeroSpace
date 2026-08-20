@@ -1,6 +1,6 @@
 public struct MoveWorkspaceToMonitorCmdArgs: CmdArgs {
     /*conforms*/ public var commonState: CmdArgsCommonState
-    public init(rawArgs: StrArrSlice) { self.commonState = .init(rawArgs) }
+    fileprivate init(rawArgs: StrArrSlice) { self.commonState = .init(rawArgs) }
     public static let parser: CmdParser<Self> = .init(
         kind: .moveWorkspaceToMonitor,
         help: move_workspace_to_monitor_help_generated,
