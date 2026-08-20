@@ -19,15 +19,16 @@ Verified against the v0.21.3 rebase (146 upstream commits, 16 conflicts).
 A file conflicts only when upstream also touches it, so treat this as
 "expect these, and check the rest merges clean" rather than a guarantee.
 
-**The fork patches exactly three upstream Swift files.** Since AutoRaise was
-removed, the only `Sources/**` delta is the `move-workspace-to-display`
-validation fix:
+**The fork patches five upstream Swift files.** Since AutoRaise was removed,
+the only `Sources/**` delta is a pair of upstream CLI fixes:
 
 | File | Conflict type | Resolve by |
 |------|---------------|------------|
 | `Sources/Common/cmdArgs/cmdArgsManifest.swift` | One line: the alias registers `parseWorkspaceToMonitorCmdArgs`, not `MoveWorkspaceToMonitorCmdArgs.init` | Keep the fork's line; accept upstream edits elsewhere. Drop entirely once upstream fixes it |
 | `Sources/Common/cmdArgs/impl/MoveWorkpsaceToMonitorCmdArgs.swift` | One line: `init(rawArgs:)` is `fileprivate`, not `public` | Same |
 | `Sources/AppBundleTests/command/MoveWorkspaceToMonitorCommandTest.swift` | Adds `testDeprecatedAliasIsValidatedLikeTheCanonicalName` | Keep both sides |
+| `Sources/Common/cmdArgs/impl/TestNotCmdArgs.swift` | `parseTestNotCmdArgs` switches over `ParsedCmd` so `-h` answers with `TestNotCmdArgs.info.help` | Keep the fork's version; drop entirely once upstream fixes it |
+| `Sources/AppBundleTests/command/TestCommandTest.swift` | Adds `testNotHelpDoesNotLeakTestUsage` | Keep both sides |
 
 Any *other* Swift conflict means something has drifted — investigate rather
 than resolving it by hand.
@@ -60,7 +61,8 @@ now gone.
 `.github/ISSUE_TEMPLATE/fork-*.yml`, `upstream-redirect.md`,
 `.github/workflows/release-adrianlsy.yml`, `.github/workflows/pages.yml`,
 `script/publish-release-adrianlsy.sh`, `FORK.md`,
-`dev-docs/fork-maintenance.md`, `CLAUDE.md`, `.claude/**`.
+`dev-docs/fork-maintenance.md`, `CLAUDE.md`, `.claude/**`,
+`Sources/AppBundleTests/CompletionGrammarTest.swift`.
 
 (`CLAUDE.md` and `.claude/**` have no upstream equivalent, so they can never
 conflict — they used to be listed in the conflict table by mistake.)
