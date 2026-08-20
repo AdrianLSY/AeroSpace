@@ -52,7 +52,9 @@ aerospace -h;
 
     | layout [--window-id <window_id>|--root|--workspace <workspace>|--fail-if-noop]... (<layouts>)... [--window-id <window_id>|--root|--workspace <workspace>|--fail-if-noop]...
 
-    | macos-native-fullscreen [--fail-if-noop|--window-id <window_id>]... [on|off] [--fail-if-noop|--window-id <window_id>]...
+    | macos-native-fullscreen [--window-id <window_id>]...
+    | macos-native-fullscreen [--fail-if-noop|--window-id <window_id>]... on [--fail-if-noop|--window-id <window_id>]...
+    | macos-native-fullscreen [--fail-if-noop|--window-id <window_id>]... off [--fail-if-noop|--window-id <window_id>]...
 
     | macos-native-minimize [--window-id <window_id>]
 
@@ -60,7 +62,8 @@ aerospace -h;
 
     | move [<move_command_flag>]... (left|down|up|right) [<move_command_flag>]...
 
-    | move-mouse [--fail-if-noop] (monitor-lazy-center|monitor-force-center|window-lazy-center|window-force-center) [--fail-if-noop]
+    | move-mouse [--fail-if-noop] (monitor-lazy-center|window-lazy-center) [--fail-if-noop]
+    | move-mouse (monitor-force-center|window-force-center)
 
     | move-node-to-monitor [<move_node_to_monitor1_flag>]... (left|down|up|right|next|prev) [<move_node_to_monitor1_flag>]...
     | move-node-to-monitor [<move_node_to_monitor2_flag>]... [--] <monitor_pattern>... [<move_node_to_monitor2_flag>]...
@@ -136,12 +139,12 @@ aerospace -h;
     | --fail-if-fullscreen | --fail-if-macos-native-fullscreen;
 <move_boundaries_action> ::= stop|fail|create-implicit-container;
 
-<move_node_to_monitor1_flag> ::= --window-id <window_id>|--focus-follows-window|--fail-if-noop|--wrap-around;
+<move_node_to_monitor1_flag> ::= --window-id <window_id>|--focus-follows-window|--wrap-around;
 <move_node_to_monitor2_flag> ::= --window-id <window_id>|--focus-follows-window|--fail-if-noop;
 
 <focus_direction_flag> ::= --boundaries <boundary>|--boundaries-action <boundaries_action>|--ignore-floating|--wrap-around
     | --fail-if-fullscreen | --fail-if-macos-native-fullscreen;
-<focus_dfs_relative_flag> ::= --boundaries-action <boundaries_action>|--ignore-floating|--wrap-around;
+<focus_dfs_relative_flag> ::= --boundaries workspace|--boundaries-action <boundaries_action>|--ignore-floating|--wrap-around;
 <boundaries_action> ::= stop|fail|wrap-around-the-workspace|wrap-around-all-monitors;
 <boundary> ::= workspace|all-monitors-outer-frame;
 
