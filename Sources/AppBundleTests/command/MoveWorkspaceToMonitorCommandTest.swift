@@ -11,6 +11,12 @@ final class MoveWorkspaceToMonitorCommandTest: XCTestCase {
         assertEquals(parseMoveWorkspaceToMonitorTarget("move-workspace-to-monitor main"), .patterns([.main]))
     }
 
+    func testDeprecatedAliasIsValidatedLikeTheCanonicalName() {
+        let expected = "--wrap-around is incompatible with <monitor-pattern> argument"
+        assertEquals(parseCommand("move-workspace-to-monitor --wrap-around main").errorOrNil, expected)
+        assertEquals(parseCommand("move-workspace-to-display --wrap-around main").errorOrNil, expected)
+    }
+
     func testParseDashDash() {
         assertEquals(parseMoveWorkspaceToMonitorTarget("move-workspace-to-monitor -- next"), .patterns([.pattern("next")!]))
         assertEquals(parseCommand("move-workspace-to-monitor --").errorOrNil, "ERROR: Argument \'(left|down|up|right|next|prev|<monitor-pattern>)\' is mandatory")
