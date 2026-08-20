@@ -19,10 +19,18 @@ Verified against the v0.21.3 rebase (146 upstream commits, 16 conflicts).
 A file conflicts only when upstream also touches it, so treat this as
 "expect these, and check the rest merges clean" rather than a guarantee.
 
-**The fork no longer patches any upstream Swift file.** Since AutoRaise was
-removed, `Sources/**` carries no fork delta at all, so no Swift conflict is
-expected. If one appears, something has drifted — investigate rather than
-resolving it by hand.
+**The fork patches exactly three upstream Swift files.** Since AutoRaise was
+removed, the only `Sources/**` delta is the `move-workspace-to-display`
+validation fix:
+
+| File | Conflict type | Resolve by |
+|------|---------------|------------|
+| `Sources/Common/cmdArgs/cmdArgsManifest.swift` | One line: the alias registers `parseWorkspaceToMonitorCmdArgs`, not `MoveWorkspaceToMonitorCmdArgs.init` | Keep the fork's line; accept upstream edits elsewhere. Drop entirely once upstream fixes it |
+| `Sources/Common/cmdArgs/impl/MoveWorkpsaceToMonitorCmdArgs.swift` | One line: `init(rawArgs:)` is `fileprivate`, not `public` | Same |
+| `Sources/AppBundleTests/command/MoveWorkspaceToMonitorCommandTest.swift` | Adds `testDeprecatedAliasIsValidatedLikeTheCanonicalName` | Keep both sides |
+
+Any *other* Swift conflict means something has drifted — investigate rather
+than resolving it by hand.
 
 Historical note: up to `v0.21.3-Beta.adrianlsy.1` the fork carried seven
 single-hunk patches into upstream-owned Swift files, and they conflicted on
@@ -43,7 +51,7 @@ now gone.
 | `CONTRIBUTING.md` | Fork section prepended above `---` divider | Keep fork preamble; accept upstream edits below the divider |
 | `docs/guide.adoc` | One rebranded releases URL | Keep the fork's URL; accept upstream edits everywhere else |
 | `docs/commands.adoc` | Hand-maintained command index; both sides append | Alphabetical adjacency — keep both sides |
-| `grammar/commands-bnf-grammar.txt` | Hand-maintained (despite the name, **not** generated) | Alphabetical adjacency — keep both sides |
+| `grammar/commands-bnf-grammar.txt` | Hand-maintained (despite the name, **not** generated). The fork also rewrites the `echo`, `eval`, `move-workspace-to-monitor`, `reload-config` and `subscribe` productions | Alphabetical adjacency — keep both sides. For the five rewritten productions keep the fork's version unless upstream has fixed them, then take upstream. Re-validate with `./build-shell-completion.sh` |
 | `docs/config-examples/*.toml` | Fork rebrands doc URLs to `adrianlsy.github.io` | Take upstream's structure, re-apply the URL rebrand. Rebrand any *new* upstream URLs too — these files ship inside the `.app` |
 | `CLAUDE.md` | Fork-specific architecture notes | Keep fork version |
 
