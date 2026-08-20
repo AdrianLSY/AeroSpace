@@ -66,6 +66,18 @@ it labels every PR not authored by an upstream maintainer as
 `not-actionable`, and fails outright if that label does not exist in this
 repo).
 
+`legal/third-party-license/LICENSE-tomlplusplus.txt` — stale orphan from the
+TOMLKit era. Added upstream in `2d21f579`; upstream's `16a0b634` ("Migrate
+from TOMLKit to TOMLDecoder") dropped the `legal/README.md` entries and
+`LICENSE-TOMLKIT.txt` but missed this file. tomlplusplus is not a direct,
+transitive, or embedded dependency — `Package.swift` and `Package.resolved`
+pin only HotKey, TOMLDecoder, swift-collections and ISSoundAdditions, and
+TOMLDecoder is pure Swift. Nothing in the tree referenced the file, and no
+build or packaging step enumerates `legal/third-party-license/`, so the
+deletion is inert. This is the fork's one deliberate delta under `legal/`;
+it is worth upstreaming, and this entry can go once upstream drops the file
+too.
+
 **Merged cleanly in v0.21.3 despite being fork-modified** — do not expect
 a conflict, but do re-check: `script/build-brew-cask.sh`,
 `install-from-sources.sh`, `.github/pull_request_template.md`,
@@ -86,7 +98,10 @@ Files that stay upstream-shaped — do not rebrand on rebase:
   completion when `script/setup.sh` now requires bash >= 5 for every
   script. `architecture.md` cites paths that no longer exist. Leave them
   alone unless you want to carry a deliberate fork patch.
-- `legal/README.md`, `third-party-license/**` — dependency licenses.
+- `legal/README.md`, `legal/third-party-license/**` — dependency licenses.
+  The fork's only delta here is the deleted `LICENSE-tomlplusplus.txt` (see
+  "Deletions to re-verify" above). Accept upstream edits to everything else,
+  including any license file upstream newly adds.
 - `.github/FUNDING.yml` — intentionally unchanged; sponsorship still
   credits upstream maintainer.
 
