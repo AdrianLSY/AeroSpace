@@ -1,7 +1,7 @@
 # Graph Report - AeroSpace  (2026-08-20)
 
 ## Corpus Check
-- 382 files · ~345,190 words
+- 382 files · ~346,376 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
