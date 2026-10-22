@@ -22,7 +22,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - run: ./.github/gh-actions-runner-xcode-select.sh
-      - run: brew install bash fish xcbeautify swiftly
+      - run: brew update && brew install bash fish xcbeautify swiftly
       - run: swiftly init --skip-install --assume-yes --verbose && swiftly install
 
       - name: Setup Ruby

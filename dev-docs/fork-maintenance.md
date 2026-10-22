@@ -18,6 +18,8 @@ git push --force-with-lease origin main
 Verified against the v0.21.3 rebase (146 upstream commits, 16 conflicts).
 A file conflicts only when upstream also touches it, so treat this as
 "expect these, and check the rest merges clean" rather than a guarantee.
+The 2026-10-22 sync onto `74a1bf17` (19 upstream commits, no new upstream
+tag) conflicted only in `README.md` ("Related projects").
 
 **The fork patches five upstream Swift files.** Since AutoRaise was removed,
 the only `Sources/**` delta is a pair of upstream CLI fixes:
@@ -66,6 +68,13 @@ now gone.
 
 (`CLAUDE.md` and `.claude/**` have no upstream equivalent, so they can never
 conflict — they used to be listed in the conflict table by mistake.)
+
+**`.gitignore`.** Since upstream's `a87c7a54` it ignores every root entry
+(`/*`) and then lists the tracked ones with `!/`. The fork appends one block
+at the end: `!/` lines for its own root entries (`.claude`, `CLAUDE.md`,
+`FORK.md`, `graphify-out`), then its ignores for Claude Code worktrees and
+graphify state. Keep that block last, and add any new fork-owned root entry
+to it — without its `!/` line, new files there need `git add -f`.
 
 **Deletions to re-verify** (upstream still ships these; confirm they are
 still absent after each rebase):
@@ -243,3 +252,7 @@ After every rebase:
 3. If upstream introduced a new file that overlaps with fork territory
    (e.g. another issue template, another workflow), update the conflict
    set table above.
+4. Diff upstream's `.github/workflows/build.yml` against the previous base.
+   `release-adrianlsy.yml` and `pages.yml` copy its toolchain steps (Xcode
+   select, `brew install`, `swiftly`), so carry any change there over to
+   them. Rebasing does not: neither file has an upstream counterpart.

@@ -185,4 +185,3 @@ In alphabetical order:
 - [yabai](https://github.com/koekeishiya/yabai) -
   A window manager that provides tight integration with native macOS Spaces and goes all the way to private APIs and code injection.
   yabai is a source of inspiration for a lot of other OSS projects.
-

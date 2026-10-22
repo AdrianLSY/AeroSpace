@@ -32,12 +32,16 @@ upstream, not here.
 ## Commands
 
 All scripts live at repo root; invoke them with `./name.sh`. They all
-`cd` to repo root and `source script/setup.sh`, which pins toolchains
-via `swiftly` when available.
+`cd` to repo root and `source script/setup.sh`, which pins the Swift
+toolchain via `swiftly`.
 
-**Requires `bash` >= 5 on PATH** (`brew install bash`) — `script/setup.sh`
-aborts otherwise, and it nukes `PATH` down to `.deps/bin:/bin:/usr/bin`,
-so tools outside that set are invisible to every script.
+**Requires `bash` >= 5 and `swiftly` on PATH** (`brew install bash
+swiftly`, then `swiftly init` and `swiftly install` in the repo root) —
+`script/setup.sh` aborts without either, and it nukes `PATH` down to
+`.deps/bin:/bin:/usr/bin`, so tools outside that set are invisible to
+every script. `swift` inside that PATH is a `.deps/bin/swift` wrapper
+that runs `swiftly run swift`. Set `AEROSPACE_VERBOSE_BUILD=1` to make
+every script `set -x` (CI does).
 
 **Primary dev loop**
 - `./build-debug.sh` — SPM debug build into `.debug/`. Fast inner loop.
@@ -46,10 +50,9 @@ so tools outside that set are invisible to every script.
   arguments.** Line 5 invokes bare `swift test` with no `"$@"`, so
   anything you pass — `--filter` included — is silently dropped and the
   whole suite runs. To target a single test, bypass the script:
-  `swift test --filter <TestCaseName>[/<testMethod>]`, prefixed with
-  `swiftly run` when `swiftly` is installed so the pinned toolchain is
-  used — `script/setup.sh` does the same and warns when it falls back to
-  whatever `swift` is on PATH. The script is upstream-owned and
+  `swiftly run swift test --filter <TestCaseName>[/<testMethod>]`, so the
+  pinned toolchain is used as it is by `script/setup.sh`'s `swift`
+  wrapper. The script is upstream-owned and
   byte-identical to upstream, so don't add `"$@"` forwarding here — that
   belongs in an upstream PR.
 - `./test.sh` — CI-equivalent: debug build with warnings-as-errors,
@@ -59,8 +62,10 @@ so tools outside that set are invisible to every script.
 - `./format.sh` — swiftformat only. Takes no options.
 - `./lint.sh` — format + a `Task.init` ban + swiftlint + periphery
   dead-code scan. Takes no options. Note: periphery is skipped on macOS
-  14/15/26 (see comments inside `lint.sh` — it can't run anywhere right
-  now). The macOS 15/26 branch is the fork's only delta in this file and
+  14/15/26 (see comments inside `lint.sh`); on macOS 27 and later it
+  runs, built from source at the commit `script/install-dep.sh` pins
+  (upstream's own periphery fork, for Swift 6.4 support). The macOS
+  15/26 branch is the fork's only delta in this file and
   its stated cause is stale: the comment blames `AutoRaiseCore` (ObjC++),
   which `d42555f6` deleted — `lint.sh` is now the only remaining mention
   of it in the repo. The skip was left in place deliberately, because

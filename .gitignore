@@ -33,7 +33,16 @@
 xcuserdata/
 xcshareddata/
 
-/openspec
+# Fork-owned root entries. Listed so that files added under them are not
+# swallowed by the `/*` rule above. openspec/ is deliberately absent: it stays
+# local-only, and `/*` already ignores it.
+!/.claude
+!/CLAUDE.md
+!/FORK.md
+!/graphify-out
+
+# Claude Code's per-session git worktrees
+/.claude/worktrees/
 
 # graphify knowledge graph. The graph itself is committed so it is queryable
 # from a fresh clone. These are not: cache/ is a regenerable cache keyed to the
