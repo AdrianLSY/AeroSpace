@@ -76,6 +76,15 @@ at the end: `!/` lines for its own root entries (`.claude`, `CLAUDE.md`,
 graphify state. Keep that block last, and add any new fork-owned root entry
 to it — without its `!/` line, new files there need `git add -f`.
 
+**`.github/workflows/build.yml`.** The fork drops upstream's daily
+`schedule:` trigger, leaving a comment in its place. On 2026-10-22 GitHub
+had paused Actions on the fork "due to the scale of GitHub Actions usage",
+and the daily macOS matrix (7 jobs once upstream added `xcode-27`) was the
+bulk of it. While Actions is paused, pushes and tags start nothing, the
+release workflow included; re-enable it from the repo's Actions tab. A
+conflict here means upstream edited the `on:` block: keep the trigger
+dropped and take upstream's other edits.
+
 **Deletions to re-verify** (upstream still ships these; confirm they are
 still absent after each rebase):
 `.github/ISSUE_TEMPLATE/new-issue.yml`,

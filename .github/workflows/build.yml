@@ -7,8 +7,9 @@ on:
       - 'rr/**' # "rr" stands for "remote run"
   pull_request:
     branches: [ "main" ]
-  schedule:
-    - cron: '0 0 * * *' # every day at 00:00
+  # Fork delta: upstream also runs this every day at 00:00 (`schedule`). The
+  # fork drops that trigger: the daily macOS matrix got Actions paused on the
+  # fork for its usage.
 
 env:
   AEROSPACE_VERBOSE_BUILD: 1
