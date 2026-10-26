@@ -29,8 +29,16 @@
       "files": 27,
       "mode": "update",
       "note": "incremental re-extract to 96349ec0: 18 code files via AST, 9 docs via 4 semantic subagents; harness reports a combined per-agent token total, recorded here as input"
+    },
+    {
+      "date": "2026-10-26T06:07:10+00:00",
+      "input_tokens": 484794,
+      "output_tokens": 0,
+      "files": 16,
+      "mode": "update",
+      "note": "incremental re-extract to 284e8855: 1 code file via AST, 15 docs via 3 semantic subagents; harness reports a combined per-agent token total, recorded here as input"
     }
   ],
-  "total_input_tokens": 1699332,
+  "total_input_tokens": 2184126,
   "total_output_tokens": 38130
 }
