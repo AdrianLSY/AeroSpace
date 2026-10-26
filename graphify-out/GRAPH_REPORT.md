@@ -1,13 +1,13 @@
 # Graph Report - AeroSpace  (2026-10-26)
 
 ## Corpus Check
-- 382 files · ~347,248 words
+- 382 files · ~357,208 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3791 nodes · 8789 edges · 186 communities (160 shown, 26 thin omitted)
-- Extraction: 81% EXTRACTED · 19% INFERRED · 0% AMBIGUOUS · INFERRED: 1698 edges (avg confidence: 0.81)
-- Token cost: 514,600 input · 0 output
+- 3793 nodes · 8837 edges · 186 communities (160 shown, 26 thin omitted)
+- Extraction: 81% EXTRACTED · 19% INFERRED · 0% AMBIGUOUS · INFERRED: 1707 edges (avg confidence: 0.81)
+- Token cost: 484,794 input · 0 output
 
 ## Community Hubs (Navigation)
 - Command Test Fixtures
@@ -195,7 +195,7 @@
 
 ## God Nodes (most connected - your core abstractions)
 1. `assertEquals()` - 284 edges
-2. `parseCommand()` - 219 edges
+2. `parseCommand()` - 220 edges
 3. `Common` - 159 edges
 4. `CmdArgs` - 76 edges
 5. `TreeNode` - 75 edges
@@ -206,8 +206,6 @@
 10. `assertTrue()` - 61 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `layout --for-next-detected-window production (tiling|floating only)` --shares_data_with--> `LayoutCmdArgs`  [INFERRED]
-  grammar/commands-bnf-grammar.txt → Sources/Common/cmdArgs/impl/LayoutCmdArgs.swift
 - `CmdArgs Protocol Bridge` --references--> `CmdArgs`  [INFERRED]
   graphify-out/memory/query_20260820_062150_why_does_cmdargs_bridge_34_communities__and_what_d.md → Sources/Common/cmdArgs/parseCmdArgs.swift
 - `Command Pipeline Four-Place Consistency` --references--> `CmdKind`  [INFERRED]
@@ -216,6 +214,8 @@
   graphify-out/memory/query_20260819_135128_why_does_treenode_connect_treenode_base_class_to_1.md → Sources/AppBundle/tree/TreeNode.swift
 - `Duplicate Boundaries Enum` --references--> `Boundaries`  [INFERRED]
   graphify-out/memory/query_20260820_004241_cohesion_outliers__which_communities_are_junk_clus.md → Sources/Common/cmdArgs/impl/FocusCmdArgs.swift
+- `Duplicate Boundaries Enum` --references--> `Boundaries`  [INFERRED]
+  graphify-out/memory/query_20260820_004241_cohesion_outliers__which_communities_are_junk_clus.md → Sources/Common/cmdArgs/impl/MoveCmdArgs.swift
 
 ## Import Cycles
 - None detected.
@@ -230,7 +230,7 @@
 - **Horizontal Tiles Window Tree Example** — docs_assets_h_tiles_finder_window, docs_assets_h_tiles_terminal_window [EXTRACTED 1.00]
 - **Stacked Monitors with Corner Placement Annotations** — docs_assets_monitor_arrangement_2_bad_monitor_1, docs_assets_monitor_arrangement_2_bad_monitor_2, docs_assets_monitor_arrangement_2_bad_bad_left_corner, docs_assets_monitor_arrangement_2_bad_bad_right_corner, docs_assets_monitor_arrangement_2_bad_good_right_corner [EXTRACTED 1.00]
 - **Rebase Conflict Resolution Flow** — dev_docs_fork_maintenance_rebase_protocol, dev_docs_fork_maintenance_expected_conflict_set, dev_docs_fork_maintenance_generated_files_rule, dev_docs_fork_maintenance_fork_owned_files, dev_docs_fork_maintenance_gitignore_fork_block, dev_docs_fork_maintenance_build_yml_schedule_drop, dev_docs_fork_maintenance_deletions_to_reverify, dev_docs_fork_maintenance_upstream_shaped_files, dev_docs_fork_maintenance_post_rebase_checks, test [EXTRACTED 1.00]
-- **Store-Aware OpenSpec CLI Workflows** — _claude_commands_opsx_apply_workflow, _claude_commands_opsx_archive_workflow, _claude_commands_opsx_explore_workflow, _claude_commands_opsx_propose_workflow, _claude_commands_opsx_sync_workflow, _claude_commands_opsx_update_workflow, _claude_skills_openspec_apply_change_skill_workflow, _claude_skills_openspec_archive_change_skill_workflow, _claude_skills_openspec_explore_skill_workflow, _claude_skills_openspec_propose_skill_workflow, _claude_skills_openspec_sync_specs_skill_workflow, _claude_skills_openspec_update_change_skill_workflow, _claude_commands_opsx_apply_openspec_cli, _claude_commands_opsx_apply_store_selection [EXTRACTED 1.00]
+- **Store-Aware OpenSpec CLI Workflows** — _claude_commands_opsx_apply_workflow, _claude_commands_opsx_archive_workflow, _claude_commands_opsx_explore_workflow, _claude_commands_opsx_propose_workflow, _claude_commands_opsx_sync_workflow, _claude_commands_opsx_update_workflow, _claude_skills_openspec_apply_change_skill_workflow, _claude_skills_openspec_archive_change_skill_workflow, _claude_skills_openspec_explore_skill_workflow, _claude_skills_openspec_propose_skill_workflow, _claude_skills_openspec_sync_specs_skill_workflow, _claude_skills_openspec_update_change_skill_workflow, _claude_commands_opsx_apply_openspec_cli, _claude_commands_opsx_apply_store_selection, _claude_commands_opsx_apply_project_check [EXTRACTED 1.00]
 - **Traffic-Light Colored Circles with Window-Operation Glyphs on a Squircle** — resources_assets_xcassets_appicon_appiconset_icon_app_icon, resources_assets_xcassets_appicon_appiconset_icon_window_management_semantics, resources_assets_xcassets_appicon_appiconset_icon_macos_squircle_convention [INFERRED 0.75]
 - **Horizontal Accordion Layout Demonstration** — docs_assets_h_accordion_screenshot, docs_assets_h_accordion_horizontal_accordion_layout, docs_assets_h_accordion_accordion_padding, docs_assets_h_accordion_focused_window_centering [INFERRED 0.75]
 - **macOS Window Controls Visual Metaphor** — docs_assets_icon_aerospace_app_icon, docs_assets_icon_macos_traffic_light_motif, docs_assets_icon_window_management_symbolism [INFERRED 0.75]
@@ -246,12 +246,13 @@
 - **Fork Release Pipeline (tag to Homebrew tap)** — _github_workflows_release_adrianlsy_release, _github_workflows_release_adrianlsy_fork_tag_format, github_workflows_build_release_script, script_build_brew_cask_script, _github_workflows_release_adrianlsy_aerospace_adrianlsy_cask, _github_workflows_release_adrianlsy_homebrew_tap_repo [EXTRACTED 1.00]
 - **Adding a CLI Command (all places that must change)** — claude_command_pipeline, dev_docs_architecture_command_checklist, grammar_commands_bnf_grammar [EXTRACTED 1.00]
 - **setup.sh Bootstrap Contract Inherited by Every Script** — script_setup, claude_bash5_path_requirement, claude_swiftly_toolchain_pin, claude_aerospace_verbose_build [EXTRACTED 1.00]
+- **User-Authorized Write Gates in OPSX Workflows** — _claude_commands_opsx_apply_project_check, _claude_commands_opsx_propose_planning_boundary, _claude_commands_opsx_explore_explore_mode_stance [INFERRED 0.75]
 
 ## Communities (186 total, 26 thin omitted)
 
 ### Community 0 - "Command Test Fixtures"
 Cohesion: 0.04
-Nodes (9): FocusCommandTest, ListWindowsTest, ListWorkspacesTest, MoveCommandTest, ResizeCommandTest, SplitCommandTest, SwapCommandTest, LayoutCommandTest (+1 more)
+Nodes (9): FocusCommandTest, LayoutCommandTest, ListWindowsTest, ListWorkspacesTest, MoveCommandTest, ResizeCommandTest, SplitCommandTest, SwapCommandTest (+1 more)
 
 ### Community 1 - "CmdArgs Protocol Core"
 Cohesion: 0.03
@@ -275,7 +276,7 @@ Nodes (48): Char, Character, LexerToken, Location, Payload, State, String, WordK
 
 ### Community 6 - "Command Execution Core"
 Cohesion: 0.12
-Nodes (13): CmdEnv, CmdIo, MoveMouseCommand, BinaryExitCode, moveMouse(), windowSubjectRectOrReportError(), activateMode_nonCancellable(), bugPrompt() (+5 more)
+Nodes (13): CmdEnv, CmdIo, MoveMouseCommand, BinaryExitCode, changeTilingLayout(), moveMouse(), windowSubjectRectOrReportError(), activateMode_nonCancellable() (+5 more)
 
 ### Community 7 - "Known Bundle IDs"
 Cohesion: 0.04
@@ -283,7 +284,7 @@ Nodes (48): AxUiElementMock, AxUiElementWindowType, KnownBundleId, dialog, popup
 
 ### Community 8 - "Command Module Imports"
 Cohesion: 0.07
-Nodes (5): AppKit, Common, ISSoundAdditions, <app_bundle_id> / <pid> nonterminals (shell out to list-apps), <monitor_id> nonterminal (shells out to list-monitors)
+Nodes (5): AppKit, ISSoundAdditions, Common, <app_bundle_id> / <pid> nonterminals (shell out to list-apps), <monitor_id> nonterminal (shells out to list-monitors)
 
 ### Community 9 - "Command Dispatch & Shell"
 Cohesion: 0.07
@@ -339,7 +340,7 @@ Nodes (32): AeroObj, Cell, InterVarExpansionError, WindowWithPrefetchedTitle, In
 
 ### Community 23 - "Test Assertion Helpers"
 Cohesion: 0.09
-Nodes (19): ModeCommandTest, MoveNodeToMonitorCommandTest, TriggerBindingCommandTest, assertNil(), assertNotEquals(), assertNotNil(), failExpectedActual(), testParseCommandHelp() (+11 more)
+Nodes (19): ModeCommandTest, MoveNodeToMonitorCommandTest, TriggerBindingCommandTest, WorkspaceCmdArgs, assertNil(), assertNotEquals(), assertNotNil(), failExpectedActual() (+11 more)
 
 ### Community 24 - "Focus State Management"
 Cohesion: 0.09
@@ -359,7 +360,7 @@ Nodes (27): Main, Bool, Int, MainActor, [String], URL, hasStdin(), run() (+19 mo
 
 ### Community 28 - "MacWindow Lifecycle"
 Cohesion: 0.10
-Nodes (16): Bool, CGFloat, CGPoint, CGSize, Int, String, UInt32, Workspace (+8 more)
+Nodes (16): MacWindow, Window, unbindAndGetBindingDataForNewTilingWindow(), unbindAndGetBindingDataForNewWindow(), .allWindows, .isHiddenInCorner, Bool, CGFloat (+8 more)
 
 ### Community 29 - "Format Command Tests"
 Cohesion: 0.11
@@ -419,7 +420,7 @@ Nodes (25): FocusMonitorCmdArgs, MonitorTarget, MoveNodeToMonitorCmdArgs, NextPr
 
 ### Community 43 - "Unix Socket Connection"
 Cohesion: 0.15
-Nodes (18): Subscriber, newConnection(), startUnixSocketServer(), toggleReleaseServerIfDebug(), handleSubscribeAndWaitTillError(), NWError, Bool, Codable (+10 more)
+Nodes (18): Subscriber, InitConnectionError, IsDone, NWConnection, newConnection(), startUnixSocketServer(), toggleReleaseServerIfDebug(), handleSubscribeAndWaitTillError() (+10 more)
 
 ### Community 44 - "Per-Monitor Gaps Config"
 Cohesion: 0.16
@@ -431,11 +432,11 @@ Nodes (25): FocusCmdArgs, FocusCmdTarget, WhenBoundariesCrossed, parseBoundaries
 
 ### Community 46 - "Build & Dev Scripts"
 Cohesion: 0.13
-Nodes (18): format.sh script, run-cli.sh script, run-debug.sh script, check-uncommitted-files.sh script, swift-test.sh script, test.sh script, Genuine Dead-Code Candidates, development.md Stale Script List (+10 more)
+Nodes (18): build-debug.sh script, format.sh script, lint.sh script, run-cli.sh script, run-debug.sh script, check-uncommitted-files.sh script, add-optional-dep-to-bin(), setup.sh script (+10 more)
 
 ### Community 47 - "Fork Docs & Drift Audit"
 Cohesion: 0.10
-Nodes (26): Cohesion Column Is Internal-Edge Density, Fork Docs Have Zero Edges into Code, Docs TOC Scroll-spy Script, Docs Index Redirect Page, AdrianLSY/AeroSpace Distribution Fork, Fork Docs Site (adrianlsy.github.io/AeroSpace), AdrianLSY/tap + aerospace-adrianlsy Cask, MIT License Inheritance (no licensing delta) (+18 more)
+Nodes (26): Cohesion Column Is Internal-Edge Density, Fork Docs Have Zero Edges into Code, Docs TOC Scroll-spy Script, Docs Index Redirect Page, AdrianLSY AeroSpace Fork (delta scope), CLAUDE.md (fork architecture guide), Bundled Dependencies License Index, tomlplusplus License File (deleted in #3) (+18 more)
 
 ### Community 48 - "Client-Server Protocol"
 Cohesion: 0.13
@@ -443,7 +444,7 @@ Nodes (14): ClientServerTest, ClientRequest, ClientRequestData, CodingKeys, Serv
 
 ### Community 49 - "Layout Command Args"
 Cohesion: 0.10
-Nodes (22): Bool, Bool, LayoutDescription, ParsedCmd, Self, StrArrSlice, String, LayoutCmdArgs (+14 more)
+Nodes (22): LayoutCmdArgs, LayoutDescription, String, parseLayoutCmdArgs(), parseToggleBetween(), Bool, accordion, floating (+14 more)
 
 ### Community 50 - "Tree Node Parent Cases"
 Cohesion: 0.08
@@ -455,15 +456,15 @@ Nodes (22): ConfigParseDiagnostic, ParseConfigResult, ReadConfigResult, Severity
 
 ### Community 52 - "CI Release Pipeline"
 Cohesion: 0.11
-Nodes (28): Upstream nikitabobko/AeroSpace Repository, Potential Bugs Discussion Template, GitHub Sponsors Link (nikitabobko), Issue Template Config (Upstream Contact Link), Fork-Specific Bug Issue Template, Fork-Specific Feature Request Template, Upstream Redirect Issue Template, Pull Request Template Checklist (+20 more)
+Nodes (28): gh-actions-runner-xcode-select.sh script, CI Job: build-debug, CI Job: build-release, Pages Workflow: build Job, Pages Workflow: deploy Job, release-adrianlsy Release Job, build-docs.sh Script, build-debug.sh Script (+20 more)
 
 ### Community 53 - "String Interpolation Tokens"
 Cohesion: 0.11
 Nodes (18): Array, InterpolationParserState, InterToken, String, Error, LocalizedError, RawStringInterToken, interpolationCharEncountered (+10 more)
 
 ### Community 54 - "CLI Grammar Productions"
-Cohesion: 0.11
-Nodes (26): Bug Report Routing (fork issues vs upstream discussions), Fix: completion offered flags the argument forbids, Fix: completion suggested mutually exclusive combinations, Fix: completion omitted real flags and mandatory args, Fix: completion never offered the -- separator, Fix: completion suggested nonexistent --window flag, Fix: move-workspace-to-display alias skipped arg validation, Fix: test-not --help printed test's usage (+18 more)
+Cohesion: 0.12
+Nodes (26): echo production (--stderr / --window-id / -- <string>), eval production (--stdin / -- <aerospace_shell_expr>), <event> nonterminal (subscribe event names), <monitor_pattern> nonterminal (free-form, always completes), move-mouse production (--fail-if-noop only on lazy-center), move-node-to-monitor production (direction vs pattern flag sets), move-workspace-to-monitor production, <output_format> nonterminal (format string placeholder) (+18 more)
 
 ### Community 55 - "Hotkey Binding Config"
 Cohesion: 0.16
@@ -471,7 +472,7 @@ Nodes (19): HotkeyBinding, Key, Mode, Dictionary, parseBinding(), parseBindings(
 
 ### Community 56 - "Move Node Tests"
 Cohesion: 0.09
-Nodes (8): MoveNodeToWorkspaceCommandTest, Bool, String, T, ParsedCmd, .errorOrNil, .cmdOrDie, MoveNodeToWorkspaceCmdArgs
+Nodes (8): MoveNodeToWorkspaceCommandTest, MoveNodeToWorkspaceCmdArgs, ParsedCmd, .cmdOrDie, .errorOrNil, Bool, String, T
 
 ### Community 57 - "Test Command Args"
 Cohesion: 0.14
@@ -483,7 +484,7 @@ Nodes (11): Comparable, Sequence, .withIndex, Double, E, Int, ParsedCmd, R (+3 m
 
 ### Community 59 - "Project Docs & Licensing"
 Cohesion: 0.09
-Nodes (25): PackageDescription, clean-project.sh script, eval, Entity-Resolution Failure: Duplicate Script Node, Weakly-Connected Nodes Are Extraction Artifacts, Junk Clusters from Import Edges and Generic Labels, Entry Point Build Scripts, Self-signed Codesign Certificate (aerospace-codesign-certificate) (+17 more)
+Nodes (25): PackageDescription, clean-project.sh script, eval, Entity-Resolution Failure: Duplicate Script Node, Weakly-Connected Nodes Are Extraction Artifacts, Junk Clusters from Import Edges and Generic Labels, AeroSpace App Target (XcodeGen project.yml), Entry Point Build Scripts (+17 more)
 
 ### Community 60 - "Config Command Values"
 Cohesion: 0.13
@@ -502,16 +503,16 @@ Cohesion: 0.09
 Nodes (8): TestCommandTest, TestNotCmdArgs, parseTestNotCmdArgs(), CmdArgsCommonState, CmdParser, ParsedCmd, Self, StrArrSlice
 
 ### Community 64 - "OpenSpec Workflow Skills"
-Cohesion: 0.19
-Nodes (23): openspec-apply-change Skill, openspec-archive-change Skill, openspec-explore Skill, openspec-propose Skill, openspec-sync-specs Skill, openspec-update-change Skill, OpenSpec CLI, Spec-Driven Schema (+15 more)
+Cohesion: 0.27
+Nodes (26): OpenSpec CLI, Spec-Driven Schema, Delta Spec, Main Spec, OPSX Apply Command Workflow, OPSX Archive Command Workflow, OPSX Explore Command Workflow, OPSX Propose Command Workflow (+18 more)
 
 ### Community 65 - "Config Root Model"
 Cohesion: 0.11
 Nodes (21): Config, ConfigVersion, DefaultContainerOrientation, FocusFollowsMouse, getDefaultConfigUrlFromProject(), parseFocusFollowsMouse(), Mode, _1 (+13 more)
 
 ### Community 66 - "Grammar Test Parser"
-Cohesion: 0.20
-Nodes (10): CompletionGrammarTest, Failure, Grammar, Sequence, Set, .url, String, StaticString (+2 more)
+Cohesion: 0.22
+Nodes (8): String, CompletionGrammarTest, Grammar, .url, Failure, StaticString, UInt, URL
 
 ### Community 67 - "Format Primitives"
 Cohesion: 0.09
@@ -531,7 +532,7 @@ Nodes (16): CGPoint, Workspace, gcMonitors(), getStubWorkspace(), isValidAssignm
 
 ### Community 71 - "Cross-File Import Hub"
 Cohesion: 0.10
-Nodes (10): HotKey, Bool, balance(), Foundation, TilingContainer, .isEnabled, Bool, Cancel-and-Replace Coalescing (+2 more)
+Nodes (10): HotKey, Bool, balance(), TilingContainer, .isEnabled, Bool, Cancel-and-Replace Coalescing, Mouse Subsystem Structural Anonymity (+2 more)
 
 ### Community 72 - "Window Detected Callbacks"
 Cohesion: 0.13
@@ -555,7 +556,7 @@ Nodes (13): ServerEvent, ServerEventType, Codable, .eventType, Int, String, UInt
 
 ### Community 77 - "CGPoint Offset Helpers"
 Cohesion: 0.14
-Nodes (11): CGFloat, CGPoint, .monitorApproximation, .vectorLength, .withYAxisFlipped, CGFloat, ClosedRange, Double (+3 more)
+Nodes (11): CGFloat, CGPoint, .body, .monitorApproximation, .vectorLength, .withYAxisFlipped, CGFloat, ClosedRange (+3 more)
 
 ### Community 78 - "List Command Args"
 Cohesion: 0.13
@@ -587,11 +588,11 @@ Nodes (17): ServerArgs, Ax, ReadableAttr, ReadableAttrImpl, WritableAttr, Writab
 
 ### Community 85 - "Release Build Scripts"
 Cohesion: 0.17
-Nodes (13): install-from-sources.sh script, Fork Release Pipeline End to End, Ad-Hoc Signing Plus Quarantine-Strip Workaround, Silent Clean-Merge Rebase Risk, build-release.sh script, check-universal-binary(), check-contains-hash(), build-brew-cask.sh script (+5 more)
+Nodes (13): check-contains-hash(), check-universal-binary(), build-release.sh script, install-from-sources.sh script, build-brew-cask.sh script, xcodebuild-pretty(), Fork Release Pipeline End to End, Ad-Hoc Signing Plus Quarantine-Strip Workaround (+5 more)
 
 ### Community 86 - "Layout Normalization"
 Cohesion: 0.16
-Nodes (13): MacOsWindowLevel, getWindowLevel(), CoreGraphics, Window, Workspace, alwaysOnTopWindow, normalWindow, unknown (+5 more)
+Nodes (13): MacOsWindowLevel, exitMacOsNativeUnconventionalState(), normalizeLayoutReason(), validateStillPopups(), getWindowLevel(), CoreGraphics, Window, Workspace (+5 more)
 
 ### Community 87 - "Refresh Session Events"
 Cohesion: 0.12
@@ -603,7 +604,7 @@ Nodes (14): LazyMonitorInfo, MonitorInfoImpl, NSScreen, .rect, .visibleRect, .he
 
 ### Community 89 - "Window Detected Tests"
 Cohesion: 0.14
-Nodes (6): TestWindow, CGFloat, String, UInt32, .description, OnWindowDetectedTest
+Nodes (6): OnWindowDetectedTest, TestWindow, CGFloat, String, UInt32, .description
 
 ### Community 90 - "List Workspaces Args"
 Cohesion: 0.17
@@ -615,7 +616,7 @@ Nodes (14): VolumeAction, VolumeCmdArgs, parseVolumeAction(), Bool, Int, Self, S
 
 ### Community 92 - "Fork Release Workflow"
 Cohesion: 0.16
-Nodes (16): publish-release-adrianlsy.sh script, MIT License (legal/LICENSE.txt, Nikita Bobko 2023), MIT License (root LICENSE.txt, Nikita Bobko 2023), Fork Contributing Guide, Bundled Dependencies License Index, Fork vs Upstream Contribution Scope, Fork Version Scheme (v<upstream>-Beta.adrianlsy.<n>), Fork-Owned Files (no upstream equivalent) (+8 more)
+Nodes (16): publish-release-adrianlsy.sh script, MIT License (legal/LICENSE.txt, Nikita Bobko 2023), MIT License (root LICENSE.txt, Nikita Bobko 2023), Fork Contributing Guide, Bundled Dependencies License Index, Fork vs Upstream Contribution Scope, .github/workflows/pages.yml, .github/workflows/release-adrianlsy.yml (+8 more)
 
 ### Community 93 - "Shared Parser Constraint"
 Cohesion: 0.13
@@ -659,7 +660,7 @@ Nodes (12): MouseTarget, MoveMouseCmdArgs, parseMouseTarget(), parseMoveMouseCmd
 
 ### Community 103 - "Command Pipeline & Rebase Docs"
 Cohesion: 0.17
-Nodes (11): SubCommandParserProtocol, initSubcommands(), .declaredFlagKeys, Client/Server Interaction over Unix Socket, New Command Checklist, SPM Library + Xcode Launcher Infrastructure, Upstream Architecture Primer, move-workspace-to-display Validation Bypass (fixed in #5) (+3 more)
+Nodes (11): initSubcommands(), Client/Server Interaction over Unix Socket, New Command Checklist, SPM Library + Xcode Launcher Infrastructure, Upstream Architecture Primer, Client/Server Split (CLI client, app server over Unix socket), Command Pipeline (three-place command definition), Shared Arg-Parser Constraint (args re-parsed on server) (+3 more)
 
 ### Community 104 - "Good Monitor Arrangement"
 Cohesion: 0.27
@@ -667,7 +668,7 @@ Nodes (13): Good Left Corner (Free Bottom-Left Zone), Good Monitor Arrangement, 
 
 ### Community 105 - "Volume HUD Panel"
 Cohesion: 0.18
-Nodes (10): Float, Color, ColorScheme, String, Timer, VolumePanel, VolumeView, .barColor (+2 more)
+Nodes (10): VolumePanel, VolumeView, Float, Color, ColorScheme, String, .barColor, .fontColor (+2 more)
 
 ### Community 106 - "CmdArgs Conformance Findings"
 Cohesion: 0.15
@@ -699,7 +700,7 @@ Nodes (10): MoveWorkspaceToMonitorCmdArgs, parseWorkspaceToMonitorCmdArgs(), Boo
 
 ### Community 113 - "Code Generation Pipeline"
 Cohesion: 0.19
-Nodes (6): generate-cmd-help.sh script, generate.sh script, XCODEGEN_AEROSPACE_CODE_SIGN_IDENTITY, XCODEGEN_SWIFT_LANGUAGE_VERSION, Generated Code (must be committed, never hand-edited), Generated Files — Never Hand-Merge
+Nodes (6): generate.sh script, XCODEGEN_AEROSPACE_CODE_SIGN_IDENTITY, generate-cmd-help.sh script, Generated Code (must be committed, never hand-edited), XCODEGEN_SWIFT_LANGUAGE_VERSION, Generated Files — Never Hand-Merge
 
 ### Community 114 - "Shell Test DSL"
 Cohesion: 0.24
@@ -715,7 +716,7 @@ Nodes (11): Dimension, Units, height, smart, smartOpposite, width, String, UInt 
 
 ### Community 117 - "Grammar & Rebase Protocol"
 Cohesion: 0.24
-Nodes (10): build-shell-completion.sh script, Rebase-Based Upstream Relationship, Hand-Written Shell Lexer/Parser (ANTLR grammar retired), Rebase, Don't Merge, Rebase Protocol (fetch, rebase, test, force-with-lease), Expected Conflict Set, Upstream Sync Cadence (~20-commit rebase threshold), Post-Rebase Checks (test.sh + docs + completion not covered by CI) (+2 more)
+Nodes (10): build-shell-completion.sh script, Hand-Written Shell Lexer/Parser (ANTLR grammar retired), Rebase, Don't Merge, complgen (external completion generator), grammar/commands-bnf-grammar.txt (hand-maintained CLI grammar), Expected Conflict Set, Post-Rebase Checks (test.sh + docs + completion not covered by CI), Rebase Protocol (fetch, rebase, test, force-with-lease) (+2 more)
 
 ### Community 118 - "Tree Node Case Enums"
 Cohesion: 0.18
@@ -739,7 +740,7 @@ Nodes (8): [String: Json], URL, AxUiElementMock, .isSynthetic, Attr, Bool, CGWin
 
 ### Community 123 - "Docs & Completion Build Scripts"
 Cohesion: 0.40
-Nodes (8): build-man(), build-site(), cp-docs(), build-docs.sh script, install-dep.sh script, get-marker(), create-marker(), lazy-download-zip-and-link-bin()
+Nodes (8): build-man(), build-site(), cp-docs(), build-docs.sh script, create-marker(), get-marker(), lazy-download-zip-and-link-bin(), install-dep.sh script
 
 ### Community 124 - "Appearance & SwiftUI Views"
 Cohesion: 0.20
@@ -897,7 +898,7 @@ Nodes (3): windowIsntPartOfTree(), String, Window
 
 ## Knowledge Gaps
 - **650 isolated node(s):** `.workspace`, `.description`, `.failExitCode`, `.info`, `.windowId` (+645 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1220 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1216 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **26 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
@@ -908,12 +909,12 @@ _Questions this graph is uniquely positioned to answer:_
 - **What is the exact relationship between `Periphery Dead-Code Scan Skip (stale stated cause)` and `xcode-27 Runner Image`?**
   _Edge tagged AMBIGUOUS (relation: conceptually_related_to) - confidence is low._
 - **Why does `Common` connect `Command Module Imports` to `Debug Windows Recording`, `Tray Menu & Status UI`, `Move Workspace Tests`, `Shell Lexer & Parser`, `Command Execution Core`, `Move Node Commands`, `Shell Execution & IO`, `Refresh Session Engine`, `Tree Node Containers`, `AX Thread Guard Findings`, `Cardinal Direction Moves`, `Exec Env Config`, `Config Parsing & Diagnostics`, `Format Variable Expansion`, `Test Assertion Helpers`, `Focus State Management`, `Test Suite Imports`, `Env Variable Tests`, `CLI Entry Point`, `MacWindow Lifecycle`, `Format Command Tests`, `AX Run Loop & Frames`, `Start At Login`, `AeroAny & App Abstraction`, `AX Element Mock`, `Frozen Tree Types`, `Monitor Description Parsing`, `Key Mapping & Presets`, `Unix Socket Connection`, `Per-Monitor Gaps Config`, `Hotkey Binding Config`, `Move Node Tests`, `Config Command Values`, `Config Root Model`, `Tree Node Binding`, `Workspace Model`, `Cross-File Import Hub`, `Window Detected Callbacks`, `Server Event Types`, `App Termination Handling`, `Menu Bar Actions`, `AX Accessibility Attributes`, `Shared Parser Constraint`, `Reload Config Command`, `AX Dump Recursive`, `Command Pipeline & Rebase Docs`, `CmdArgs Conformance Findings`, `Appearance & SwiftUI Views`, `Frozen Tree Snapshots`?**
-  _High betweenness centrality (0.178) - this node is a cross-community bridge._
+  _High betweenness centrality (0.148) - this node is a cross-community bridge._
+- **Why does `CmdArgs` connect `CmdArgs Protocol Core` to `Command Execution Core`, `Command Dispatch & Shell`, `List Modes Args`, `Arg Parser Framework`, `Split Command Args`, `Swap Command Args`, `Subcommand Parser Registry`, `Test Assertion Helpers`, `Boolean Flag Parsers`, `Specific Arg Parsing`, `AeroAny & App Abstraction`, `Workspace Command Args`, `Interpolated Arg Consumption`, `Monitor Target Args`, `Per-Monitor Gaps Config`, `Focus Direction Args`, `Layout Command Args`, `Test Command Args`, `Test & Test-Not Commands`, `Window Detected Callbacks`, `Fullscreen Command Args`, `List Windows Args`, `List Command Args`, `AX Accessibility Attributes`, `Refresh Session Events`, `List Workspaces Args`, `Volume Command Args`, `Shared Parser Constraint`, `Enable Command Args`, `Config Command Args`, `Move Mouse Args`, `Command Pipeline & Rebase Docs`, `CmdArgs Conformance Findings`, `Run Callback Args`, `Workspace To Monitor Args`?**
+  _High betweenness centrality (0.096) - this node is a cross-community bridge._
 - **Why does `TreeNode` connect `TreeNode Base Class` to `AeroAny & App Abstraction`, `Window Layout Primitives`, `Relative Monitor Resolution`, `Recursive Layout Engine`, `Frozen Tree Types`, `Tree Node Binding`, `Cross-File Import Hub`, `MRU Stack`, `Tiling Container Nodes`, `Command Module Imports`, `Workspace Model`, `Per-Monitor Gaps Config`, `Tree Node Containers`, `Tree Node Parent Cases`, `Cardinal Direction Moves`, `Test Suite Imports`, `Rect Geometry`, `TreeNode Bridge Findings`?**
-  _High betweenness centrality (0.075) - this node is a cross-community bridge._
-- **Why does `Command` connect `Command Dispatch & Shell` to `Command Test Fixtures`, `CmdArgs Protocol Core`, `AeroAny & App Abstraction`, `Config Root Model`, `Exit Code Commands`, `Command Execution Core`, `Command Module Imports`, `Move Node Commands`, `Window Detected Callbacks`, `Per-Monitor Gaps Config`, `Shell Execution & IO`, `Refresh Session Engine`, `Cardinal Direction Moves`, `AX Accessibility Attributes`, `Config Parsing & Diagnostics`, `Hotkey Binding Config`, `Shared Parser Constraint`?**
-  _High betweenness centrality (0.069) - this node is a cross-community bridge._
+  _High betweenness centrality (0.060) - this node is a cross-community bridge._
 - **Are the 273 inferred relationships involving `assertEquals()` (e.g. with `checkAxDumpsRecursive()` and `.testBalanceSizesCommand()`) actually correct?**
   _`assertEquals()` has 273 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 212 inferred relationships involving `parseCommand()` (e.g. with `testParseCommandHelp()` and `testParseSingleCommandSucc()`) actually correct?**
-  _`parseCommand()` has 212 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 213 inferred relationships involving `parseCommand()` (e.g. with `testParseCommandHelp()` and `testParseSingleCommandSucc()`) actually correct?**
+  _`parseCommand()` has 213 INFERRED edges - model-reasoned connections that need verification._
