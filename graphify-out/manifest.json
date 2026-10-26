@@ -1,9 +1,9 @@
 {
   ".github/gh-actions-runner-xcode-select.sh": {
-    "mtime": 1787216032.9813273,
-    "seen": 1787228576.529526,
-    "ast_hash": "2ed6f0c446f41ca79eccd8f8a034995e",
-    "semantic_hash": "2ed6f0c446f41ca79eccd8f8a034995e"
+    "mtime": 1792657921.5898802,
+    "seen": 1792987015.944436,
+    "ast_hash": "21d24cd126569e99aa9a85b0175f6f82",
+    "semantic_hash": "21d24cd126569e99aa9a85b0175f6f82"
   },
   "Package.swift": {
     "mtime": 1787216032.98253,
@@ -162,10 +162,10 @@
     "semantic_hash": "4d929afd5223673d1a8faa7df4062be2"
   },
   "Sources/AppBundle/command/impl/LayoutCommand.swift": {
-    "mtime": 1787216032.9843268,
-    "seen": 1787228576.5295382,
-    "ast_hash": "2f8928f8657f8e075e1e0caeae67fe7e",
-    "semantic_hash": "2f8928f8657f8e075e1e0caeae67fe7e"
+    "mtime": 1792657921.5908945,
+    "seen": 1792987015.944436,
+    "ast_hash": "52a0a10005d9021d23208cf1d7a29546",
+    "semantic_hash": "52a0a10005d9021d23208cf1d7a29546"
   },
   "Sources/AppBundle/command/impl/ListAppsCommand.swift": {
     "mtime": 1787216032.9843888,
@@ -540,10 +540,10 @@
     "semantic_hash": "26d66c0815a6ee0d3413478425d712dc"
   },
   "Sources/AppBundle/normalizeLayoutReason.swift": {
-    "mtime": 1787216032.988339,
-    "seen": 1787228576.529557,
-    "ast_hash": "8c1cc4cfa3b978782437d8c2550bd823",
-    "semantic_hash": "8c1cc4cfa3b978782437d8c2550bd823"
+    "mtime": 1792657921.5910504,
+    "seen": 1792987015.944436,
+    "ast_hash": "558c242f1fb44f4903e3e269baac8694",
+    "semantic_hash": "558c242f1fb44f4903e3e269baac8694"
   },
   "Sources/AppBundle/runLoop.swift": {
     "mtime": 1787216032.9883864,
@@ -600,10 +600,10 @@
     "semantic_hash": "20e75ce58c94987a862be9a171f05185"
   },
   "Sources/AppBundle/tree/MacWindow.swift": {
-    "mtime": 1787216032.989076,
-    "seen": 1787228576.52956,
-    "ast_hash": "bcbb5b23584e119c6f739de20886baba",
-    "semantic_hash": "bcbb5b23584e119c6f739de20886baba"
+    "mtime": 1792657921.591175,
+    "seen": 1792987015.944436,
+    "ast_hash": "bc508ad810bed9694e4575290316a07a",
+    "semantic_hash": "bc508ad810bed9694e4575290316a07a"
   },
   "Sources/AppBundle/tree/MacosUnconventionalWindowsContainer.swift": {
     "mtime": 1787216032.9891381,
@@ -726,10 +726,10 @@
     "semantic_hash": "c806858dc4a8df88abdeb3307fcc6ecd"
   },
   "Sources/AppBundle/ui/VolumeView.swift": {
-    "mtime": 1787216032.9903827,
-    "seen": 1787228576.529567,
-    "ast_hash": "18d9f410316a160257836df55465466b",
-    "semantic_hash": "18d9f410316a160257836df55465466b"
+    "mtime": 1792657921.591339,
+    "seen": 1792987015.944436,
+    "ast_hash": "696a8a24d8bc401380a7f3e0a81a3f78",
+    "semantic_hash": "696a8a24d8bc401380a7f3e0a81a3f78"
   },
   "Sources/AppBundle/util/AwaitableOneTimeBroadcastLatch.swift": {
     "mtime": 1787216032.9904666,
@@ -918,10 +918,10 @@
     "semantic_hash": "e3ac472fb2b01c8742632f92cd1fd711"
   },
   "Sources/AppBundleTests/command/LayoutCommandTest.swift": {
-    "mtime": 1787216032.9926267,
-    "seen": 1787228576.529577,
-    "ast_hash": "b27ffa5cbd9d6b37f68b489b0ad559d1",
-    "semantic_hash": "b27ffa5cbd9d6b37f68b489b0ad559d1"
+    "mtime": 1792657921.5915112,
+    "seen": 1792987015.944436,
+    "ast_hash": "8dc9cee51f48608d22182105bbffa3d5",
+    "semantic_hash": "8dc9cee51f48608d22182105bbffa3d5"
   },
   "Sources/AppBundleTests/command/ListAppsTest.swift": {
     "mtime": 1787216032.992682,
@@ -1080,16 +1080,16 @@
     "semantic_hash": "7076972a2a89747640f533aa7f890b6f"
   },
   "Sources/AppBundleTests/testUtil.swift": {
-    "mtime": 1787216032.9944048,
-    "seen": 1787228576.529585,
-    "ast_hash": "e118c4dc66012c57f2933c0618acd802",
-    "semantic_hash": "e118c4dc66012c57f2933c0618acd802"
+    "mtime": 1792657921.5921028,
+    "seen": 1792987015.944436,
+    "ast_hash": "751858a2a097f704c5a160a0564b3085",
+    "semantic_hash": "751858a2a097f704c5a160a0564b3085"
   },
   "Sources/AppBundleTests/tree/OnWindowDetectedTest.swift": {
-    "mtime": 1787216032.994474,
-    "seen": 1787228576.529585,
-    "ast_hash": "642bb57836e88ca6840735b7606a1230",
-    "semantic_hash": "642bb57836e88ca6840735b7606a1230"
+    "mtime": 1792657921.5921881,
+    "seen": 1792987015.944436,
+    "ast_hash": "c7dcff0f8badc7a787ee59b2f84d9f6e",
+    "semantic_hash": "c7dcff0f8badc7a787ee59b2f84d9f6e"
   },
   "Sources/AppBundleTests/tree/TestApp.swift": {
     "mtime": 1787216032.9945273,
@@ -1278,10 +1278,10 @@
     "semantic_hash": "a83d018a8edf91fb677ab547bdcf3af8"
   },
   "Sources/Common/cmdArgs/impl/LayoutCmdArgs.swift": {
-    "mtime": 1787216032.996426,
-    "seen": 1787228576.529595,
-    "ast_hash": "84b5aba41bab30c203e6dd4e43335b20",
-    "semantic_hash": "84b5aba41bab30c203e6dd4e43335b20"
+    "mtime": 1792657921.5925212,
+    "seen": 1792987015.944436,
+    "ast_hash": "f0f0cd06c0205213e7515c0fcae33a52",
+    "semantic_hash": "f0f0cd06c0205213e7515c0fcae33a52"
   },
   "Sources/Common/cmdArgs/impl/ListAppsCmdArgs.swift": {
     "mtime": 1787216032.9964893,
@@ -1476,10 +1476,10 @@
     "semantic_hash": "5af659a46670a5518a755a131ef175dd"
   },
   "Sources/Common/cmdHelpGenerated.swift": {
-    "mtime": 1787216032.9983683,
-    "seen": 1787228576.5296052,
-    "ast_hash": "fe7d66e420a3043319ea25efd506822d",
-    "semantic_hash": "fe7d66e420a3043319ea25efd506822d"
+    "mtime": 1792657935.646299,
+    "seen": 1792987015.944436,
+    "ast_hash": "72d7fc045f1a4780146940baa58a748a",
+    "semantic_hash": "72d7fc045f1a4780146940baa58a748a"
   },
   "Sources/Common/gitHashGenerated.swift": {
     "mtime": 1787216032.9984145,
@@ -1638,10 +1638,10 @@
     "semantic_hash": "dadb581ec9f8b883ba8fe0573048c1de"
   },
   "Sources/Common/util/NWConnectionEx.swift": {
-    "mtime": 1787216032.9997518,
-    "seen": 1787228576.529613,
-    "ast_hash": "abd45c2a4da5883244537c89510308e0",
-    "semantic_hash": "abd45c2a4da5883244537c89510308e0"
+    "mtime": 1792657921.593046,
+    "seen": 1792987015.944436,
+    "ast_hash": "f4d690c5c91922ba1effce109c8a1c74",
+    "semantic_hash": "f4d690c5c91922ba1effce109c8a1c74"
   },
   "Sources/Common/util/NonCopyable.swift": {
     "mtime": 1787216032.9998064,
@@ -1722,10 +1722,10 @@
     "semantic_hash": "a1bd041f5c7b384cc5b8ff81cf4ab3b4"
   },
   "build-debug.sh": {
-    "mtime": 1787216033.0078073,
-    "seen": 1787228576.529618,
-    "ast_hash": "c421681da4d654f9d3cc5d6a73ea3a5f",
-    "semantic_hash": "c421681da4d654f9d3cc5d6a73ea3a5f"
+    "mtime": 1792657921.5931861,
+    "seen": 1792987015.944436,
+    "ast_hash": "0f70500c0a32ab132fe6c70131b3384d",
+    "semantic_hash": "0f70500c0a32ab132fe6c70131b3384d"
   },
   "build-docs.sh": {
     "mtime": 1787216033.0078602,
@@ -1734,10 +1734,10 @@
     "semantic_hash": "5a1f69b31c4c80865f53737396dbcc5a"
   },
   "build-release.sh": {
-    "mtime": 1787216033.0079243,
-    "seen": 1787228576.529618,
-    "ast_hash": "953bb0a82a7670414680968d0870635e",
-    "semantic_hash": "953bb0a82a7670414680968d0870635e"
+    "mtime": 1792657921.5932715,
+    "seen": 1792987015.944436,
+    "ast_hash": "93396fbd15023a298d94c5ff9f949839",
+    "semantic_hash": "93396fbd15023a298d94c5ff9f949839"
   },
   "build-shell-completion.sh": {
     "mtime": 1787216033.0079844,
@@ -1752,10 +1752,10 @@
     "semantic_hash": "205ef1f80e4708400a13337417061470"
   },
   "generate.sh": {
-    "mtime": 1787216033.020909,
-    "seen": 1787228576.529619,
-    "ast_hash": "67f8ca739f723aa4a606b2ad7243619e",
-    "semantic_hash": "67f8ca739f723aa4a606b2ad7243619e"
+    "mtime": 1792657921.5965414,
+    "seen": 1792987015.944436,
+    "ast_hash": "98e7eadf952be2ff9cd08a081b34b719",
+    "semantic_hash": "98e7eadf952be2ff9cd08a081b34b719"
   },
   "install-from-sources.sh": {
     "mtime": 1787216033.0210483,
@@ -1764,10 +1764,10 @@
     "semantic_hash": "456169d48fdda528e2153c8bdeb9f29f"
   },
   "lint.sh": {
-    "mtime": 1787216033.0214674,
-    "seen": 1787228576.52962,
-    "ast_hash": "86b0964b333c15d6055914ea43a681ef",
-    "semantic_hash": "86b0964b333c15d6055914ea43a681ef"
+    "mtime": 1792657921.6147225,
+    "seen": 1792987015.944436,
+    "ast_hash": "dece2cb19f8773ed25035c28c8aad655",
+    "semantic_hash": "dece2cb19f8773ed25035c28c8aad655"
   },
   "resources/Assets.xcassets/AccentColor.colorset/Contents.json": {
     "mtime": 1787216033.0217085,
@@ -1800,10 +1800,10 @@
     "semantic_hash": "c8d1571001d20ab797ed39f1980e42ec"
   },
   "script/build-brew-cask.sh": {
-    "mtime": 1787216033.0228367,
-    "seen": 1787228576.529622,
-    "ast_hash": "9c180b2793f85ad136a8cc60417e8f68",
-    "semantic_hash": "9c180b2793f85ad136a8cc60417e8f68"
+    "mtime": 1792657921.6148105,
+    "seen": 1792987015.944436,
+    "ast_hash": "655a2e846b8ea474f72352190b77fb41",
+    "semantic_hash": "655a2e846b8ea474f72352190b77fb41"
   },
   "script/check-uncommitted-files.sh": {
     "mtime": 1787216033.0228813,
@@ -1830,10 +1830,10 @@
     "semantic_hash": "0cc492abad84821f68898ac84a98bfaf"
   },
   "script/install-dep.sh": {
-    "mtime": 1787216033.0230932,
-    "seen": 1787228576.529624,
-    "ast_hash": "a9f0d799442ca78600336bf248b98939",
-    "semantic_hash": "a9f0d799442ca78600336bf248b98939"
+    "mtime": 1792657921.5970547,
+    "seen": 1792987015.944436,
+    "ast_hash": "dcd5365a6d4e616b3b1dd092c4e0a44e",
+    "semantic_hash": "dcd5365a6d4e616b3b1dd092c4e0a44e"
   },
   "script/publish-release-adrianlsy.sh": {
     "mtime": 1787216033.0231414,
@@ -1854,10 +1854,10 @@
     "semantic_hash": "ee523ef24049fcb16ae25f41b93a11f5"
   },
   "script/setup.sh": {
-    "mtime": 1787216033.0232816,
-    "seen": 1787228576.5296252,
-    "ast_hash": "c59c90bcda37ace42a1785cfeba007af",
-    "semantic_hash": "c59c90bcda37ace42a1785cfeba007af"
+    "mtime": 1792657921.5971289,
+    "seen": 1792987015.944436,
+    "ast_hash": "a80d39422e687394e649d8b69aded7c8",
+    "semantic_hash": "a80d39422e687394e649d8b69aded7c8"
   },
   "swift-test.sh": {
     "mtime": 1787216033.023333,
@@ -1986,34 +1986,34 @@
     "semantic_hash": "775790cfd4183872eb7a58939ab70bd0"
   },
   ".github/workflows/build.yml": {
-    "mtime": 1787216032.9814475,
-    "seen": 1787228576.529632,
-    "ast_hash": "05c1858640ba481e7d798644fbe9a915",
-    "semantic_hash": "05c1858640ba481e7d798644fbe9a915"
+    "mtime": 1792658675.091124,
+    "seen": 1792987015.944436,
+    "ast_hash": "e828d79c4516005889de471448c5cba6",
+    "semantic_hash": "e828d79c4516005889de471448c5cba6"
   },
   ".github/workflows/pages.yml": {
-    "mtime": 1787216032.9815133,
-    "seen": 1787228576.529632,
-    "ast_hash": "9f40da85c0f6b1d667d246c6194136b8",
-    "semantic_hash": "9f40da85c0f6b1d667d246c6194136b8"
+    "mtime": 1792658041.9506247,
+    "seen": 1792987015.944436,
+    "ast_hash": "18e4c5480fb0b160f7522339294197dd",
+    "semantic_hash": "18e4c5480fb0b160f7522339294197dd"
   },
   ".github/workflows/release-adrianlsy.yml": {
-    "mtime": 1787216032.9815786,
-    "seen": 1787228576.529633,
-    "ast_hash": "5171eb51e58357837945df28de20de99",
-    "semantic_hash": "5171eb51e58357837945df28de20de99"
+    "mtime": 1792658051.8545794,
+    "seen": 1792987015.944436,
+    "ast_hash": "b6ee72c4c47f2fae689ab6b5a6642b1f",
+    "semantic_hash": "b6ee72c4c47f2fae689ab6b5a6642b1f"
   },
   ".swiftlint.yml": {
-    "mtime": 1787216032.982066,
-    "seen": 1787228576.529633,
-    "ast_hash": "b97815fbe1fde7daa4ef8e478362afb6",
-    "semantic_hash": "b97815fbe1fde7daa4ef8e478362afb6"
+    "mtime": 1792657921.5905612,
+    "seen": 1792987015.944436,
+    "ast_hash": "64b2d973960fce17968985b2143ae66b",
+    "semantic_hash": "64b2d973960fce17968985b2143ae66b"
   },
   "CLAUDE.md": {
-    "mtime": 1787216032.9821389,
-    "seen": 1787228576.529634,
-    "ast_hash": "f39da06a5187209dbd8295c731418a25",
-    "semantic_hash": "f39da06a5187209dbd8295c731418a25"
+    "mtime": 1792658051.9190233,
+    "seen": 1792987015.944436,
+    "ast_hash": "16729b1ef4fc383c4975f063dbed6a44",
+    "semantic_hash": "16729b1ef4fc383c4975f063dbed6a44"
   },
   "CONTRIBUTING.md": {
     "mtime": 1787216032.982215,
@@ -2034,10 +2034,10 @@
     "semantic_hash": "c523962524262ffd88059fa761de2724"
   },
   "README.md": {
-    "mtime": 1787216032.9825983,
-    "seen": 1787228576.5296352,
-    "ast_hash": "421fd527356308cba0310fb971821490",
-    "semantic_hash": "421fd527356308cba0310fb971821490"
+    "mtime": 1792658041.9507108,
+    "seen": 1792987015.944436,
+    "ast_hash": "657e9ae3d1395dba4196c268dcb28487",
+    "semantic_hash": "657e9ae3d1395dba4196c268dcb28487"
   },
   "axDumps/scenario_firefox_google_meet_share_window/README.md": {
     "mtime": 1787216033.0057702,
@@ -2058,10 +2058,10 @@
     "semantic_hash": "a18e173053cb1f682d2afe63dc2048eb"
   },
   "dev-docs/fork-maintenance.md": {
-    "mtime": 1787216033.008204,
-    "seen": 1787228576.529637,
-    "ast_hash": "3810c4c391580b531878c630124e1652",
-    "semantic_hash": "3810c4c391580b531878c630124e1652"
+    "mtime": 1792658675.1165512,
+    "seen": 1792987015.944436,
+    "ast_hash": "9b4c4628cceccb9d771e117f7535dd7e",
+    "semantic_hash": "9b4c4628cceccb9d771e117f7535dd7e"
   },
   "docs/docinfo-footer.html": {
     "mtime": 1787216033.0197833,
@@ -2076,10 +2076,10 @@
     "semantic_hash": "09c3a529f43e1982ffef954660540c69"
   },
   "grammar/commands-bnf-grammar.txt": {
-    "mtime": 1787216033.020994,
-    "seen": 1787228576.5296378,
-    "ast_hash": "9bc34d7684a9b00dec99bdf33fc062fc",
-    "semantic_hash": "9bc34d7684a9b00dec99bdf33fc062fc"
+    "mtime": 1792657948.2020125,
+    "seen": 1792987015.944436,
+    "ast_hash": "4c44f32423d41bbb1c4f4e9a8678da82",
+    "semantic_hash": "4c44f32423d41bbb1c4f4e9a8678da82"
   },
   "legal/LICENSE.txt": {
     "mtime": 1787216032.9824188,
@@ -2118,10 +2118,10 @@
     "semantic_hash": "f6c482a0548ea60d6c2e015776534035"
   },
   "xcode/project.yml": {
-    "mtime": 1787216033.0236864,
-    "seen": 1787228576.529648,
-    "ast_hash": "373fc3f221eae78d043b1227959455a3",
-    "semantic_hash": "373fc3f221eae78d043b1227959455a3"
+    "mtime": 1792657921.5973704,
+    "seen": 1792987015.944436,
+    "ast_hash": "922a2bb4db1a86f64f22e821363d0b6a",
+    "semantic_hash": "922a2bb4db1a86f64f22e821363d0b6a"
   },
   "docs/assets/h_accordion.png": {
     "mtime": 1787216033.0116823,
