@@ -21,8 +21,16 @@
       "files": 9,
       "mode": "update",
       "note": "re-ingest of memos amended with 2026-08-20 errata"
+    },
+    {
+      "date": "2026-10-26T03:54:42+00:00",
+      "input_tokens": 514600,
+      "output_tokens": 0,
+      "files": 27,
+      "mode": "update",
+      "note": "incremental re-extract to 96349ec0: 18 code files via AST, 9 docs via 4 semantic subagents; harness reports a combined per-agent token total, recorded here as input"
     }
   ],
-  "total_input_tokens": 1184732,
+  "total_input_tokens": 1699332,
   "total_output_tokens": 38130
 }

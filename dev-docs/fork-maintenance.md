@@ -54,7 +54,7 @@ now gone.
 | `CONTRIBUTING.md` | Fork section prepended above `---` divider | Keep fork preamble; accept upstream edits below the divider |
 | `docs/guide.adoc` | One rebranded releases URL | Keep the fork's URL; accept upstream edits everywhere else |
 | `docs/commands.adoc` | Hand-maintained command index; both sides append | Alphabetical adjacency — keep both sides |
-| `grammar/commands-bnf-grammar.txt` | Hand-maintained (despite the name, **not** generated). The fork also rewrites the `echo`, `eval`, `move-workspace-to-monitor`, `reload-config` and `subscribe` productions | Alphabetical adjacency — keep both sides. For the five rewritten productions keep the fork's version unless upstream has fixed them, then take upstream. Re-validate with `./build-shell-completion.sh` |
+| `grammar/commands-bnf-grammar.txt` | Hand-maintained (despite the name, **not** generated). The fork also rewrites the `echo`, `eval`, `layout --for-next-detected-window`, `move-workspace-to-monitor`, `reload-config` and `subscribe` productions | Alphabetical adjacency — keep both sides. For the six rewritten productions keep the fork's version unless upstream has fixed them, then take upstream. Re-validate with `./build-shell-completion.sh` |
 | `docs/config-examples/*.toml` | Fork rebrands doc URLs to `adrianlsy.github.io` | Take upstream's structure, re-apply the URL rebrand. Rebrand any *new* upstream URLs too — these files ship inside the `.app` |
 | `CLAUDE.md` | Fork-specific architecture notes | Keep fork version |
 
