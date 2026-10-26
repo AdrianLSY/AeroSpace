@@ -34,7 +34,9 @@ fixes ahead of upstream. None of them changes window-management behavior.
 - **Shell completion suggested combinations that always fail.**
   `subscribe --all` offered event names, but `--all` and an explicit
   `<event>` are mutually exclusive; `move-workspace-to-monitor` offered
-  `--wrap-around` alongside a monitor pattern, which the CLI rejects.
+  `--wrap-around` alongside a monitor pattern, which the CLI rejects;
+  `layout --for-next-detected-window` offered any number of `tiling` and
+  `floating` targets, but the flag takes exactly one.
 - **`move-workspace-to-display` skipped argument validation.** The
   deprecated alias accepted `--wrap-around` together with a monitor
   pattern — rejected under the canonical `move-workspace-to-monitor` name —

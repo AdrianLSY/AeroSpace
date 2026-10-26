@@ -15,7 +15,8 @@ import XCTest
 /// the `.filter` rules in each `parse*CmdArgs`, and complgen cannot express
 /// most of it anyway. So a flag that is valid on one form but wrongly offered
 /// on another still slips through; only wholly-absent and wholly-bogus flags
-/// are caught.
+/// are caught, plus the individual `.filter` rules pinned by their own tests
+/// below.
 final class CompletionGrammarTest: XCTestCase {
     /// Deprecated aliases are deliberately absent from the grammar: completion
     /// should not steer anyone towards a name that is on its way out.
@@ -58,6 +59,34 @@ final class CompletionGrammarTest: XCTestCase {
         assertNoProblems(problems, hint: "Completion would offer a subcommand that does not exist.")
     }
 
+    /// `--for-next-detected-window` takes exactly one `<target-layout>`, and only
+    /// one the `.filter` in `parseLayoutCmdArgs` lets through. The grammar once
+    /// offered `(--for-next-detected-window|tiling|floating)...`, which completed
+    /// `layout --for-next-detected-window tiling floating`.
+    @MainActor
+    func testForNextDetectedWindowIsOfferedWithExactlyOneAcceptedLayout() throws {
+        let flag = "--for-next-detected-window"
+        let productions = try Grammar.load().alternativesByCommand["layout", default: []]
+            .filter { Grammar.tokenize($0).contains(flag) }
+        let accepted = Set(LayoutCmdArgs.LayoutDescription.allCases.map(\.rawValue).filter {
+            parseCommand("layout \(flag) \($0)").errorOrNil == nil
+        })
+        var problems: [String] = []
+        if productions.isEmpty {
+            problems.append("layout: no production offers \(flag)")
+        }
+        for production in productions {
+            if production.contains("...") {
+                problems.append("layout: `\(production)` repeats, but \(flag) allows exactly one <target-layout>")
+            }
+            let offered = Set(Grammar.tokenize(production)).subtracting(["layout", flag])
+            if offered != accepted {
+                problems.append("layout: `\(production)` offers \(offered.sorted()) with \(flag); the parser accepts \(accepted.sorted())")
+            }
+        }
+        assertNoProblems(problems, hint: "Completion would suggest a combination that always fails to parse.")
+    }
+
     private func declaredFlags(of command: String) -> Set<String>? {
         subcommandParsers[command]?.declaredFlagKeys
     }
@@ -86,6 +115,8 @@ extension SubCommandParserProtocol {
 /// long flags the grammar offers.
 private struct Grammar {
     let flagsByCommand: [String: Set<String>]
+    /// Each production's raw text, `{{{ shell }}}` blocks already replaced.
+    let alternativesByCommand: [String: [String]]
 
     static func load() throws -> Grammar {
         let text = try String(contentsOf: url, encoding: .utf8)
@@ -94,13 +125,15 @@ private struct Grammar {
             throw Failure("<subcommand> rule not found in \(url.path)")
         }
         var flagsByCommand: [String: Set<String>] = [:]
+        var alternativesByCommand: [String: [String]] = [:]
         for alternative in Self.splitOnTopLevelPipes(subcommands) {
             let tokens = Self.tokenize(alternative)
             guard let command = tokens.first, !command.hasPrefix("-"), !command.hasPrefix("<") else { continue }
             let flags = Self.flags(in: tokens.dropFirst(), rules: rules, visiting: [])
             flagsByCommand[command, default: []].formUnion(flags)
+            alternativesByCommand[command, default: []].append(alternative)
         }
-        return Grammar(flagsByCommand: flagsByCommand)
+        return Grammar(flagsByCommand: flagsByCommand, alternativesByCommand: alternativesByCommand)
     }
 
     static var url: URL {
@@ -163,7 +196,7 @@ private struct Grammar {
     /// Grammar punctuation binds directly to the tokens it decorates
     /// (`[--no-gui`, `--warnings-as-errors]...`), so it has to be split off
     /// rather than trimmed.
-    private static func tokenize(_ text: String) -> [String] {
+    static func tokenize(_ text: String) -> [String] {
         let separators = CharacterSet(charactersIn: "[]()|.").union(.whitespacesAndNewlines)
         return text.components(separatedBy: separators).filter { !$0.isEmpty }
     }
